@@ -7,6 +7,7 @@ import FetchData from "./components/FetchData";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import UserInterface from "./components/UserInterface";
 import AdminInterface from "./components/AdminInterface";
+import ResetPassword from "./components/ResetPassword";
 import ProjectManagement from "./components/ProjectManagementInterface";
 import {
   faInbox,
@@ -60,6 +61,7 @@ export default () => (
     <Route path="/p" component={ProjectManagement} />
     {/* <Route exact path="/admin/home" component={Home} /> */}
     <Route path="/login" component={Login} />
+    <Route path="/resetpassword" component={ResetPassword} />
     <Route path="/counter" component={Counter} />
     <Route path="/fetch-data/:startDateIndex?" component={FetchData} />
   </Layout>

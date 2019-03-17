@@ -18,6 +18,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import mainLogo from "../assets/img/logo.png";
 import avatar from "../assets/img/avatar.jpg";
 import Login from "./Login";
+import ResetPassword from "./ResetPassword";
 import ComposeForm from "./ComposeForm";
 import "antd/lib/icon/style";
 
@@ -173,6 +174,8 @@ class ReportSystem extends React.Component {
             </Drawer>
             {/* <Footer>Footer</Footer> */}
           </Layout>
+        ) : window.location.pathname === "/resetpassword" ? (
+          <ResetPassword />
         ) : (
           <Login />
         )}
