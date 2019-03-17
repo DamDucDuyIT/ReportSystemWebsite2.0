@@ -69,6 +69,14 @@ export const actionCreators = {
     return res;
   },
 
+  sendResetPasswordMail: email => async (dispatch, getState) => {
+    var res = await dataService.post(
+      "api/accounts/generateresetpasswordcode/" + email
+    );
+
+    return res;
+  },
+
   register: inputData => async () => {
     console.log(inputData);
     const data = {

@@ -5,6 +5,7 @@ import * as Counter from "./Counter";
 import * as ComposeForm from "./ComposeForm";
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Login from "./Login";
+import * as ResetPassword from "./ResetPassword";
 import * as Admin_Account from "./Admin/Account";
 
 import * as LayoutDepartment from "./LayoutDepartment";
@@ -20,6 +21,7 @@ import * as Admin_AccountDetail from "./Admin/AccountDetail";
 export default function configureStore(history, initialState) {
   const reducers = {
     login: Login.reducer,
+    resetPassword: ResetPassword.reducer,
     counter: Counter.reducer,
     composeForm: ComposeForm.reducer,
     report: Report.reducer,

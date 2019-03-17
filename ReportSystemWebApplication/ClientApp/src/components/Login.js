@@ -36,9 +36,11 @@ class Login extends Component {
       email: "",
       password: "",
       registerModalVisible: false,
+      resetPasswordModalVisible: false,
       confirmDirty: false,
       confirmEmailOK: false,
       confirmLoading: false,
+      confirmResetLoading: false,
       department: "",
       departments: []
     };
@@ -143,10 +145,39 @@ class Login extends Component {
     }
   };
 
+  confirmResetLoading = () => {
+    const isValid = this.props.form.getFieldError("email");
+
+    if (isValid === undefined) {
+      this.setState({
+        confirmResetLoading: true
+      });
+      const value = this.props.form.getFieldValue("email");
+      console.log(value);
+      this.props.sendResetPasswordMail(value).then(response => {
+        this.setState({
+          confirmResetLoading: false
+        });
+        if (response && response.status === 200) {
+          message.success(
+            "Đã gửi liên kết thay đổi mật khẩu đến mail của bạn.",
+            10
+          );
+        } else {
+          message.error(response.data, 10);
+        }
+      });
+    }
+  };
+
   setRegisterModalVisible(registerModalVisible) {
     const isLoaded = false;
     this.props.requestRegisterForm(isLoaded);
     this.setState({ registerModalVisible });
+  }
+
+  setResetPasswordModalVisible(resetPasswordModalVisible) {
+    this.setState({ resetPasswordModalVisible });
   }
 
   compareToFirstPassword = (rule, value, callback) => {
@@ -265,7 +296,10 @@ class Login extends Component {
                 >
                   Đăng ký
                 </a>
-                <a className="login-form-forgot" href="">
+                <a
+                  className="login-form-forgot"
+                  onClick={() => this.setResetPasswordModalVisible(true)}
+                >
                   Quên mật khẩu
                 </a>
               </Form.Item>
@@ -412,6 +446,43 @@ class Login extends Component {
               >
                 Đăng ký
               </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+
+        <Modal
+          title="Khôi phục mật khẩu"
+          visible={this.state.resetPasswordModalVisible}
+          style={{ top: 20 }}
+          onOk={() => this.setResetPasswordModalVisible(false)}
+          onCancel={() => this.setResetPasswordModalVisible(false)}
+        >
+          <Form className="login-form">
+            <Form.Item label="Email">
+              <Row gutter={8}>
+                <Col span={18}>
+                  {getFieldDecorator("email", {
+                    rules: [
+                      {
+                        type: "email",
+                        message: "Email chưa đúng!"
+                      },
+                      { required: true, message: "Xin nhập Email!" }
+                      // { validator: this.checkNull }
+                    ]
+                  })(<Input />)}
+                </Col>
+                <Col span={6}>
+                  <Button
+                    type="primary"
+                    icon="check-circle"
+                    loading={this.state.confirmResetLoading}
+                    onClick={this.confirmResetLoading}
+                  >
+                    Xác nhận
+                  </Button>
+                </Col>
+              </Row>
             </Form.Item>
           </Form>
         </Modal>
