@@ -174,7 +174,7 @@ class ReportSystem extends React.Component {
             </Drawer>
             {/* <Footer>Footer</Footer> */}
           </Layout>
-        ) : window.location.pathname === "/resetpassword" ? (
+        ) : window.location.pathname.includes("/resetpassword") ? (
           <ResetPassword />
         ) : (
           <Login />

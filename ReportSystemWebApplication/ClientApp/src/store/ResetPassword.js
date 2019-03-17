@@ -37,6 +37,8 @@ export const actionCreators = {
       code: getState().resetPassword.code
     };
 
+    console.log(data);
+
     var res = await dataService.post(`api/accounts/resetpassword`, data);
 
     return res;
