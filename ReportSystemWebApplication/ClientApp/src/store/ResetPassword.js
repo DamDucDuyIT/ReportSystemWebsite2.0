@@ -11,7 +11,7 @@ const initialState = {
 
 export const actionCreators = {
   requestResetPassword: (isLoaded, code) => async (dispatch, getState) => {
-    if (isLoaded === getState().requestResetPassword.isLoaded) {
+    if (isLoaded === getState().resetPassword.isLoaded) {
       // Don't issue a duplicate request (we already have or are loading the requested
       // data)
       return;
