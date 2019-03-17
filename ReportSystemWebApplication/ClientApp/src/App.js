@@ -8,7 +8,6 @@ import FetchData from "./components/FetchData";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import UserInterface from "./components/UserInterface";
 import AdminInterface from "./components/AdminInterface";
-import ResetPassword from "./components/ResetPassword";
 import ProjectManagement from "./components/ProjectManagementInterface";
 import {
   faInbox,
