@@ -20,7 +20,7 @@ export const actionCreators = {
     localStorage.removeItem(constant.CURRENT_USER);
 
     dispatch({
-      type: requestLogInType,
+      type: requestResetPasswordType,
       isLoaded,
       code
     });

@@ -1,7 +1,11 @@
 import React, { Component, cloneElement } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { actionCreators } from "../store/ResetPassword";
 import { Form, Input, Button, message } from "antd";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import mainLogo from "../assets/img/logo.png";
+import "../assets/css/login.css";
 
 class ResetPassword extends Component {
   constructor(props) {
