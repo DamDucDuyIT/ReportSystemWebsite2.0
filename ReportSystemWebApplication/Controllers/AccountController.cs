@@ -339,10 +339,11 @@ namespace ReportSystemWebApplication.Controllers
 
             var code = await userManager.GeneratePasswordResetTokenAsync(user);
 
+            var link = Constant.Url + "resetpassword/" + code;
             //send email
             SendMail.SendMailConfirmation("Report System", config["EmailSettings:Email"],
                 config["EmailSettings:Password"], "Report System", email, "Reset password code for account of Report System",
-                "Please check your code: " + code, config["EmailSettings:Server"], Int32.Parse(config["EmailSettings:Port"]));
+                $"Please reset password by this link: " + "<a href='{link}'>{link}</a>", config["EmailSettings:Server"], Int32.Parse(config["EmailSettings:Port"]));
 
             return Ok();
         }

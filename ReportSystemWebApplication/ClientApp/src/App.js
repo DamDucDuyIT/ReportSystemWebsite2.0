@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
+import ResetPassword from "./components/ResetPassword";
 import Counter from "./components/Counter";
 import FetchData from "./components/FetchData";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -61,7 +62,7 @@ export default () => (
     <Route path="/p" component={ProjectManagement} />
     {/* <Route exact path="/admin/home" component={Home} /> */}
     <Route path="/login" component={Login} />
-    <Route path="/resetpassword" component={ResetPassword} />
+    <Route path="/resetpassword/:code?" component={ResetPassword} />
     <Route path="/counter" component={Counter} />
     <Route path="/fetch-data/:startDateIndex?" component={FetchData} />
   </Layout>
