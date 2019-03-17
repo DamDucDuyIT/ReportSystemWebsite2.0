@@ -1,0 +1,12 @@
+.alert-zone {
+  padding: 3em;
+  text-align: center;
+}
+
+.alert-zone > .alert-icon-zone {
+  font-size: 50px;
+}
+
+.alert-zone > .alert-message-zone {
+  font-size: 30px;
+}
