@@ -120,6 +120,14 @@ class ResetPassword extends Component {
 
   resetPassword() {
     const { email, password, confirmPassword } = this.state;
+    if (password !== confirmPassword) {
+      message.error(
+        "Mật khẩu và Nhập lại mật khẩu không khớp. Vui lòng nhập lại",
+        10
+      );
+
+      return;
+    }
     this.setState({
       confirmLoading: true
     });
