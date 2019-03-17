@@ -2,7 +2,6 @@ import React from "react";
 import { Route } from "react-router";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
-import ResetPassword from "./components/ResetPassword";
 import Counter from "./components/Counter";
 import FetchData from "./components/FetchData";
 import { library } from "@fortawesome/fontawesome-svg-core";

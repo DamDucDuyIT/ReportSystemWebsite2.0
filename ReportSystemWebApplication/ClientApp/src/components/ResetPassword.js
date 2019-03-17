@@ -19,19 +19,22 @@ class ResetPassword extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   componentWillMount() {
     // This method runs when the component is first added to the page
     const isLoaded = false;
-    const code = this.props.match.params.code;
+
+    var code = window.location.pathname.split("/resetpassword/")[1];
+
     this.props.requestResetPassword(isLoaded, code);
   }
 
   componentWillReceiveProps(nextProps) {
     // This method runs when incoming props (e.g., route params) change
     const isLoaded = false;
-    const code = this.props.match.params.code;
+    var code = window.location.pathname.split("/resetpassword/")[1];
     this.props.requestResetPassword(isLoaded, code);
   }
 
@@ -55,7 +58,7 @@ class ResetPassword extends Component {
                       style={{ color: "rgba(0,0,0,.25)" }}
                     />
                   }
-                  placeholder="Tên đăng nhập"
+                  placeholder="Email"
                 />
               </Form.Item>
               <Form.Item>
@@ -75,7 +78,7 @@ class ResetPassword extends Component {
               </Form.Item>
               <Form.Item>
                 <Input
-                  name="password"
+                  name="confirmPassword"
                   value={this.state.confirmPassword}
                   onChange={this.handleChange}
                   prefix={
@@ -98,15 +101,15 @@ class ResetPassword extends Component {
                 >
                   Xác nhận đổi mật khẩu
                 </Button>
-                <a href={`/login`}>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className="login-form-button"
-                  >
-                    Quay lại trang đăng nhập
-                  </Button>
-                </a>
+
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  className="login-form-button"
+                  onClick={this.backToLogin}
+                >
+                  Quay lại trang đăng nhập
+                </Button>
               </Form.Item>
             </Form>
           </div>
@@ -132,6 +135,10 @@ class ResetPassword extends Component {
           message.error(response.data, 10);
         }
       });
+  }
+
+  backToLogin() {
+    window.location.assign("/");
   }
 
   handleChange(e) {

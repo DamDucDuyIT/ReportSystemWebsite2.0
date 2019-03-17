@@ -17,7 +17,8 @@ namespace ReportSystemWebApplication.Extensions
                 mimeMessage.Subject = Subject;
 
                 var builder = new BodyBuilder();
-                builder.TextBody = BodyContent;
+                //builder.TextBody = BodyContent;
+                builder.HtmlBody = BodyContent;
 
                 // Now we just need to set the message body 
                 mimeMessage.Body = builder.ToMessageBody();
