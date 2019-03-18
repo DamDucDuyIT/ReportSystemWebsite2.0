@@ -37,6 +37,16 @@ p {
   background: #60f74c;
   font-weight: bold;
 }
+.btn-info {
+  border: 2px solid #2a6deb;
+  color: #5a5a5a;
+}
+.btn-info:hover {
+  border: none;
+  color: #eeeeee;
+  background: #2a6deb;
+  font-weight: bold;
+}
 .text-center {
   text-align: center !important;
 }

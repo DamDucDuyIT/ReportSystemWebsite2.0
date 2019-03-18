@@ -55,11 +55,13 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                              .Include(r => r.Department)
                              .Include(r => r.Reply)
                              .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.Email)) && r.IsReply == false)
+                             .AsNoTracking()
                              .ToListAsync();
 
             var user = await context.ApplicationUsers
                         .Include(a => a.Department)
                             .ThenInclude(d => d.Children)
+                        .AsNoTracking()
                         .FirstOrDefaultAsync(a => a.Email == queryObj.Email);
 
             var userDepartment = user.Department;
@@ -72,6 +74,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                         .Include(r => r.To)
                             .ThenInclude(t => t.ApplicationUser)
                         .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.Email)))
+                        .AsNoTracking()
                         .ToListAsync();
 
             var projectByDepartment = new Collection<ProjectByDepartment>();
@@ -87,6 +90,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
                 var getChildDepartment = await context.Departments
                               .Include(d => d.Children)
+                              .AsNoTracking()
                               .FirstOrDefaultAsync(d => d.DepartmentId == childDepartment.DepartmentId);
 
                 await AddProjectFromAllChildDepartment(reports, projects, getChildDepartment, reportsToUser, queryObj.Email);
@@ -119,6 +123,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                     .Include(p => p.Department)
                     .Include(p => p.Reports)
                     .Include(p => p.ProjectMembers)
+                    .AsNoTracking()
                     .AsQueryable();
 
             //filter
@@ -188,6 +193,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 var childDepartment = await context.Departments
                               .Include(d => d.Children)
+                              .AsNoTracking()
                               .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
 
                 await AddProjectFromAllChildDepartment(reports, projects, childDepartment, reportsToUser, email);

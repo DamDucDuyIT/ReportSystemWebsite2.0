@@ -40,6 +40,21 @@ export const actionCreators = {
     );
     console.log(res);
     return res;
+  },
+
+  changePassword: (email, password, confirmPassword) => async () => {
+    const data = {
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    };
+
+    const res = await dataService.put(
+      "api/accounts/resetpasswordforadmin",
+      data
+    );
+
+    return res;
   }
 };
 
