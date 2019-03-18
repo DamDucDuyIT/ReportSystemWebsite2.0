@@ -10,10 +10,12 @@ import {
   Input,
   Button,
   Select,
-  DatePicker
+  DatePicker,
+  Progress
 } from "antd";
 import moment from "moment";
 import * as FormatDate from "../../services/FormatDate";
+import * as GlobalService from "../../services/GlobalService";
 import { Formik, Field, FieldArray } from "formik";
 
 const { Option, OptGroup } = Select;
@@ -64,17 +66,14 @@ const ProjectDetailForm = Form.create({
     // console.log(values);
   }
 })(props => {
-  const { getFieldDecorator } = props.form;
-  const formItemLayout = {
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 20 }
-    },
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 4 }
-    }
-  };
+  const { getFieldDecorator, getFieldValue } = props.form;
+  const dateRanges = getFieldValue("projectDeadline");
+  const dates = [
+    dateRanges[0].format("YYYY-MM-DD"),
+    dateRanges[1].format("YYYY-MM-DD")
+  ];
+  const progress = GlobalService.getProgress(dates[0] + "", dates[1] + "");
+
   return (
     <Form>
       <Form.Item label="Mã">
@@ -106,6 +105,7 @@ const ProjectDetailForm = Form.create({
           />
         )}
       </Form.Item>
+      <Progress percent={progress} />
       <Form.Item label="Tình trạng">
         {getFieldDecorator("isDeleted", {})(<Input disabled />)}
       </Form.Item>

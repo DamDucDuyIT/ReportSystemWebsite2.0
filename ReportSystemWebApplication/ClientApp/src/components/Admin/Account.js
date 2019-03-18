@@ -194,7 +194,7 @@ class Account extends Component {
         />
         <Modal
           className="project-detail-modal no-footer-modal"
-          title="Thông tin dự án"
+          title="Thông tin tài khoản"
           visible={visible}
           onCancel={this.handleCancel}
         >

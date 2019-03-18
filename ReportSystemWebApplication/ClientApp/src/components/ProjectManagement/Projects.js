@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/ProjectManagement/Projects";
-import { Table, Button, Input, Icon, Modal } from "antd";
+import { Table, Button, Input, Icon, Modal, Progress } from "antd";
 import Highlighter from "react-highlight-words";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as FormatDate from "../../services/FormatDate";
@@ -133,7 +133,7 @@ class Account extends Component {
   };
 
   render() {
-    let projects = this.props.projects.items;
+    let { projects } = this.props;
     // console.log(projects);
     // let { sortedInfo } = this.state;
     // sortedInfo = sortedInfo || {};
@@ -179,16 +179,10 @@ class Account extends Component {
         ...this.getColumnSearchProps("description")
       },
       {
-        title: "Bắt đầu",
-        key: "from",
-        dataIndex: "from",
-        render: val => FormatDate.formatDate(val)
-      },
-      {
-        title: "Kết thúc",
-        key: "to",
-        dataIndex: "to",
-        render: val => FormatDate.formatDate(val)
+        title: "Tiến trình",
+        key: "progress",
+        dataIndex: "progress",
+        render: val => <Progress status="active" percent={val} />
       },
       {
         title: "Tình trạng",

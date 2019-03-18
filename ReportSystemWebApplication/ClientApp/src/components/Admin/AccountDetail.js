@@ -68,10 +68,10 @@ const ProjectDetailForm = Form.create({
         {getFieldDecorator("fullName", {})(<Input />)}
       </Form.Item>
       <Form.Item label="Email">
-        {getFieldDecorator("email", {})(<Input />)}
+        {getFieldDecorator("email", {})(<Input disabled />)}
       </Form.Item>
       <Form.Item label="Điện thoại">
-        {getFieldDecorator("phoneNumber", {})(<Input disabled />)}
+        {getFieldDecorator("phoneNumber", {})(<Input />)}
       </Form.Item>
       <Form.Item label="Nhóm">
         {getFieldDecorator("departmentName", {})(<Input disabled />)}
@@ -182,7 +182,7 @@ class ProjectDetail extends React.Component {
             </div>
 
             <Modal
-              title="Thay đổi mật khẩu"
+              title="Đổi mật khẩu"
               visible={this.state.modalVisible}
               onCancel={() => this.modalVisible(false)}
               onOk={() => this.changePassword()}

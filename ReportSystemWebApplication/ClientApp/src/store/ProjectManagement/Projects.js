@@ -1,13 +1,11 @@
 import { push } from "react-router-redux";
 import * as authService from "../../services/Authentication";
 import * as dataService from "../../services/DataService";
+import * as globalService from "../../services/GlobalService";
 import * as signalR from "@aspnet/signalr";
 
 const requestProjectsType = "REQUEST_PROJECTS";
 const receiveProjectsType = "RECEIVE_PROJECTS";
-
-const requestDepartmentsType = "REQUEST_DEPARTMENTS";
-const receiveDepartmentsType = "RECEIVE_DEPARTMENTS";
 
 const initialState = {
   projects: [],
@@ -70,11 +68,19 @@ export const actionCreators = {
 
 export const loadData = async (dispatch, isLoaded) => {
   const projects = await dataService.get("api/projects/getall");
+  var projectList = [];
+
+  projects.items.map(project => {
+    // console.log(project.from);
+    var progress = globalService.getProgress(project.from, project.to);
+    project.progress = progress;
+    projectList.push(project);
+  });
   // console.log(projects);
   dispatch({
     type: receiveProjectsType,
     isLoaded,
-    projects
+    projects: projectList
   });
 };
 
@@ -186,21 +192,6 @@ export const reducer = (state, action) => {
       ...state,
       isLoaded: action.isLoaded,
       projects: action.projects
-    };
-  }
-
-  if (action.type === requestDepartmentsType) {
-    return {
-      ...state,
-      isLoaded: action.isLoaded
-    };
-  }
-
-  if (action.type === receiveDepartmentsType) {
-    return {
-      ...state,
-      isLoaded: action.isLoaded,
-      department: action.departments
     };
   }
 
