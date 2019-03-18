@@ -56,6 +56,7 @@ namespace ReportSystemWebApplication.Mapping
                 //.ForMember(rr => rr.To, opt => opt.MapFrom(r => r.To.Select(rf => rf.ApplicationUserReportId)))
                 .ForMember(rr => rr.ToEmails, opt => opt.MapFrom(r => r.To.Select(rf => rf.ApplicationUser.Email)))
                 //.ForMember(rr => rr.Files, opt => opt.MapFrom(r => r.Files.Select(rf => rf.FileId)))
+                .ForMember(rr => rr.ProjectName, opt => opt.MapFrom(r => r.Project != null ? r.Project.Name : null))
                 .ForMember(rr => rr.Reply, opt => opt.MapFrom(r => r.Reply.Select(rf => rf)))
                 .ForMember(rr => rr.CreatedOn, opt => opt.MapFrom(r => r.CreatedOn.ToString("dd/M/yyyy hh:mm:ss", CultureInfo.InvariantCulture)));
 

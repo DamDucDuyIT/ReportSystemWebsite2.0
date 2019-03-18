@@ -13,6 +13,7 @@ namespace ReportSystemWebApplication.Resources
         public string Content { get; set; }
         public string ShortContent { get; set; }
         public string CreatedOn { get; set; }
+        public string ProjectName { get; set; }
         public long? DepartmentId { get; set; }
         public string FromId { get; set; }
         public string FromEmail { get; set; }

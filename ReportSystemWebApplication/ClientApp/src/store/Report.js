@@ -115,6 +115,7 @@ export const loadData = async (dispatch, departmentId, isLoaded) => {
       `api/reports/getreportsindepartmentofuser?toemail=${userEmail}&departmentId=${departmentId}`
     );
   }
+
   dispatch({
     type: receiveSentReportsType,
     isLoaded,
