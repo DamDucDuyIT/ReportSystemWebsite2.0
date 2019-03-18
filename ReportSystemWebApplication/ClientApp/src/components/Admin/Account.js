@@ -185,7 +185,7 @@ class Account extends Component {
     return (
       <div>
         <div className="table-operations">
-          <Button onClick={this.clearFilters}>Thanh tẩy</Button>
+          <Button onClick={this.clearFilters}>Loại bỏ</Button>
         </div>
         <Table
           columns={columns}

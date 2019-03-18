@@ -2,8 +2,22 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators, addReport } from "../../store/Admin/AccountDetail";
-import { Form, Icon, message, Input, Button, Select, DatePicker } from "antd";
+import {
+  Form,
+  Icon,
+  Input,
+  Button,
+  Select,
+  DatePicker,
+  Modal,
+  Col,
+  message,
+  Row
+} from "antd";
 import moment from "moment";
+import mainLogo from "../../assets/img/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import "../../assets/css/login.css";
 import * as FormatDate from "../../services/FormatDate";
 
 const { Option, OptGroup } = Select;
@@ -75,8 +89,13 @@ class ProjectDetail extends React.Component {
     const { data } = props;
     this.updateFields(data);
     this.state = {
-      fields: newFields
+      fields: newFields,
+      modalVisible: false,
+      passwword: "",
+      confirmPassword: ""
     };
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   updateFields = data => {
@@ -135,7 +154,7 @@ class ProjectDetail extends React.Component {
   render() {
     const { data } = this.props;
     const fields = this.state.fields;
-    console.log(data);
+
     // console.log(data);
     return (
       <div>
@@ -154,13 +173,103 @@ class ProjectDetail extends React.Component {
               >
                 Lưu
               </Button>
+
+              <Button
+                size="large"
+                className="btn btn-info btn-circle"
+                onClick={() => this.modalVisible(true)}
+              >
+                Thay đổi mật khẩu
+              </Button>
             </div>
+
+            <Modal
+              title="Thay đổi mật khẩu"
+              visible={this.state.modalVisible}
+              onCancel={() => this.modalVisible(false)}
+              onOk={() => this.changePassword()}
+              style={{ top: 20 }}
+            >
+              <Form className="login-form">
+                <Form.Item>
+                  <Row gutter={8}>
+                    <Col span={18}>
+                      <Input
+                        name="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
+                        type="password"
+                        prefix={
+                          <FontAwesomeIcon
+                            icon="user"
+                            style={{ color: "rgba(0,0,0,.25)" }}
+                          />
+                        }
+                        placeholder="Mật khẩu mới"
+                      />
+
+                      <Input
+                        name="confirmPassword"
+                        value={this.state.confirmPassword}
+                        onChange={this.handleChange}
+                        type="password"
+                        prefix={
+                          <FontAwesomeIcon
+                            icon="user"
+                            style={{ color: "rgba(0,0,0,.25)" }}
+                          />
+                        }
+                        placeholder="Nhập lại mật khẩu mới"
+                      />
+                    </Col>
+                  </Row>
+                </Form.Item>
+              </Form>
+            </Modal>
           </div>
         ) : (
           <div>Loading...</div>
         )}
       </div>
     );
+  }
+
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({ [name]: value });
+  }
+
+  modalVisible(modalVisible) {
+    this.setState({
+      modalVisible: modalVisible,
+      password: "",
+      confirmPassword: ""
+    });
+  }
+
+  changePassword() {
+    var email = this.state.fields.email.value;
+    const { password, confirmPassword } = this.state;
+
+    if (password != confirmPassword) {
+      message.error("Hai mật khẩu không khớp với nhau", 5);
+      return;
+    }
+
+    this.props
+      .changePassword(email, password, confirmPassword)
+      .then(response => {
+        if (response && response.status === 200) {
+          this.setState({
+            modalVisible: false,
+            password: "",
+            confirmPassword: ""
+          });
+          message.success("Mật khẩu đã được thay đổi thành công.", 5);
+        } else {
+          message.error(response.data, 5);
+        }
+      });
   }
 }
 
