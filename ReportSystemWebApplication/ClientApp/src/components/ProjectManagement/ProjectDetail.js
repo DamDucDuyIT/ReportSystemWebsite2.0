@@ -1,8 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-// import { bindActionCreators } from "redux";
-// import { actionCreators, addReport } from "../store/ComposeForm";
-import { Form, Icon, Switch, Input, Button, Select, DatePicker } from "antd";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../store/ProjectManagement/Projects";
+import {
+  Form,
+  Icon,
+  message,
+  Tooltip,
+  Input,
+  Button,
+  Select,
+  DatePicker
+} from "antd";
 import moment from "moment";
 import * as FormatDate from "../../services/FormatDate";
 import { Formik, Field, FieldArray } from "formik";
@@ -52,33 +61,46 @@ const ProjectDetailForm = Form.create({
     };
   },
   onValuesChange(_, values) {
-    console.log(values);
+    // console.log(values);
   }
 })(props => {
   const { getFieldDecorator } = props.form;
+  const formItemLayout = {
+    wrapperCol: {
+      xs: { span: 24 },
+      sm: { span: 20 }
+    },
+    labelCol: {
+      xs: { span: 24 },
+      sm: { span: 4 }
+    }
+  };
   return (
-    <Form layout="inline">
+    <Form>
       <Form.Item label="Mã">
         {getFieldDecorator("code", {})(<Input disabled />)}
       </Form.Item>
+
       <Form.Item label="Tên">
         {getFieldDecorator("name", {
           rules: [{ required: true, message: "Không bỏ trống Tên!" }]
         })(<Input />)}
       </Form.Item>
+
       <Form.Item label="Ngày tạo">
         {getFieldDecorator("createOn", {})(<Input disabled />)}
       </Form.Item>
+
       <Form.Item label="Mô tả">
         {getFieldDecorator("description", {})(<Input />)}
       </Form.Item>
       <Form.Item label="Thời hạn">
         {getFieldDecorator("projectDeadline", {})(
           <RangePicker
-            defaultValue={[
-              moment("01/01/2018", dateFormat),
-              moment("01/01/2018", dateFormat)
-            ]}
+            // defaultValue={[
+            //   moment("01/01/2018", dateFormat),
+            //   moment("01/01/2018", dateFormat)
+            // ]}
             format={dateFormat}
             placeholder={["Bắt đầu", "Kết thúc"]}
           />
@@ -98,7 +120,7 @@ class ProjectDetail extends React.Component {
   constructor(props) {
     super(props);
     const { data } = props;
-    console.log(data);
+    // console.log(data);
     this.updateFields(data);
     this.state = {
       fields: newFields
@@ -106,7 +128,21 @@ class ProjectDetail extends React.Component {
   }
 
   updateFields = data => {
+    // console.log(data);
+    var members = [];
+    data.projectMembers.map(member => {
+      var temp = {
+        name: member.name,
+        email: member.email,
+        phoneNumber: member.phoneNumber,
+        department: member.department
+      };
+      members.push(temp);
+    });
     newFields = {
+      projectId: {
+        value: data.projectId
+      },
       name: {
         value: data.name
       },
@@ -130,6 +166,9 @@ class ProjectDetail extends React.Component {
       },
       reportNumbers: {
         value: data.reports.length
+      },
+      members: {
+        value: members
       }
     };
     this.setState(({ fields }) => ({
@@ -151,12 +190,25 @@ class ProjectDetail extends React.Component {
     }
   }
 
-  onSubmit = () => {
-    console.log();
-    // this.form.validateFields((err, values) => {
-    //   if (err) return;
-    //   console.log(values);
-    // });
+  // onSubmit = () => {
+  //   console.log();
+  //   // this.form.validateFields((err, values) => {
+  //   //   if (err) return;
+  //   //   console.log(values);
+  //   // });
+  // };
+
+  onSubmit = (data, members) => {
+    data.projectMembers = members;
+
+    this.props.updateProject(data).then(res => {
+      if (res.status === 200) {
+        this.props.handleCancel();
+        message.success("Đã cập nhật thông tin thành công!", 5);
+      } else {
+        message.error("Đã có lỗi trong quá trình cập nhật thông tin!", 5);
+      }
+    });
   };
 
   render() {
@@ -172,83 +224,84 @@ class ProjectDetail extends React.Component {
               onChange={this.handleFormChange}
               ref={form => (this.form = form)}
             />
-            <Formik
-              initialValues={{
-                members: [
-                  {
-                    name: "hau",
-                    email: "hau@g.acom",
-                    phoneNumber: "123123123",
-                    department: "Giam doc"
-                  },
-                  {
-                    name: "Duy",
-                    email: "duy@v.com",
-                    phoneNumber: "321312321",
-                    department: "Linh"
-                  }
-                ]
-              }}
-              // onSubmit={values =>
-              //   setTimeout(() => {
-              //     alert(JSON.stringify(values, null, 2));
-              //   }, 500)
-              // }
-              render={({ values }) => (
-                <FieldArray
-                  name="members"
-                  render={arrayHelpers => (
-                    <div>
-                      {values.members.map((member, index) => (
-                        <div key={index}>
-                          <Field name={`members[${index}].name`} />
-                          <Field name={`members[${index}].email`} />
-                          <Field name={`members[${index}].phoneNumber`} />
-                          <Field name={`members[${index}].department`} />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              arrayHelpers.remove(index);
-                            }}
-                          >
-                            -
-                          </button>
+            <div className="ant-form-item-label">
+              <label>Danh sách thành viên</label>
+            </div>
+            <div className="membersForm">
+              <Formik
+                initialValues={{
+                  members: fields.members.value
+                }}
+                // onSubmit={values => console.log(values)}
+                render={({ values }) => (
+                  <FieldArray
+                    name="members"
+                    render={arrayHelpers => (
+                      <div className="member">
+                        {values.members.map((member, index) => (
+                          <div key={index}>
+                            <Field
+                              name={`members[${index}].name`}
+                              placeholder="Tên"
+                            />
+                            <Field
+                              name={`members[${index}].email`}
+                              placeholder="Email"
+                            />
+                            <Field
+                              name={`members[${index}].phoneNumber`}
+                              placeholder="Điện thoại"
+                            />
+                            <Field
+                              name={`members[${index}].department`}
+                              placeholder="Phòng ban"
+                            />
+                            <Button
+                              type="danger"
+                              shape="circle"
+                              className="minus-button"
+                              onClick={() => {
+                                arrayHelpers.remove(index);
+                              }}
+                              icon="minus"
+                            />
+                          </div>
+                        ))}
+                        <div style={{ width: "100%", textAlign: "center" }}>
+                          <Tooltip placement="topLeft" title="Thêm thành viên">
+                            <Button
+                              type="primary"
+                              shape="circle"
+                              icon="plus"
+                              onClick={() =>
+                                arrayHelpers.push({
+                                  name: "",
+                                  email: "",
+                                  phoneNumber: "",
+                                  department: ""
+                                })
+                              }
+                            />
+                          </Tooltip>
                         </div>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={() =>
-                          arrayHelpers.push({
-                            name: "",
-                            email: "",
-                            phoneNumber: "",
-                            department: ""
-                          })
-                        }
-                      >
-                        +
-                      </button>
-                      <div>
-                        <button
-                          type="submit"
-                          onClick={() => alert(JSON.stringify(values, null, 2))}
-                        >
-                          Submit
-                        </button>
+
+                        <div className="modal-action">
+                          <Button
+                            className="btn btn-success btn-circle"
+                            size="large"
+                            onClick={() =>
+                              this.onSubmit(fields, values.members)
+                            }
+                            // onClick={() => this.hau(values)}
+                          >
+                            Lưu
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  )}
-                />
-              )}
-            />
-            <div className="modal-action">
-              <Button
-                className="btn btn-success btn-circle"
-                size="large"
-                onClick={this.onSubmit}
-              >
-                Lưu
-              </Button>
+                    )}
+                  />
+                )}
+              />
             </div>
           </div>
         ) : (
@@ -261,6 +314,7 @@ class ProjectDetail extends React.Component {
 
 const Page = Form.create()(ProjectDetail);
 
-export default connect()(Page);
-//   state => state.project,
-//   dispatch => bindActionCreators(actionCreators, dispatch)
+export default connect(
+  state => state.projectManagement_Projects,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(Page);

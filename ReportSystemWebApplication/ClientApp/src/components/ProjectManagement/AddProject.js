@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/ProjectManagement/Projects";
-import { Form, Input, Button, Icon, Row, Col, DatePicker } from "antd";
+import { Form, Input, Button, Icon, Row, Col, DatePicker, message } from "antd";
 import moment from "moment";
 
 const { RangePicker } = DatePicker;
@@ -68,7 +68,12 @@ class AddProject extends Component {
         ];
         values["projectDeadline"] = dates;
         console.log("Received values of form: ", values);
-        this.props.addProject(values);
+        this.props.addProject(values).then(res => {
+          if (res.status === 200) {
+            message.success("Đã tạo dự án thành công!");
+            this.props.form.resetFields();
+          }
+        });
       }
     });
   };

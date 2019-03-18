@@ -6,7 +6,6 @@ import * as ComposeForm from "./ComposeForm";
 import * as WeatherForecasts from "./WeatherForecasts";
 import * as Login from "./Login";
 import * as ResetPassword from "./ResetPassword";
-import * as Admin_Account from "./Admin/Account";
 
 import * as LayoutDepartment from "./LayoutDepartment";
 
@@ -16,7 +15,10 @@ import * as Project from "./Project";
 import * as ProjectManagement_Projects from "./ProjectManagement/Projects";
 
 import * as Report from "./Report";
+import * as Admin_Account from "./Admin/Account";
 import * as Admin_AccountDetail from "./Admin/AccountDetail";
+import * as Admin_Department from "./Admin/Department";
+import * as Admin_DepartmentDetail from "./Admin/DepartmentDetail";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -33,6 +35,9 @@ export default function configureStore(history, initialState) {
 
     admin_Account: Admin_Account.reducer,
     admin_AccountDetail: Admin_AccountDetail.reducer,
+    admin_Department: Admin_Department.reducer,
+    admin_DepartmentDetail: Admin_DepartmentDetail.reducer,
+
     weatherForecasts: WeatherForecasts.reducer,
 
     projectManagement_Projects: ProjectManagement_Projects.reducer

@@ -5,6 +5,7 @@ import { Menu, Button, Layout } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Account from "./Admin/Account";
 import AccountDetail from "./Admin/AccountDetail";
+import Department from "./Admin/Department";
 const SubMenu = Menu.SubMenu;
 const { Sider, Content } = Layout;
 
@@ -18,6 +19,11 @@ const routes = [
     path: "/a/accountdetail/:id?",
     component: AccountDetail,
     label: "AccountDetail"
+  },
+  {
+    path: "/a/department",
+    component: Department,
+    label: "Department"
   }
 
   // {
@@ -72,19 +78,27 @@ export default class AdminInterface extends React.Component {
       <Layout className="admin-body">
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <Menu
-            defaultSelectedKeys={["1"]}
+            defaultSelectedKeys={["account"]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
             className="navmenu"
           >
             <Menu.Item key="account">
-              <FontAwesomeIcon icon="user" className="anticon" />
-              <span>Tài Khoản</span>
+              <Link to="/a/account">
+                <FontAwesomeIcon icon="user" className="anticon" />
+                <span>Tài Khoản</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="department">
+              <Link to="/a/department">
+                <FontAwesomeIcon icon="building" className="anticon" />
+                <span>Phòng ban</span>
+              </Link>
+            </Menu.Item>
+            {/* <Menu.Item key="department">
               <FontAwesomeIcon icon="users" className="anticon" />
               <span>Nhóm Tài Khoản</span>
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Item key="subject">
               <FontAwesomeIcon icon="sun" className="anticon" />
               <span>Danh Mục Chủ Đề</span>

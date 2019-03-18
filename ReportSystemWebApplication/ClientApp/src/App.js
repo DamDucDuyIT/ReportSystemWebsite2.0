@@ -25,7 +25,8 @@ import {
   faUsers,
   faLock,
   faSun,
-  faInfo
+  faInfo,
+  faBuilding
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -44,7 +45,8 @@ library.add(
   faUsers,
   faLock,
   faSun,
-  faInfo
+  faInfo,
+  faBuilding
 );
 
 var currentUrl = window.location.pathname;

@@ -184,9 +184,9 @@ class Account extends Component {
     ];
     return (
       <div>
-        <div className="table-operations">
+        {/* <div className="table-operations">
           <Button onClick={this.clearFilters}>Thanh tẩy</Button>
-        </div>
+        </div> */}
         <Table
           columns={columns}
           dataSource={accounts}

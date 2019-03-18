@@ -54,22 +54,23 @@ export const actionCreators = {
     }
   },
 
-  // requestDepartments: isLoaded => async (dispatch, getState) => {
-  //   dispatch({
-  //     type: requestDepartmentsType,
-  //     isLoaded
-  //   });
-  //   loadDepartments(dispatch, isLoaded);
-  // },
+  addProject: data => async dispatch => {
+    var res = await AddNewProject(data);
+    return res;
+  },
 
-  addProject: data => async () => {
-    addNewProject(data);
+  updateProject: data => async dispatch => {
+    var res = await UpdateProject(data, dispatch);
+    if (res.status === 200) {
+      loadData(dispatch);
+    }
+    return res;
   }
 };
 
 export const loadData = async (dispatch, isLoaded) => {
   const projects = await dataService.get("api/projects/getall");
-  console.log(projects);
+  // console.log(projects);
   dispatch({
     type: receiveProjectsType,
     isLoaded,
@@ -90,7 +91,7 @@ export const loadData = async (dispatch, isLoaded) => {
 //   });
 // };
 
-export const addNewProject = async data => {
+export const AddNewProject = async data => {
   // console.log(data);
   var currentUser = authService.getLoggedInUser();
   var departmentId = currentUser.departmentId;
@@ -120,9 +121,8 @@ export const addNewProject = async data => {
       }
       project.ProjectMembers = members;
     }
-    await dataService.post("api/projects/add", project).then(result => {
-      console.log(result);
-    });
+    var res = await dataService.post("api/projects/add", project);
+    return res;
   } catch (e) {
     console.log(e);
   }
@@ -135,6 +135,41 @@ export const addNewProject = async data => {
   //   projects
   // });
 };
+
+export const UpdateProject = async (data, dispatch) => {
+  try {
+    const projectId = data.projectId.value;
+    var project = await dataService.get(`api/projects/getproject/${projectId}`);
+    const deadline = data.projectDeadline.value;
+
+    const dates = [
+      deadline[0].format("DD-MM-YYYY"),
+      deadline[1].format("DD-MM-YYYY")
+    ];
+    data.from = dates[0];
+    data.to = dates[1];
+
+    project.name = data.name.value;
+    project.description = data.description.value;
+    project.from = data.from;
+    project.to = data.to;
+
+    project.projectMembers = data.projectMembers;
+
+    // console.log(project);
+
+    var res = await dataService.put(
+      `api/projects/update/${projectId}`,
+      project
+    );
+    // console.log(res);
+    return res;
+    // loadData(dispatch);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 export const reducer = (state, action) => {
   state = state || initialState;
 

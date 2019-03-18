@@ -211,7 +211,10 @@ class Account extends Component {
           visible={visible}
           onCancel={this.handleCancel}
         >
-          <ProjectDetail data={this.state.data} />
+          <ProjectDetail
+            handleCancel={this.handleCancel}
+            data={this.state.data}
+          />
         </Modal>
       </div>
     );

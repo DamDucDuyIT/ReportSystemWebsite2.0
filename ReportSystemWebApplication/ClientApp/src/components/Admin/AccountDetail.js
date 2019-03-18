@@ -44,12 +44,12 @@ const ProjectDetailForm = Form.create({
     };
   },
   onValuesChange(_, values) {
-    console.log(values);
+    // console.log(values);
   }
 })(props => {
   const { getFieldDecorator } = props.form;
   return (
-    <Form layout="inline">
+    <Form>
       <Form.Item label="Tên">
         {getFieldDecorator("fullName", {})(<Input />)}
       </Form.Item>
@@ -122,10 +122,10 @@ class ProjectDetail extends React.Component {
         values.isDeleted = this.state.fields.isDeleted.value;
         this.props.updateAccount(values).then(res => {
           if (res.status === 200) {
-            message.success("Đã lưu thông tin thành công!");
+            message.success("Đã lưu thông tin thành công!", 5);
             this.props.handleCancel();
           } else {
-            message.error("Đã có lỗi trong quá trình lưu tài khoản!");
+            message.error("Đã có lỗi trong quá trình lưu tài khoản!", 5);
           }
         });
       }
@@ -135,8 +135,6 @@ class ProjectDetail extends React.Component {
   render() {
     const { data } = this.props;
     const fields = this.state.fields;
-    console.log(data);
-    // console.log(data);
     return (
       <div>
         {data ? (

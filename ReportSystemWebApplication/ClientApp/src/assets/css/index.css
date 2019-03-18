@@ -434,8 +434,58 @@ p {
   padding-left: 5px;
 }
 
+.ant-modal-body .ant-form-item input[disabled] {
+  background: #555555;
+  color: #fff;
+}
+.membersForm {
+  margin-top: 10px;
+  line-height: 20px;
+}
+.membersForm input {
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 3px;
+  border: none;
+  color: #313131;
+  font-weight: 500;
+  border: 1px solid #868686;
+  -webkit-transition: all 0.5s linear;
+  transition: all 0.5s linear;
+}
+.no-expand .ant-table-row-expand-icon {
+  display: none;
+}
+.ant-btn-danger {
+  border-color: #f5222d;
+}
+.ant-btn-danger:hover {
+  color: #fff !important;
+}
+.membersForm input:focus {
+  outline: none;
+  border-color: #ff3672;
+}
+.membersForm input::placeholder {
+  color: #b1b1b1;
+}
+.membersForm .minus-button {
+  margin-left: 5px;
+}
+.member > div {
+  margin-bottom: 15px;
+}
+.ant-form-item-label {
+  font-weight: bold;
+}
+.ant-modal-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
 .project-detail-modal {
-  width: 80% !important;
+  top: 5%;
+  width: 50% !important;
+  min-width: 320px;
 }
 .department-zone {
   background: #d4d4d4;
