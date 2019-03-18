@@ -349,7 +349,7 @@ namespace ReportSystemWebApplication.Controllers
             return Ok(code);
         }
 
-        [HttpPost]
+        [HttpPut]
         [AllowAnonymous]
         [Route("resetpassword")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordViewModel model)
@@ -365,6 +365,32 @@ namespace ReportSystemWebApplication.Controllers
             }
 
             var result = await userManager.ResetPasswordAsync(user, model.Code, model.Password);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest(" Something wrong. We cannot update your password. Something wrong");
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("resetpasswordforadmin")]
+        public async Task<IActionResult> ResetPasswordForAdmin([FromBody] ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null || user.IsActived == false)
+            {
+                return BadRequest("We can find any account with this email in our database.");
+            }
+
+            var code = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            var result = await userManager.ResetPasswordAsync(user, code, model.Password);
             if (result.Succeeded)
             {
                 return Ok();

@@ -20,6 +20,7 @@ class ResetPassword extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.backToLogin = this.backToLogin.bind(this);
   }
 
   componentWillMount() {
@@ -138,7 +139,11 @@ class ResetPassword extends Component {
           confirmLoading: false
         });
         if (response && response.status === 200) {
-          message.success("Mật khẩu đã được thay đổi thành công", 10);
+          message.success(
+            "Mật khẩu đã được thay đổi thành công",
+            10,
+            this.backToLogin()
+          );
         } else {
           message.error(response.data, 10);
         }

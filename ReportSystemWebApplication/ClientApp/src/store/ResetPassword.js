@@ -39,7 +39,7 @@ export const actionCreators = {
 
     console.log(data);
 
-    var res = await dataService.post(`api/accounts/resetpassword`, data);
+    var res = await dataService.put(`api/accounts/resetpassword`, data);
 
     return res;
   }

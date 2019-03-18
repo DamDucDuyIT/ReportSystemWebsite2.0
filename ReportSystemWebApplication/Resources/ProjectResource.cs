@@ -10,6 +10,7 @@ namespace ReportSystemWebApplication.Resources
         public string Description { get; set; }
         public string Code { get; set; }
         public bool IsDeleted { get; set; }
+        public bool IsFinished { get; set; }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public string CreatorEmail { get; set; }
