@@ -60,6 +60,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                     .Include(a => a.Department)
                     .Include(a => a.Reports)
                     .Include(a => a.ApplicationUserReports)
+                    .AsNoTracking()
                     .AsQueryable();
 
             //filter
@@ -98,6 +99,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var department = await context.Departments
                                     .Include(d => d.Parent)
                                     .Include(d => d.Children)
+                                    .AsNoTracking()
                                     .FirstOrDefaultAsync(d => d.DepartmentId == departmentId);
 
 
@@ -113,6 +115,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var userList = await context.ApplicationUsers
                                 .Include(a => a.Department)
                                 .Where(a => departmentIdList.Contains(a.Department.DepartmentId) && a.IsActived == true)
+                                .AsNoTracking()
                                 .ToListAsync();
 
             result.TotalItems = userList.Count;
@@ -132,6 +135,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 var childDepartment = await context.Departments
                                     .Include(d => d.Children)
+                                    .AsNoTracking()
                                     .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
                 childDepartmentIdList.Add(childDepartment.DepartmentId);
 
@@ -145,6 +149,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 var parentDepartment = await context.Departments
                                     .Include(d => d.Parent)
+                                    .AsNoTracking()
                                     .FirstOrDefaultAsync(d => d.DepartmentId == (department.Parent.DepartmentId));
 
                 parentDepartmentIdList.Add(parentDepartment.DepartmentId);

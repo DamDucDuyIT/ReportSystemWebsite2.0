@@ -47,6 +47,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var user = await context.ApplicationUsers
                         .Include(a => a.Department)
                             .ThenInclude(d => d.Children)
+                        .AsNoTracking()
                         .FirstOrDefaultAsync(a => a.Email == queryObj.Email);
 
             var userDepartment = user.Department;
@@ -64,6 +65,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                      .Include(r => r.Department)
                      .Include(r => r.Reply)
                      .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.Email)) && r.IsReply == false)
+                     .AsNoTracking()
                      .ToListAsync();
 
             //Tất cả///////////////////////
@@ -77,6 +79,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
                 var childIncludeChildren = await context.Departments
                                             .Include(d => d.Children)
+                                            .AsNoTracking()
                                             .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
 
                 foreach (var grandChild in childIncludeChildren.Children)
@@ -147,6 +150,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                     .Where(d => d.IsDeleted == false && d.Parent == null)
                     .Include(d => d.Children)
                     .Include(d => d.Parent)
+                    .AsNoTracking()
                     .ToListAsync();
 
             List<DepartmentGraph> departmentGraph = new List<DepartmentGraph>();
@@ -168,6 +172,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                     .Include(d => d.ApplicationUsers)
                     .Include(d => d.Children)
                     .Include(d => d.Parent)
+                    .AsNoTracking()
                     .AsQueryable();
             //filter
             if (queryObj.ParentId.HasValue)
@@ -224,6 +229,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
         {
             var department = await context.Departments
                             .Include(d => d.Children)
+                            .AsNoTracking()
                             .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
 
             var reportsInMainDepart = reportsToUser
@@ -246,6 +252,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 var departmentInDatase = await context.Departments
                                          .Include(d => d.Children)
+                                         .AsNoTracking()
                                          .FirstOrDefaultAsync(d => d.DepartmentId == department.DepartmentId);
 
                 var children = new List<DepartmentGraph>();

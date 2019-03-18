@@ -129,6 +129,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
         {
             var result = new QueryResult<Report>();
             var department = await context.Departments
+                            .AsNoTracking()
                             .FirstOrDefaultAsync(d => d.DepartmentId == queryObj.DepartmentId && d.IsDeleted == false);
 
             var reportsToUser = await context.Reports
@@ -143,6 +144,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                                 .Include(r => r.Reply)
                                     .ThenInclude(re => re.To)
                                 .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.ToEmail)) && r.IsReply == false)
+                                .AsNoTracking()
                                 .ToListAsync();
 
             List<Report> reports = new List<Report>();
@@ -200,6 +202,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                         .ThenInclude(re => re.To)
                        .Include(r => r.Reply)
                         .ThenInclude(re => re.From)
+                    .AsNoTracking()
                     //.Include(r => r.Read)
                     .AsQueryable();
 
@@ -293,11 +296,13 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 var user = await context.ApplicationUsers
                             .Include(a => a.Department)
+                            .AsNoTracking()
                             .FirstOrDefaultAsync(a => a.Email == email);
 
                 var userDepartment = await context.Departments
                                     .Include(d => d.Children)
                                         .ThenInclude(c => c.Children)
+                                    .AsNoTracking()
                                     .FirstOrDefaultAsync();
 
                 if (userDepartment.Children.Any(c => c.DepartmentId == report.Department.DepartmentId))
@@ -321,6 +326,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
         {
             var department = await context.Departments
                             .Include(d => d.Children)
+                            .AsNoTracking()
                             .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
 
             var reportsInMainDepart = reportsToUser
@@ -351,6 +357,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 var childDepartment = await context.Departments
                                         .Include(d => d.Children)
                                         .Include(d => d.Parent)
+                                        .AsNoTracking()
                                         .FirstOrDefaultAsync(d => d.DepartmentId == child.DepartmentId);
 
                 var check = await findDepartmentOfToUserFromReportDepartment(childDepartment, report, level + 1);

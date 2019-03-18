@@ -42,6 +42,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var query = context.ProjectMembers
                     .Where(p => p.IsDeleted == false)
                     .Include(p => p.Project)
+                    .AsNoTracking()
                     .AsQueryable();
 
             //filter

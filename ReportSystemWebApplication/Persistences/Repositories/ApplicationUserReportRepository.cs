@@ -58,6 +58,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                     .Where(d => d.IsDeleted == false)
                      .Include(d => d.Report)
                     .Include(d => d.ApplicationUser)
+                    .AsNoTracking()
                     .AsQueryable();
 
             //filter
