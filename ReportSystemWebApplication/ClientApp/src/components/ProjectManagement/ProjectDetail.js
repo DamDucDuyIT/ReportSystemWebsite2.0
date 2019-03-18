@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Form, Icon, Switch, Input, Button, Select, DatePicker } from "antd";
 import moment from "moment";
 import * as FormatDate from "../../services/FormatDate";
+import { Formik, Field, FieldArray } from "formik";
 
 const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
@@ -151,10 +152,11 @@ class ProjectDetail extends React.Component {
   }
 
   onSubmit = () => {
-    this.form.validateFields((err, values) => {
-      if (err) return;
-      console.log(values);
-    });
+    console.log();
+    // this.form.validateFields((err, values) => {
+    //   if (err) return;
+    //   console.log(values);
+    // });
   };
 
   render() {
@@ -169,6 +171,75 @@ class ProjectDetail extends React.Component {
               {...fields}
               onChange={this.handleFormChange}
               ref={form => (this.form = form)}
+            />
+            <Formik
+              initialValues={{
+                members: [
+                  {
+                    name: "hau",
+                    email: "hau@g.acom",
+                    phoneNumber: "123123123",
+                    department: "Giam doc"
+                  },
+                  {
+                    name: "Duy",
+                    email: "duy@v.com",
+                    phoneNumber: "321312321",
+                    department: "Linh"
+                  }
+                ]
+              }}
+              // onSubmit={values =>
+              //   setTimeout(() => {
+              //     alert(JSON.stringify(values, null, 2));
+              //   }, 500)
+              // }
+              render={({ values }) => (
+                <FieldArray
+                  name="members"
+                  render={arrayHelpers => (
+                    <div>
+                      {values.members.map((member, index) => (
+                        <div key={index}>
+                          <Field name={`members[${index}].name`} />
+                          <Field name={`members[${index}].email`} />
+                          <Field name={`members[${index}].phoneNumber`} />
+                          <Field name={`members[${index}].department`} />
+                          <button
+                            type="button"
+                            onClick={() => {
+                              arrayHelpers.remove(index);
+                            }}
+                          >
+                            -
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          arrayHelpers.push({
+                            name: "",
+                            email: "",
+                            phoneNumber: "",
+                            department: ""
+                          })
+                        }
+                      >
+                        +
+                      </button>
+                      <div>
+                        <button
+                          type="submit"
+                          onClick={() => alert(JSON.stringify(values, null, 2))}
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                />
+              )}
             />
             <div className="modal-action">
               <Button

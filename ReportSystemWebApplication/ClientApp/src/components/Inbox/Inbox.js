@@ -37,7 +37,7 @@ const routes = [
   }
 ];
 
-function RouteWithSubRoutes(route, activeOnlyWhenExact, label) {
+function RouteWithSubRoutes(route) {
   return (
     <Route
       // exact={activeOnlyWhenExact}
@@ -45,12 +45,6 @@ function RouteWithSubRoutes(route, activeOnlyWhenExact, label) {
       render={props => (
         // pass the sub-routes down to keep nesting
         <route.component {...props} routes={route.routes} />
-      )}
-      children={({ match }) => (
-        <div className={match ? "active" : ""}>
-          {match ? "> " : ""}
-          <Link to={route.path}>{label}</Link>
-        </div>
       )}
     />
   );

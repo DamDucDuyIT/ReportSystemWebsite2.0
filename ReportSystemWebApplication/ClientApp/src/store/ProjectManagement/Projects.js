@@ -107,9 +107,9 @@ export const addNewProject = async data => {
       CreatorEmail: email,
       ProjectMembers: []
     };
-    if (data.keys.length > 0) {
+    if (data.members.length > 0) {
       var members = [];
-      for (var i = 0; i < data.keys.length; i++) {
+      for (var i = 0; i < data.members.length; i++) {
         var member = {
           Name: data.memberNames[i],
           PhoneNumber: data.memberPhoneNumbers[i],
