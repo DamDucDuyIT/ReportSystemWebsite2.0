@@ -44,6 +44,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 .Include(r => r.Reply)
                     .ThenInclude(re => re.To)
                         .ThenInclude(t => t.ApplicationUser)
+                                                .Include(r => r.Reply)
+                                    .ThenInclude(re => re.From)
                 //.Include(r => r.Read)
                 .SingleOrDefaultAsync(r => r.ReportId == id);
 
@@ -145,6 +147,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                                 .Include(r => r.Reply)
                                     .ThenInclude(re => re.To)
                                         .ThenInclude(t => t.ApplicationUser)
+                                .Include(r => r.Reply)
+                                    .ThenInclude(re => re.From)
                                 .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.ToEmail)) && r.IsReply == false)
                                 .AsNoTracking()
                                 .ToListAsync();
