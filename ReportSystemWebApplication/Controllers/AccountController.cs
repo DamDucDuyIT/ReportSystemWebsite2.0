@@ -67,7 +67,7 @@ namespace ReportSystemWebApplication.Controllers
                     var result = await userManager.CreateAsync(user);
                     if (!result.Succeeded)
                     {
-                        return BadRequest("Could not register.");
+                        return BadRequest("Có lỗi xảy ra trong quá trình đăng ký. Vui lòng kiểm tra lại dữ liệu.");
                     }
 
                     userCreated = await userManager.FindByEmailAsync(model.Email);
@@ -110,7 +110,7 @@ namespace ReportSystemWebApplication.Controllers
 
                 if (!userCreated.ConfirmationCode.Equals(model.ConfirmationCode))
                 {
-                    return BadRequest();
+                    return BadRequest("Mã xác nhận không đúng. Vui lòng kiểm tra lại.");
                 }
 
                 await userManager.AddPasswordAsync(userCreated, model.Password);
@@ -179,11 +179,11 @@ namespace ReportSystemWebApplication.Controllers
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest("Có lỗi xảy ra trong quá trình đăng nhập. Gợi ý: Email chưa được đăng ký.");
                 }
             }
 
-            return BadRequest("Could not create token");
+            return BadRequest("Không thể đăng nhập. Vui lòng kiểm tra lại Email và Mật khẩu.");
         }
 
         [HttpPut]

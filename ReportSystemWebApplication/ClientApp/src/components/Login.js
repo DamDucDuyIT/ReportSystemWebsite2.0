@@ -41,6 +41,7 @@ class Login extends Component {
       confirmEmailOK: false,
       confirmLoading: false,
       confirmResetLoading: false,
+      loginLoading: false,
       department: "",
       departments: []
     };
@@ -68,11 +69,11 @@ class Login extends Component {
   }
 
   registerSuccessed() {
-    message.success("Đã đăng ký thành công!", 10);
+    message.success("Đã đăng ký thành công!", 5);
   }
 
   registerFailed() {
-    message.error("Đã có lỗi trong quá trình tạo tài khoản!", 10);
+    message.error("Đã có lỗi trong quá trình tạo tài khoản!", 5);
   }
 
   handleRegisterAccount = e => {
@@ -204,10 +205,16 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
+    this.setState({
+      loginLoading: true
+    });
     const { email, password } = this.state;
     if (email && password) {
       this.props.logIn(email, password).then(response => {
-        // console.log(response);
+        this.setState({
+          loginLoading: false
+        });
+        message.error(response.data, 5);
       });
     }
   };
@@ -287,6 +294,7 @@ class Login extends Component {
                   type="primary"
                   htmlType="submit"
                   className="login-form-button"
+                  loading={this.state.loginLoading}
                 >
                   Đăng nhập
                 </Button>
