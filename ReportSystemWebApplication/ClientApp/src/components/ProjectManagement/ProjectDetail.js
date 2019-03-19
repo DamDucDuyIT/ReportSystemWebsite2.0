@@ -105,7 +105,7 @@ const ProjectDetailForm = Form.create({
           />
         )}
       </Form.Item>
-      <Progress percent={progress} />
+      <Progress className="lg-progress" percent={progress} status="active" />
       <Form.Item label="Tình trạng">
         {getFieldDecorator("isDeleted", {})(<Input disabled />)}
       </Form.Item>

@@ -91,46 +91,42 @@ class Report extends React.Component {
     console.log(this.state.reports);
     return (
       <div>
-        <Row>
-          <Col span={6}>
-            {reports.length > 0 ? (
-              <Menu
-                mode="inline"
-                selectedKeys={[this.state.reportId + ""]}
-                className="menu-scroll report-list"
-                style={{ height: maxHeight, overflow: "scroll" }}
-              >
-                {reports.map(report => (
-                  <Menu.Item
-                    key={report.reportId}
-                    id={report.reportId}
-                    className={`report-item ${
-                      ReportService.isRead(report) ? "read" : "unread"
-                    }`}
-                    onClick={() => this.renderReportAndRead(report)}
-                  >
-                    <p className="email">{report.fromEmail}</p>
-                    <p className="title">{report.title}</p>
-                    <p className="shortContent">
-                      {report.shortContent === null
-                        ? "Null"
-                        : report.shortContent}
-                    </p>
-                  </Menu.Item>
-                ))}
-              </Menu>
-            ) : (
-              <div>
-                <Icon type="loading" /> Đang tải dữ liệu!
-              </div>
-            )}
-          </Col>
-          <Col span={18}>
-            <div style={{ height: maxHeight, overflow: "scroll" }}>
-              <Body data={this.state.report} />
-            </div>
-          </Col>
-        </Row>
+        {reports.length > 0 ? (
+          <div className="report-menu">
+            <Menu
+              mode="inline"
+              selectedKeys={[this.state.reportId + ""]}
+              className="menu-scroll report-list"
+            >
+              {reports.map(report => (
+                <Menu.Item
+                  key={report.reportId}
+                  id={report.reportId}
+                  className={`report-item ${
+                    ReportService.isRead(report) ? "read" : "unread"
+                  }`}
+                  onClick={() => this.renderReportAndRead(report)}
+                >
+                  <p className="email">{report.fromEmail}</p>
+                  <p className="title">{report.title}</p>
+                  <p className="shortContent">
+                    {report.shortContent === null
+                      ? "Null"
+                      : report.shortContent}
+                  </p>
+                </Menu.Item>
+              ))}
+            </Menu>
+          </div>
+        ) : (
+          <div>
+            <Icon type="loading" /> Đang tải dữ liệu!
+          </div>
+        )}
+
+        <div style={{ height: maxHeight, overflow: "scroll" }}>
+          <Body data={this.state.report} />
+        </div>
       </div>
     );
   }

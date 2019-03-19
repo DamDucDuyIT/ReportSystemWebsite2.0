@@ -38,7 +38,6 @@ export const actionCreators = {
       "api/accounts/updatebyemail/" + data.email,
       data
     );
-    console.log(res);
     return res;
   },
 

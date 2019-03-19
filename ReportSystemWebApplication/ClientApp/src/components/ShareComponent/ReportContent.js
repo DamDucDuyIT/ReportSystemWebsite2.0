@@ -116,6 +116,7 @@ export default class Body extends React.Component {
             </div>
 
             <ul className="report">
+              {console.log(data.reply)}
               {data.reply.map((report, i) => (
                 <li>
                   <div className="group-item">
@@ -177,7 +178,9 @@ export default class Body extends React.Component {
                           <div className="item-content">
                             <div
                               className="report-content"
-                              dangerouslySetInnerHTML={{ __html: data.content }}
+                              dangerouslySetInnerHTML={{
+                                __html: report.content
+                              }}
                             />
                             {data.files.length > 0 && (
                               <div className="report-files">
@@ -204,19 +207,23 @@ export default class Body extends React.Component {
                       <Col span={14}>
                         <p className="name">{data.fromEmail}</p>
                         <p
-                          className={`short-content collapsible ${
-                            !this.state.currents.includes(data.reportId)
+                          className={`short-content collapsible 
+                          ${
+                            !this.state.currents.includes(data.reportId) &&
+                            data.reply.length > 0
                               ? "open "
                               : ""
                           }`}
                         >
+                          {data.reply.length}
                           {data.shortContent}
                         </p>
                         <p
                           className={`collapsible ${
-                            this.state.currents.includes(data.reportId)
-                              ? "open "
-                              : ""
+                            !this.state.currents.includes(data.reportId) &&
+                            data.reply.length > 0
+                              ? ""
+                              : "open"
                           }`}
                         >
                           <span style={{ display: "inline-block" }}>Tới:</span>
@@ -237,7 +244,10 @@ export default class Body extends React.Component {
 
                   <div
                     className={`collapsible ${
-                      this.state.currents.includes(data.reportId) ? "open " : ""
+                      !this.state.currents.includes(data.reportId) &&
+                      data.reply.length > 0
+                        ? ""
+                        : "open"
                     }`}
                   >
                     <Row>

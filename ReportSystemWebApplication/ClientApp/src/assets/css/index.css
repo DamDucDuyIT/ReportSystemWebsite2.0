@@ -66,10 +66,25 @@ p {
   z-index: 3;
   width: 100%;
   min-width: 1000px;
-  background: #fff;
+  background: #fefefe;
   /* background: url("https://d2v9y0dukr6mq2.cloudfront.net/video/thumbnail/GfRLKaE/videoblocks-abstract-polygonal-space-low-poly-dark-background_b3eahq7rl_thumbnail-full01.png"); */
   background-repeat: no-repeat;
   background-size: auto;
+  /* -webkit-box-shadow: 0px -2px 27px 0px rgba(59, 59, 59, 1);
+  -moz-box-shadow: 0px -2px 27px 0px rgba(59, 59, 59, 1);
+  box-shadow: 0px -2px 27px 0px rgba(59, 59, 59, 1); */
+}
+.ant-table-thead tr th {
+  background: #5f5f5f;
+  color: #fff;
+}
+.ant-table-thead tr th i {
+  color: #fff !important;
+}
+.layout-content-body {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .layout-content .fixed-nav {
@@ -129,18 +144,18 @@ p {
 }
 
 .company-menu .ant-layout-sider-children {
-  width: 250px;
+  width: 260px;
   position: fixed;
-  border-right: 1px solid #a5a5a5;
-  background: #f0f1f5;
+  border-right: 1px solid #e0e0e0;
+  background: #fefefe;
 }
 .report-menu {
   width: 300px;
   position: fixed;
   height: 100vh;
-  overflow-y: scroll;
-  border-right: 1px solid #a5a5a5;
-  background: #f0f1f5;
+  /* overflow-y: scroll; */
+  border-right: 1px solid #e0e0e0;
+  background: #fefefe;
 }
 /* .ck.ck-toolbar {
   border-radius: 4px 4px 0 0 !important;
@@ -348,9 +363,42 @@ p {
 
 /* Admin Interface */
 .admin-body {
+  background: #f2f2f2;
+  padding: 2em;
+  -webkit-box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
+  -moz-box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
+  box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
   margin-top: 68px;
 }
 
+.admin-body > .ant-layout-sider {
+  border-radius: 8px;
+  padding-top: 5px;
+  margin-right: 2em;
+  /* -webkit-box-shadow: 0px 0px 20px 0px rgba(135, 135, 135, 1);
+  -moz-box-shadow: 0px 0px 20px 0px rgba(135, 135, 135, 1); */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+.admin-body .ant-menu {
+  border-radius: 8px;
+  border: none;
+}
+.admin-body .ant-menu-item.ant-menu-item-selected {
+  background: #91e5ff;
+  width: 260px;
+}
+.admin-body .ant-menu-item.ant-menu-item-selected a {
+  color: #fff;
+}
+.admin-body .ant-menu-item:hover a {
+  color: #313131;
+}
+.admin-body .ant-menu-item.ant-menu-item-selected::after {
+  display: none;
+}
+.ant-table-pagination.ant-pagination {
+  margin: 20px;
+}
 .report-list .email,
 .report-list .title {
   color: #1f1f1f;
@@ -422,7 +470,9 @@ p {
   margin: auto;
   margin-top: 5px;
 }
-
+.ant-avatar > img {
+  object-fit: cover;
+}
 .item-header .name {
   font-weight: bold;
 }
@@ -446,10 +496,12 @@ p {
 .toEmails span {
   padding-left: 5px;
 }
-
+.ant-modal-body .ant-form-item input {
+  color: #313131;
+}
 .ant-modal-body .ant-form-item input[disabled] {
-  background: #555555;
-  color: #fff;
+  background: #c4c4c4;
+  color: #313131;
 }
 .membersForm {
   margin-top: 10px;
@@ -533,4 +585,63 @@ p {
   border-radius: 5px;
   padding: 8px 15px;
   background: #d4d4d4;
+}
+
+.lg-progress .ant-progress-bg {
+  height: 20px !important;
+}
+
+.profile-card {
+}
+.profile-card .card-header {
+}
+.profile-card .card-header img {
+  height: 300px;
+  border-radius: 8px;
+  width: 100%;
+  -webkit-box-shadow: 0px 0px 36px -10px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 36px -10px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 36px -10px rgba(0, 0, 0, 0.75);
+  object-fit: cover;
+}
+.profile-card .right-card {
+  margin-top: 20px;
+  -webkit-box-shadow: 14px 5px 36px -15px rgba(0, 0, 0, 0.56);
+  -moz-box-shadow: 14px 5px 36px -15px rgba(0, 0, 0, 0.56);
+  box-shadow: 14px 5px 36px -15px rgba(0, 0, 0, 0.56);
+}
+.profile-card .card-body {
+  height: 200px;
+  text-align: center;
+  background: #fff;
+}
+.profile-card .card-body p {
+  color: #6b6b6b;
+}
+.profile-card .card-body .name {
+  padding: 20px 0 10px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+.profile-card .card-body .mail {
+  font-size: 16px;
+}
+.profile-card .card-body .phone {
+  font-size: 16px;
+  padding: 5px;
+}
+.profile-card .card-body .department {
+  font-size: 16px;
+}
+
+.profile-card .card-footer {
+  text-align: center;
+  height: 60px;
+  background: #fff;
+}
+
+.ant-dropdown {
+  -webkit-box-shadow: -1px 3px 36px -10px rgba(0, 0, 0, 0.56);
+  -moz-box-shadow: -1px 3px 36px -10px rgba(0, 0, 0, 0.56);
+  box-shadow: -1px 3px 36px -10px rgba(0, 0, 0, 0.56);
 }

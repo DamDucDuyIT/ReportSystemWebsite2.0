@@ -9,6 +9,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import UserInterface from "./components/UserInterface";
 import AdminInterface from "./components/AdminInterface";
 import ProjectManagement from "./components/ProjectManagementInterface";
+import Profile from "./components/Profile";
 import {
   faInbox,
   faPaperPlane,
@@ -61,6 +62,7 @@ export default () => (
     <Route path="/u" component={UserInterface} />
     <Route path="/a" component={AdminInterface} />
     <Route path="/p" component={ProjectManagement} />
+    <Route path="/profile" component={Profile} />
     {/* <Route exact path="/admin/home" component={Home} /> */}
     <Route path="/login" component={Login} />
     <Route path="/resetpassword/:code?" component={ResetPassword} />

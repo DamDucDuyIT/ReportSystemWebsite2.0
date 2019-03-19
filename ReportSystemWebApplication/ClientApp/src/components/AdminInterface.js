@@ -52,9 +52,24 @@ export default class AdminInterface extends React.Component {
 
     this.state = {
       collapsed: false,
-      composeDrawerVisible: false
+      composeDrawerVisible: false,
+      activeItem: window.location.pathname.split("/")[2]
     };
   }
+
+  componentWillReceiveProps(nextProps) {
+    const currentLocation = this.props.location.pathname;
+    const nextLocation = nextProps.location.pathname;
+
+    const current = currentLocation.split("/")[2];
+    const next = nextLocation.split("/")[2];
+    if (current !== next) {
+      this.setState({
+        activeItem: next
+      });
+    }
+  }
+  compo;
   showComposeDrawer = () => {
     this.setState({
       composeDrawerVisible: true
@@ -72,13 +87,19 @@ export default class AdminInterface extends React.Component {
       collapsed: !this.state.collapsed
     });
   };
+  setActive = item => {
+    this.setState({
+      activeItem: item
+    });
+  };
 
   render() {
+    const { activeItem } = this.state;
     return (
       <Layout className="admin-body">
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <Menu
-            defaultSelectedKeys={["account"]}
+            defaultSelectedKeys={[activeItem]}
             defaultOpenKeys={["sub1"]}
             mode="inline"
             className="navmenu"
@@ -90,7 +111,10 @@ export default class AdminInterface extends React.Component {
               </Link>
             </Menu.Item>
             <Menu.Item key="department">
-              <Link to="/a/department">
+              <Link
+                to="/a/department"
+                onClick={() => this.setActive("department")}
+              >
                 <FontAwesomeIcon icon="building" className="anticon" />
                 <span>Phòng ban</span>
               </Link>

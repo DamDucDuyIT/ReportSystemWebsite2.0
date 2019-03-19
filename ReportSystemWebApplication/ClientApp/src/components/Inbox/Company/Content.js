@@ -40,6 +40,8 @@ class Report extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    console.log(prevProps);
+    console.log(this.props);
     const departmentId = this.props.match.params.departmentId;
     const prevDepartmentId = prevProps.match.params.departmentId;
     const { isFirstLoaded } = this.state;
@@ -88,6 +90,7 @@ class Report extends React.Component {
   }
 
   renderReportAndRead = report => {
+    console.log(report);
     var reports = this.state.reports;
     var reportTemp = report.to.find(t => t.email === userEmail);
 

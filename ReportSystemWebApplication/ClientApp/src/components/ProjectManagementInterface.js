@@ -89,7 +89,7 @@ export default class ProjectManagementInterface extends React.Component {
             </Menu.Item> */}
           </Menu>
         </Sider>
-        <Content>
+        <Content className="layout-content-body">
           <div className="">
             {routes.map((route, i) => (
               <RouteWithSubRoutes key={i} {...route} />

@@ -33,7 +33,7 @@ window.onresize = function(event) {
 const { Header, Content, Footer } = Layout;
 const profileMenu = (
   <Menu>
-    <Menu.Item key="0">
+    <Menu.Item key="0" onClick={() => redirect("profile")}>
       <FontAwesomeIcon
         icon="tshirt"
         className="anticon"

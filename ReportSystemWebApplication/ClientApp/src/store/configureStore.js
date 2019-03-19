@@ -11,6 +11,7 @@ import * as LayoutDepartment from "./LayoutDepartment";
 
 import * as Department from "./Department";
 import * as Project from "./Project";
+import * as Profile from "./Profile";
 
 import * as ProjectManagement_Projects from "./ProjectManagement/Projects";
 
@@ -32,6 +33,7 @@ export default function configureStore(history, initialState) {
 
     department: Department.reducer,
     project: Project.reducer,
+    profile: Profile.reducer,
 
     admin_Account: Admin_Account.reducer,
     admin_AccountDetail: Admin_AccountDetail.reducer,
