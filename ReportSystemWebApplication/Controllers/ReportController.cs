@@ -132,7 +132,7 @@ namespace ReportSystemWebApplication.Controllers
             report.From = fromUser;
 
             //add department for report
-            report.Department = await departmentRepository.GetDepartment(fromUser.Department.DepartmentId, false);
+            report.Department = await departmentRepository.GetDepartment(reportResource.DepartmentId, false);
 
             //add main report if is reply
             if (reportResource.MainReportId != null)
@@ -149,8 +149,8 @@ namespace ReportSystemWebApplication.Controllers
             }
 
             //highestchildrenofTo
-            report.HighestChildDepartmentsOfTo.Clear();
-            await reportRepository.AddHighestChildDepartmentsOfTo(report, reportResource);
+            // report.HighestChildDepartmentsOfTo.Clear();
+            // await reportRepository.AddHighestChildDepartmentsOfTo(report, reportResource);
 
             //file
             //todo
