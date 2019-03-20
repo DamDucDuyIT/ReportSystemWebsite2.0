@@ -398,5 +398,40 @@ namespace ReportSystemWebApplication.Controllers
 
             return BadRequest(" Something wrong. We cannot update your password. Something wrong");
         }
+
+        [HttpPut]
+        [AllowAnonymous]
+        [Route("resetpasswordforuser")]
+        public async Task<IActionResult> ResetPasswordForUser([FromBody] ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var user = await userManager.FindByEmailAsync(model.Email);
+            if (user == null || user.IsActived == false)
+            {
+                return BadRequest("We can find any account with this email in our database.");
+            }
+
+            var result = await signInManager.CheckPasswordSignInAsync(user, model.OldPassword, false);
+            if (result.Succeeded)
+            {
+
+                var code = await userManager.GeneratePasswordResetTokenAsync(user);
+
+                var resetPassword = await userManager.ResetPasswordAsync(user, code, model.Password);
+                if (resetPassword.Succeeded)
+                {
+                    return Ok();
+                }
+            }
+            else
+            {
+                return BadRequest("Mật khẩu cũ không chính xác. Vui lòng kiểm tra lại.");
+            }
+
+            return BadRequest(" Something wrong. We cannot update your password. Something wrong");
+        }
     }
 }

@@ -44,8 +44,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 .Include(r => r.Reply)
                     .ThenInclude(re => re.To)
                         .ThenInclude(t => t.ApplicationUser)
-                                                .Include(r => r.Reply)
-                                    .ThenInclude(re => re.From)
+                .Include(r => r.Reply)
+                    .ThenInclude(re => re.From)
                 //.Include(r => r.Read)
                 .SingleOrDefaultAsync(r => r.ReportId == id);
 
