@@ -41,9 +41,9 @@ namespace ReportSystemWebApplication.Mapping
 
             CreateMap<Project, ProjectResource>()
                 .ForMember(pr => pr.DepartmentId, opt => opt.MapFrom(p => p.Department.DepartmentId))
-                .ForMember(pr => pr.Reports, opt => opt.MapFrom(p => p.Reports.Select(pf => pf.ReportId)))
-                .ForMember(pr => pr.From, opt => opt.MapFrom(p => p.From.ToString("dd/M/yyyy", CultureInfo.InvariantCulture)))
-                .ForMember(pr => pr.To, opt => opt.MapFrom(p => p.To.ToString("dd/M/yyyy", CultureInfo.InvariantCulture)));
+                .ForMember(pr => pr.Reports, opt => opt.MapFrom(p => p.Reports.Select(pf => pf.ReportId)));
+            // .ForMember(pr => pr.From, opt => opt.MapFrom(p => p.From.ToString("dd/M/yyyy", CultureInfo.InvariantCulture)))
+            // .ForMember(pr => pr.To, opt => opt.MapFrom(p => p.To.ToString("dd/M/yyyy", CultureInfo.InvariantCulture)));
 
             CreateMap<Report, ReportResource>()
                 .ForMember(rr => rr.DepartmentId, opt => opt.MapFrom(r => r.Department.DepartmentId))

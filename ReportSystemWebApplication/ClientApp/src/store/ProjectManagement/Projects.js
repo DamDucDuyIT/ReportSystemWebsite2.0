@@ -52,9 +52,11 @@ export const actionCreators = {
     }
   },
 
-  addProject: data => async dispatch => {
+  addProject: data => async (dispatch, getState) => {
     var res = await AddNewProject(data);
-    console.log(res);
+    if (res.status === 200) {
+      loadData(dispatch, getState().projectManagement_Projects.isLoaded);
+    }
     return res;
   },
 
@@ -128,7 +130,7 @@ export const AddNewProject = async data => {
       }
       project.projectMembers = members;
     }
-    console.log(project);
+
     var res = await dataService.post("api/projects/add", project);
     return res;
   } catch (e) {

@@ -74,7 +74,9 @@ export const actionCreators = {
 };
 
 export const loadData = async (dispatch, isLoaded) => {
-  const departments = await dataService.get("api/departments/getall");
+  const departments = await dataService.get(
+    "api/departments/getall?sortby=code&issortascending=true"
+  );
 
   dispatch({
     type: receiveDepartmentsType,

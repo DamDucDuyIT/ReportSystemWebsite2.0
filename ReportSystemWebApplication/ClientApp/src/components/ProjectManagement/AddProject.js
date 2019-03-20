@@ -20,7 +20,8 @@ class AddProject extends Component {
     super(props);
     this.state = {
       searchText: "",
-      sortedInfo: null
+      sortedInfo: null,
+      addLoading: false
     };
   }
 
@@ -59,8 +60,12 @@ class AddProject extends Component {
   };
   addProjectSubmit = e => {
     e.preventDefault();
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
+        this.setState({
+          addLoading: true
+        });
         const rangeValue = values["projectDeadline"];
         const dates = [
           rangeValue[0].format("YYYY-MM-DD"),
@@ -70,9 +75,15 @@ class AddProject extends Component {
 
         this.props.addProject(values).then(res => {
           if (res.status === 200) {
+            this.setState({
+              addLoading: false
+            });
             message.success("Đã tạo dự án thành công!", 3);
             this.props.form.resetFields();
           } else {
+            this.setState({
+              addLoading: false
+            });
             message.error(
               "Có lỗi trong quá trình tạo dự án. Gợi ý: " + res.data,
               3
@@ -217,8 +228,8 @@ class AddProject extends Component {
             })(
               <RangePicker
                 defaultValue={[
-                  moment("01/01/2018", dateFormat),
-                  moment("01/01/2018", dateFormat)
+                  moment(new Date(), dateFormat),
+                  moment(new Date(), dateFormat)
                 ]}
                 format={dateFormat}
                 placeholder={["Bắt đầu", "Kết thúc"]}
@@ -242,6 +253,7 @@ class AddProject extends Component {
               type="primary"
               htmlType="submit"
               className="login-form-button"
+              loading={this.state.addLoading}
             >
               Tạo
             </Button>

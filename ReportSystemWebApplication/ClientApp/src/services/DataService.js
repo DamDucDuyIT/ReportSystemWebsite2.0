@@ -65,7 +65,6 @@ export const post = async (url, data) => {
       headers: getHeader()
     })
     .then(res => {
-      console.log(res);
       return res;
     })
     .catch(error => {
@@ -74,7 +73,6 @@ export const post = async (url, data) => {
 };
 
 export const upload = async (url, file) => {
-  console.log(url);
   var data = new FormData();
   data.append("file", file);
   return axios.post(constant.BASE_URL + url, data).then(res => {

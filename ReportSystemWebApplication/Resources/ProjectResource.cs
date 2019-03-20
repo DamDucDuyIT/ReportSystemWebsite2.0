@@ -11,8 +11,8 @@ namespace ReportSystemWebApplication.Resources
         public string Code { get; set; }
         public bool IsDeleted { get; set; }
         public bool IsFinished { get; set; }
-        public string From { get; set; }
-        public string To { get; set; }
+        public DateTime From { get; set; }
+        public DateTime To { get; set; }
         public string CreatorEmail { get; set; }
         public DateTime CreateOn { get; set; }
         public long? DepartmentId { get; set; }
