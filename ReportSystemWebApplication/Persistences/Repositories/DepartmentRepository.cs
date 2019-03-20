@@ -187,7 +187,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             //sort
             var columnsMap = new Dictionary<string, Expression<Func<Department, object>>>()
             {
-                ["name"] = s => s.Name
+                ["name"] = s => s.Name,
+                ["code"] = s => s.Code
             };
             if (queryObj.SortBy != "id" || queryObj.IsSortAscending != true)
             {
