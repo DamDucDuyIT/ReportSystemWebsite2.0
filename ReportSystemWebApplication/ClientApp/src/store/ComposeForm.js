@@ -16,7 +16,8 @@ const initialState = {
   accounts: [],
   isLoading: false,
   hubConnection: null,
-  isSent: false
+  isSent: false,
+  toEmailsOfReport: []
 };
 
 export var addSuccess = false;
@@ -47,6 +48,8 @@ export const actionCreators = {
       authService.clearLocalStorage();
       dispatch(push("/"));
     } else {
+      console.log(isLoaded);
+      console.log(getState().composeForm.isLoaded);
       if (isLoaded === getState().composeForm.isLoaded) {
         // Don't issue a duplicate request (we already have or are loading the requested
         // data)
@@ -91,7 +94,7 @@ export const addReport = async (data, content, shortContent, fileList) => {
     data["content"] = content;
     data["shortContent"] = shortContent;
     const response = await dataService.post("api/reports/add", data);
-    console.log(response);
+
     if (response.status === 200 && fileList) {
       var reportId = response.data.reportId;
       for (var i = 0; i < fileList.length; i++) {
@@ -108,9 +111,7 @@ export const addReport = async (data, content, shortContent, fileList) => {
     }
 
     return response.status;
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 export const replyReport = async (
@@ -124,6 +125,7 @@ export const replyReport = async (
 ) => {
   try {
     const fromEmail = authService.getLoggedInUser().email;
+    const departmentId = authService.getLoggedInUser().departmentId;
     const report = await dataService.get("api/reports/getreport/" + reportId);
     var data = {};
     data["fromEmail"] = fromEmail;
@@ -134,6 +136,9 @@ export const replyReport = async (
     data["shortContent"] = shortContent;
     data["mainReportId"] = reportId;
     data["isReply"] = true;
+    data["isReply"] = true;
+    data["departmentId"] = departmentId;
+
     const response = await dataService.post("api/reports/add", data);
 
     if (response.status === 200) {
@@ -154,9 +159,7 @@ export const replyReport = async (
     // const response = {};
     // response["status"] = 200
     return response.status;
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 };
 
 // Load Compose Form
@@ -183,13 +186,21 @@ export const loadReplyForm = async (dispatch, isLoaded, reportId) => {
   const projects = await dataService.get(
     "api/projects/getallprojectofuser?email=a@a.com"
   );
+
+  var emails = report.toEmails;
+  if (!emails.includes(report.fromEmail)) {
+    emails.push(report.fromEmail);
+  }
+
+  const toEmailsOfReport = emails.filter(e => e !== currentEmail);
   dispatch({
     type: receiveReplyFormType,
     isLoaded,
     currentEmail,
     report,
     accounts,
-    projects
+    projects,
+    toEmailsOfReport
   });
 };
 
@@ -229,7 +240,8 @@ export const reducer = (state, action) => {
       currentEmail: action.currentEmail,
       report: action.report,
       accounts: action.accounts,
-      projects: action.projects
+      projects: action.projects,
+      toEmailsOfReport: action.toEmailsOfReport
     };
   }
 

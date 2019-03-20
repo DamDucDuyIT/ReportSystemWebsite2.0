@@ -65,7 +65,7 @@ export const UpdateProfile = async data => {
     "api/accounts/updatebyemail/" + user.email,
     user
   );
-  console.log(user);
+
   return res;
 };
 

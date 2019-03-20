@@ -27,7 +27,6 @@ class ComposeForm extends React.Component {
     this.updateContent = this.updateContent.bind(this);
   }
   updateContent(content) {
-    //console.log("recieved HTML content", content);
     this.setState({ content });
   }
 
@@ -38,7 +37,6 @@ class ComposeForm extends React.Component {
     }
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         var shortContent = document.createElement("html");
         shortContent.innerHTML = this.state.content;
 
@@ -54,11 +52,6 @@ class ComposeForm extends React.Component {
             this.props.onClose();
           }
         });
-        // console.log(response);
-        // if (response.result === 200) {
-        //   console.log("close close");
-        //   this.props.onClose();
-        // }
       }
     });
   };
@@ -76,7 +69,6 @@ class ComposeForm extends React.Component {
     this.setState({
       fileList: fileList
     });
-    // console.log(this.state.fileList);
   }
 
   render() {
@@ -139,7 +131,6 @@ class ComposeForm extends React.Component {
                   project =>
                     project.department && (
                       <OptGroup label={project.department.name}>
-                        {console.log(project)}
                         {project.projects.map(
                           item =>
                             item.project && (

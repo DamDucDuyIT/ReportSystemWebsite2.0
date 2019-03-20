@@ -30,7 +30,6 @@ const ProjectDetailForm = Form.create({
     props.onChange(changedFields);
   },
   mapPropsToFields(props) {
-    // console.log(props);
     return {
       name: Form.createFormField({
         ...props.name,
@@ -62,9 +61,7 @@ const ProjectDetailForm = Form.create({
       })
     };
   },
-  onValuesChange(_, values) {
-    // console.log(values);
-  }
+  onValuesChange(_, values) {}
 })(props => {
   const { getFieldDecorator, getFieldValue } = props.form;
   const dateRanges = getFieldValue("projectDeadline");
@@ -120,7 +117,7 @@ class ProjectDetail extends React.Component {
   constructor(props) {
     super(props);
     const { data } = props;
-    // console.log(data);
+
     this.updateFields(data);
     this.state = {
       fields: newFields
@@ -128,7 +125,6 @@ class ProjectDetail extends React.Component {
   }
 
   updateFields = data => {
-    // console.log(data);
     var members = [];
     data.projectMembers.map(member => {
       var temp = {
@@ -190,14 +186,6 @@ class ProjectDetail extends React.Component {
     }
   }
 
-  // onSubmit = () => {
-  //   console.log();
-  //   // this.form.validateFields((err, values) => {
-  //   //   if (err) return;
-  //   //   console.log(values);
-  //   // });
-  // };
-
   onSubmit = (data, members) => {
     data.projectMembers = members;
 
@@ -214,7 +202,7 @@ class ProjectDetail extends React.Component {
   render() {
     const { data } = this.props;
     const fields = this.state.fields;
-    // console.log(data);
+
     return (
       <div>
         {data ? (

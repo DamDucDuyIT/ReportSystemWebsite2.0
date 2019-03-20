@@ -99,7 +99,6 @@ class Account extends Component {
   };
 
   showAccountDetailModal = data => {
-    console.log(data);
     this.setState({
       visible: true,
       data
@@ -117,14 +116,12 @@ class Account extends Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter
     });
   };
   handleCancel = e => {
-    // console.log(e);
     this.setState({
       visible: false
     });

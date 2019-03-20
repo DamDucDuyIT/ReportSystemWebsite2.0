@@ -41,9 +41,7 @@ class Project extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+  handleChange(value) {}
   handleClick = e => {
     departmentId = e.key;
     ContentService.callback(e.key);
@@ -71,8 +69,7 @@ class Project extends Component {
 
   render() {
     const { projects, totalUnread } = this.props;
-    console.log(this.props);
-    // console.log(this.props.projects);
+
     return (
       <Layout>
         <Sider className="company-menu">

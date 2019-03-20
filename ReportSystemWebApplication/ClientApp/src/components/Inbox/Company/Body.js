@@ -23,8 +23,6 @@ export default class Body extends React.Component {
       projectId,
       title
     });
-
-    // console.log(reportId);
   }
   closeReplyDrawer = () => {
     this.setState({
@@ -38,7 +36,7 @@ export default class Body extends React.Component {
     if (data !== undefined) {
       content = data.content;
     }
-    console.log(this.props);
+
     // document.getElementById("content").innerHTML = ll;
     return (
       <div>

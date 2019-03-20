@@ -47,13 +47,11 @@ export default class ProjectManagementInterface extends React.Component {
     this.setState({
       composeDrawerVisible: true
     });
-    console.log(this.state.composeDrawerVisible);
   };
   closeComposeDrawer = () => {
     this.setState({
       composeDrawerVisible: false
     });
-    console.log(this.state.composeDrawerVisible);
   };
   toggleCollapsed = () => {
     this.setState({

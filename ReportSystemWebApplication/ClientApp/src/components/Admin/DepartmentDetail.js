@@ -18,7 +18,6 @@ const ProjectDetailForm = Form.create({
     props.onChange(changedFields);
   },
   mapPropsToFields(props) {
-    // console.log(props);
     return {
       code: Form.createFormField({
         ...props.code,
@@ -30,9 +29,7 @@ const ProjectDetailForm = Form.create({
       })
     };
   },
-  onValuesChange(_, values) {
-    // console.log(values);
-  }
+  onValuesChange(_, values) {}
 })(props => {
   const { getFieldDecorator } = props.form;
   return (

@@ -78,7 +78,6 @@ export const actionCreators = {
   },
 
   register: inputData => async () => {
-    console.log(inputData);
     const data = {
       Email: inputData.email,
       Password: inputData.password,
@@ -89,7 +88,7 @@ export const actionCreators = {
     };
 
     var res = await dataService.post(`api/accounts/register`, data);
-    console.log(res);
+
     return res;
   },
 
@@ -101,10 +100,9 @@ export const actionCreators = {
 
     var res = await dataService.login(data);
 
-    if (res && res.access_token) {
+    if (res.status === 200 && res.data.access_token) {
       localStorage.removeItem(constant.CURRENT_USER);
-      localStorage.setItem(constant.CURRENT_USER, JSON.stringify(res));
-      window.location.reload();
+      localStorage.setItem(constant.CURRENT_USER, JSON.stringify(res.data));
     } else {
       const isLoaded = getState().login.isLoaded;
       const errorMessage = "You have entered an invalid username or password";
@@ -135,7 +133,7 @@ export const loadDeparment = async departmentId => {
   const department = await dataService.get(
     `api/departments/getdepartment/${departmentId}`
   );
-  console.log(department);
+
   return department;
 };
 

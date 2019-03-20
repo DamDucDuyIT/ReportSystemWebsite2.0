@@ -51,9 +51,7 @@ function RouteWithSubRoutes(route) {
 }
 
 class UserInterface extends Component {
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+  handleChange(value) {}
   handleClick(zone) {
     if (zone === "c") {
       CompanyContentService.reload();
@@ -69,8 +67,7 @@ class UserInterface extends Component {
   render() {
     const { departmentUnread, projectUnread } = this.props;
     const link3 = window.location.pathname.split("/")[3];
-    console.log(this.props);
-    // console.log(this.props.departments);
+
     return (
       <Layout className="custom-layout">
         <Sider collapsed={true}>

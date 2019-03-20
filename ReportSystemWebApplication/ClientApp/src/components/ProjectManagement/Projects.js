@@ -18,7 +18,6 @@ class Account extends Component {
     };
   }
   showProjectDetailModal = data => {
-    // console.log(data);
     data.from;
     this.setState({
       visible: true,
@@ -26,7 +25,6 @@ class Account extends Component {
     });
   };
   handleCancel = e => {
-    // console.log(e);
     this.setState({
       visible: false
     });
@@ -125,7 +123,6 @@ class Account extends Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    // console.log("Various parameters", pagination, filters, sorter);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter
@@ -134,9 +131,7 @@ class Account extends Component {
 
   render() {
     let { projects } = this.props;
-    // console.log(projects);
-    // let { sortedInfo } = this.state;
-    // sortedInfo = sortedInfo || {};
+
     const columns = [
       {
         title: "",

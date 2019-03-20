@@ -115,14 +115,12 @@ class Department extends Component {
   };
 
   handleChange = (pagination, filters, sorter) => {
-    console.log("Various parameters", pagination, filters, sorter);
     this.setState({
       filteredInfo: filters,
       sortedInfo: sorter
     });
   };
   handleCancel = e => {
-    // console.log(e);
     this.setState({
       visible: false
     });

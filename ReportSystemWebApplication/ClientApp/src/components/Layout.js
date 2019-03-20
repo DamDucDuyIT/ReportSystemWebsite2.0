@@ -85,7 +85,6 @@ class ReportSystem extends React.Component {
     this.setState({
       composeDrawerVisible: false
     });
-    // console.log(this.state.composeDrawerVisible);
   };
 
   render() {

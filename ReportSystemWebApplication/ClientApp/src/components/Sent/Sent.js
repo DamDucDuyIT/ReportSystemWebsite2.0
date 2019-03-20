@@ -47,11 +47,10 @@ class Report extends React.Component {
   renderReportAndRead = report => {
     var reports = this.state.reports;
     var reportTemp = report.to.find(t => t.email === userEmail);
-    console.log(report);
+
     reportTemp &&
       reports.forEach(item => {
         item.to.forEach(index => {
-          console.log(index);
           if (
             index.applicationUserReportId === reportTemp.applicationUserReportId
           ) {
@@ -88,7 +87,7 @@ class Report extends React.Component {
 
   render() {
     const { reports } = this.state;
-    console.log(this.state.reports);
+
     return (
       <div>
         {reports.length > 0 ? (

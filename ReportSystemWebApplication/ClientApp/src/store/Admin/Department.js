@@ -104,7 +104,7 @@ export const UpdateDepartment = async (departmentId, data) => {
     `api/departments/update/${departmentId}`,
     department
   );
-  console.log(res);
+
   return res;
 };
 

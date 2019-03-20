@@ -52,7 +52,7 @@ class AddProject extends Component {
     const nextmembers = members.concat(id++);
     // can use data-binding to set
     // important! notify form to detect changes
-    // console.log(nextmembers);
+
     form.setFieldsValue({
       members: nextmembers
     });
@@ -67,7 +67,7 @@ class AddProject extends Component {
           rangeValue[1].format("DD-MM-YYYY")
         ];
         values["projectDeadline"] = dates;
-        console.log("Received values of form: ", values);
+
         this.props.addProject(values).then(res => {
           if (res.status === 200) {
             message.success("Đã tạo dự án thành công!", 3);

@@ -194,8 +194,12 @@ namespace ReportSystemWebApplication.Controllers
 
             foreach (var user in report.To)
             {
+                //send for receiver
                 await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", report.ReportId, report.Title);
             }
+
+            //send for sender to reload data
+            await hubContext.Clients.All.SendAsync(report.From.Email);
 
             var result = mapper.Map<Report, ReportResource>(report);
 

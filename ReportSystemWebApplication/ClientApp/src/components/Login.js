@@ -84,7 +84,7 @@ class Login extends Component {
         if (departments.length > 0) {
           const department = departments[departments.length - 1];
           values.departmentId = department.departmentId;
-          console.log("Received values of form: ", values);
+
           this.props.register(values).then(response => {
             if (response && response.status === 200) {
               alert("OK ne");
@@ -154,7 +154,7 @@ class Login extends Component {
         confirmResetLoading: true
       });
       const value = this.props.form.getFieldValue("email");
-      console.log(value);
+
       this.props.sendResetPasswordMail(value).then(response => {
         this.setState({
           confirmResetLoading: false
@@ -211,10 +211,15 @@ class Login extends Component {
     const { email, password } = this.state;
     if (email && password) {
       this.props.logIn(email, password).then(response => {
-        this.setState({
-          loginLoading: false
-        });
-        message.error(response.data, 3);
+        if (response.status !== 200) {
+          this.setState({
+            loginLoading: false
+          });
+          message.error(response.data, 3);
+        } else {
+          message.success("Đăng nhập thành công", 3);
+          window.location.assign("/");
+        }
       });
     }
   };

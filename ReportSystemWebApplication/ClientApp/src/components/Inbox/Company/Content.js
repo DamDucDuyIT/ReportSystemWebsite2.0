@@ -12,20 +12,19 @@ const SubMenu = Menu.SubMenu;
 
 var running = false;
 var isReload = false;
+var callbackFromReply = false;
 const userEmail = authService.getLoggedInUser().email;
 
 export const reload = () => {
   isReload = true;
 };
 
-export const callback = async departmentId => {
-  departmentId = departmentId;
+export const callback = async () => {
   running = true;
 };
 
 class Report extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     const link3 = window.location.pathname.split("/")[3];
     const link4 = window.location.pathname.split("/")[4];
@@ -40,33 +39,23 @@ class Report extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log(prevProps);
-    console.log(this.props);
     const departmentId = this.props.match.params.departmentId;
     const prevDepartmentId = prevProps.match.params.departmentId;
     const { isFirstLoaded } = this.state;
 
-    if (isReload === true) {
-      isReload = false;
-      this.props.reloadData(departmentId).then(() => {
-        this.setState({
-          reports: this.props.reports.items
-        });
-      });
-    }
     if (departmentId !== prevDepartmentId) {
       this.props.reloadData(departmentId).then(() => {
         this.setState({
           report: undefined,
-          reportId: 0,
-          reports: this.props.reports.items
+          reportId: 0
+          // reports: this.props.reports.items
         });
       });
     }
     if (departmentId === this.props.departmentId && running == true) {
       running = false;
       this.setState({
-        reports: this.props.reports.items
+        // reports: this.props.reports.items
       });
     }
 
@@ -77,7 +66,7 @@ class Report extends React.Component {
       this.props.reports.items.length > 0
     ) {
       this.setState({
-        reports: this.props.reports.items,
+        // reports: this.props.reports.items,
         isFirstLoaded: true
       });
     }
@@ -90,8 +79,7 @@ class Report extends React.Component {
   }
 
   renderReportAndRead = report => {
-    console.log(report);
-    var reports = this.state.reports;
+    var reports = this.props.reports ? this.props.reports.items : [];
     var reportTemp = report.to.find(t => t.email === userEmail);
 
     reportTemp &&
@@ -108,7 +96,6 @@ class Report extends React.Component {
         });
       });
 
-    this.setState({ reports });
     this.renderReport(report.reportId);
     // this.setState({ reports });
     // this.renderReport(report.reportId);
@@ -143,7 +130,6 @@ class Report extends React.Component {
       this.setState({
         reportId: report.reportId,
         report,
-        reports,
         departmentId: this.props.match.params.departmentId
       });
     }
@@ -151,8 +137,12 @@ class Report extends React.Component {
 
   render() {
     // var reports = this.props.reports;
-    const { reports } = this.state;
-    // console.log(reports);
+    var reports = this.props.reports ? this.props.reports.items : [];
+
+    var report = reports
+      ? reports.find(o => o.reportId === this.state.reportId)
+      : undefined;
+
     return (
       <div>
         <div>
@@ -188,7 +178,7 @@ class Report extends React.Component {
                   </Menu>
                 </div>
                 <div>
-                  <Body data={this.state.report} />
+                  <Body data={report} />
                 </div>
               </div>
             ) : (

@@ -4,6 +4,8 @@ import ReplyForm from "../ReplyForm";
 import "../../assets/css/report.css";
 import imageExtentions from "image-extensions";
 import * as GlobalService from "../../services/GlobalService";
+import * as CompanyContent from "../Inbox/Company/Content";
+import * as ProjectContent from "../Inbox/Project/Content";
 
 var mh = window.outerHeight;
 
@@ -42,7 +44,6 @@ export default class Body extends React.Component {
       projectId,
       title
     });
-    // console.log(reportId);
   }
   closeReplyDrawer = () => {
     this.setState({
@@ -56,7 +57,6 @@ export default class Body extends React.Component {
     });
   };
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
@@ -116,7 +116,6 @@ export default class Body extends React.Component {
             </div>
 
             <ul className="report">
-              {console.log(data.reply)}
               {data.reply.map((report, i) => (
                 <li>
                   <div className="group-item">

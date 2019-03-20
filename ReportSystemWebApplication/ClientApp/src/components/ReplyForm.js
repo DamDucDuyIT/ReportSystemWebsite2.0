@@ -27,7 +27,6 @@ class ComposeForm extends React.Component {
     this.updateContent = this.updateContent.bind(this);
   }
   updateContent(content) {
-    console.log("recieved HTML content", content);
     this.setState({ content });
   }
   handleSubmit = e => {
@@ -38,7 +37,6 @@ class ComposeForm extends React.Component {
     const { report } = this.props;
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
         var shortContent = document.createElement("html");
         shortContent.innerHTML = this.state.content;
 
@@ -53,46 +51,65 @@ class ComposeForm extends React.Component {
           this.state.files
         ).then(response => {
           if (response === 200) {
+            this.setState({
+              content: "",
+              shortContent: ""
+            });
             alert("Đã gửi thành công!");
             this.props.onClose();
           }
         });
-        // console.log(response);
-        // if (response.result === 200) {
-        //   console.log("close close");
-        //   this.props.onClose();
-        // }
       }
     });
   };
 
   componentDidMount() {
     const isLoaded = false;
-    this.props.requestReplyForm(isLoaded, this.props.reportId);
+    const { report } = this.props;
+
+    if (report) {
+      if (report.reportId !== this.props.reportId) {
+        this.props.requestReplyForm(!this.props.isLoaded, this.props.reportId);
+      } else {
+        this.props.requestReplyForm(isLoaded, this.props.reportId);
+      }
+    } else {
+      this.props.requestReplyForm(isLoaded, this.props.reportId);
+    }
   }
 
   componentDidUpdate() {
-    if (this.state.toEmails.length < 1) {
-      const fromEmail = this.props.fromEmail;
-      var toEmails = [];
-      if (this.props.accounts && this.props.accounts.items) {
-        if (fromEmail === userEmail) {
-          toEmails = this.props.report.toEmails;
-        } else {
-          this.props.report.toEmails.map(item => {
-            if (item !== userEmail) {
-              toEmails.push(item);
-            }
-          });
-          if (!toEmails.includes(fromEmail)) {
-            toEmails.push(fromEmail);
-          }
-        }
-        this.setState({
-          toEmails
-        });
+    const { report } = this.props;
+    const reportId = this.props.reportId;
+
+    if (report) {
+      if (report.reportId !== reportId) {
+        this.props.requestReplyForm(!this.props.isLoaded, reportId);
       }
     }
+    // console.log(this.state.toEmails);
+    // if (this.state.toEmails.length < 1) {
+    //   console.log("dsdsdsds");
+    //   const fromEmail = this.props.fromEmail;
+    //   var toEmails = [];
+    //   if (this.props.accounts && this.props.accounts.items) {
+    //     if (fromEmail === userEmail) {
+    //       toEmails = this.props.report.toEmails;
+    //     } else {
+    //       this.props.report.toEmails.map(item => {
+    //         if (item !== userEmail) {
+    //           toEmails.push(item);
+    //         }
+    //       });
+    //       if (!toEmails.includes(fromEmail)) {
+    //         toEmails.push(fromEmail);
+    //       }
+    //     }
+    //     this.setState({
+    //       toEmails
+    //     });
+    //   }
+    // }
   }
   // onFieldsChange(props, changedFields) {
   //   props.onChange(changedFields);
@@ -101,7 +118,7 @@ class ComposeForm extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const { report } = this.props;
     const { selectedItems } = this.state;
-
+    console.log(report);
     var projects = [];
     if (this.props.accounts && this.props.accounts.items) {
       this.props.projects &&
@@ -135,7 +152,7 @@ class ComposeForm extends React.Component {
             <Form.Item className="email-input">
               {getFieldDecorator(
                 "toEmails",
-                { initialValue: this.state.toEmails },
+                { initialValue: this.props.toEmailsOfReport },
                 {
                   rules: [
                     { required: true, message: "Xin nhập địa chỉ gửi đến!" }

@@ -54,9 +54,7 @@ class Company extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+  handleChange(value) {}
   handleClick = e => {
     departmentId = e.key;
     ContentService.callback(e.key);
@@ -69,13 +67,10 @@ class Company extends Component {
     const isLoaded = false;
     this.props.requestDepartmentsByCompany(isLoaded);
   }
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-  }
+  componentWillReceiveProps(nextProps) {}
   componentDidUpdate() {
     const { isLoading } = this.state;
 
-    console.log(this.props);
     if (this.props.isLoaded === false && isLoading === true) {
       this.setState({
         totalUnread: this.state.totalUnread + 1,
@@ -87,7 +82,6 @@ class Company extends Component {
   render() {
     const departmentList = this.props.departments.items;
 
-    // console.log(departmentList);
     return (
       <Layout>
         {/* <button
@@ -107,7 +101,6 @@ class Company extends Component {
             className="menu-scroll"
             // style={{ height: maxHeight, overflowY: "scroll" }}
           >
-            {/* {console.log(departmentList)} */}
             <Menu.Item key={0} className="first-item">
               <Link to={`/u/inbox/c/0`} />
               <Icon type="mail" />

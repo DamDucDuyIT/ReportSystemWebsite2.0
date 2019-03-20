@@ -1,7 +1,8 @@
 import { push } from "react-router-redux";
 import * as authService from "../services/Authentication";
 import * as dataService from "../services/DataService";
-// import * as signalR from "@aspnet/signalr";
+import * as signalR from "@aspnet/signalr";
+import { departmentId } from "./../components/Inbox/Company/Layout";
 
 const requestReportsType = "REQUEST_REPORTS";
 const receiveReportsType = "RECEIVE_REPORTS";
@@ -17,7 +18,9 @@ const receiveReportsByProjectType = "RECEIVE_REPORTSBYPROJECT";
 
 const initialState = {
   reports: [],
-  isLoading: false
+  isLoading: false,
+  hubConnectionDepartment: [],
+  hubConnectionProject: []
 };
 
 export const actionCreators = {
@@ -27,9 +30,39 @@ export const actionCreators = {
       authService.clearLocalStorage();
       dispatch(push("/"));
     } else {
+      if (isLoaded === getState().report.isLoaded) {
+        // Don't issue a duplicate request (we already have or are loading the requested
+        // data)
+        return;
+      }
+
+      ///////////////////
+      var hubConnectionDepartment = new signalR.HubConnectionBuilder()
+        .withUrl("hub")
+        .build();
+
+      hubConnectionDepartment.on(authService.getLoggedInUser().email, () => {
+        const departmentId = window.location.pathname.split("/")[4];
+        if (window.location.pathname.split("/")[3] === "c") {
+          loadData(dispatch, departmentId, getState().report.isLoaded);
+        }
+      });
+
+      hubConnectionDepartment
+        .start()
+        .then(() => {
+          console.log("Hub connection started");
+        })
+        .catch(err => {
+          console.log("Error while establishing connection");
+        });
+
+      ///////////////////
+
       dispatch({
         type: requestReportsType,
-        isLoaded
+        isLoaded,
+        hubConnectionDepartment
       });
       loadData(dispatch, departmentId, isLoaded);
     }
@@ -63,9 +96,39 @@ export const actionCreators = {
         return;
       }
 
+      ///////////////////
+      var hubConnectionProject = new signalR.HubConnectionBuilder()
+        .withUrl("hub")
+        .build();
+
+      const defaultId = window.location.pathname.split("/")[4];
+      const splitId = defaultId.split("+");
+      hubConnectionProject.on(authService.getLoggedInUser().email, () => {
+        if (window.location.pathname.split("/")[3] === "c") {
+          loadReportsByProject(
+            dispatch,
+            splitId[0],
+            splitId[1],
+            getState().report.isLoaded
+          );
+        }
+      });
+
+      hubConnectionProject
+        .start()
+        .then(() => {
+          console.log("Hub connection started");
+        })
+        .catch(err => {
+          console.log("Error while establishing connection");
+        });
+
+      ///////////////////
+
       dispatch({
         type: requestReportsByProjectType,
-        isLoaded
+        isLoaded,
+        hubConnectionProject
       });
       loadReportsByProject(dispatch, departmentId, projectId, isLoaded);
     }
@@ -83,7 +146,7 @@ export const actionCreators = {
 
   loadReport: reportId => async dispatch => {
     const report = await dataService.get("api/reports/getreport/" + reportId);
-    // console.log(report);
+
     dispatch({
       type: receiveReportType,
       report
@@ -98,9 +161,7 @@ export const actionCreators = {
           item
         );
       }
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (e) {}
   }
 };
 
@@ -108,7 +169,7 @@ export const loadData = async (dispatch, departmentId, isLoaded) => {
   const userEmail = authService.getLoggedInUser().email;
 
   var reports = [];
-  if (departmentId === "0") {
+  if (departmentId === "0" || departmentId === undefined) {
     reports = await dataService.get(`api/reports/getall?toemail=${userEmail}`);
   } else {
     reports = await dataService.get(
@@ -129,7 +190,7 @@ export const loadSentReports = async (dispatch, isLoaded) => {
   var reports = await dataService.get(
     `api/reports/getall?senderemail=${userEmail}`
   );
-  console.log(reports);
+
   dispatch({
     type: receiveReportsType,
     isLoaded,
@@ -145,6 +206,7 @@ export const loadReportsByProject = async (
 ) => {
   const userEmail = authService.getLoggedInUser().email;
   var reports = [];
+
   if (departmentId === "0" && projectId === "0") {
     reports = await dataService.get(`api/reports/getall?toemail=${userEmail}`);
   } else {
@@ -174,7 +236,7 @@ export const reducer = (state, action) => {
     return {
       ...state,
       isLoaded: action.isLoaded,
-      hubConnection: action.hubConnection
+      hubConnectionDepartment: action.hubConnectionDepartment
     };
   }
 
@@ -190,8 +252,7 @@ export const reducer = (state, action) => {
   if (action.type === requestSentReportsType) {
     return {
       ...state,
-      isLoaded: action.isLoaded,
-      hubConnection: action.hubConnection
+      isLoaded: action.isLoaded
     };
   }
 
@@ -206,8 +267,7 @@ export const reducer = (state, action) => {
   if (action.type === requestReportType) {
     return {
       ...state,
-      isLoaded: action.isLoaded,
-      hubConnection: action.hubConnection
+      isLoaded: action.isLoaded
     };
   }
 
@@ -222,7 +282,7 @@ export const reducer = (state, action) => {
     return {
       ...state,
       isLoaded: action.isLoaded,
-      hubConnection: action.hubConnection
+      hubConnectionProject: action.hubConnectionProject
     };
   }
 

@@ -22,7 +22,6 @@ var newFields = {};
 class Profile extends React.Component {
   constructor(props) {
     super(props);
-    // console.log(data);
 
     this.state = { visible: false, fields: newFields };
   }
@@ -61,22 +60,18 @@ class Profile extends React.Component {
   }
 
   handleOk = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
   handleCancel = e => {
-    console.log(e);
     this.setState({
       visible: false
     });
   };
 
   updateFields = data => {
-    // console.log(data);
-    console.log(data);
     newFields = {
       name: {
         value: data.name
@@ -205,7 +200,6 @@ const ProfileForm = Form.create({
     props.onChange(changedFields);
   },
   mapPropsToFields(props) {
-    // console.log(props);
     return {
       name: Form.createFormField({
         ...props.name,
@@ -225,9 +219,7 @@ const ProfileForm = Form.create({
       })
     };
   },
-  onValuesChange(_, values) {
-    // console.log(values);
-  }
+  onValuesChange(_, values) {}
 })(props => {
   const { getFieldDecorator, getFieldValue } = props.form;
 

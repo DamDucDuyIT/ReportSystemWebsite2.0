@@ -19,7 +19,6 @@ const initialState = {
 
 export const actionCreators = {
   requestDepartmentsByCompany: isLoaded => async (dispatch, getState) => {
-    console.log(getState().department.isLoaded);
     //check if user dont log in
     if (!authService.isUserAuthenticated() || authService.isExpired()) {
       authService.clearLocalStorage();

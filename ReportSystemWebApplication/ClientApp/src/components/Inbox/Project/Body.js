@@ -23,8 +23,6 @@ export default class Body extends React.Component {
       subjectId,
       title
     });
-
-    // console.log(reportId);
   }
   closeReplyDrawer = () => {
     this.setState({

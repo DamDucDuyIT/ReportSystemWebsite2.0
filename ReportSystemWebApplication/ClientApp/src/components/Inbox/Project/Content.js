@@ -19,7 +19,6 @@ export const callback = () => {
 
 export const reload = () => {
   isReload = true;
-  console.log(isReload);
 };
 
 class Report extends React.Component {
@@ -42,11 +41,12 @@ class Report extends React.Component {
     const isLoaded = false;
     const departmentId = this.props.match.params.departmentId;
     var projectId = this.props.match.params.projectId.substring(1);
-    // console.log(departmentId + " === " + projectId);
+
     this.props.requestReportsByProject(departmentId, projectId, isLoaded);
   }
 
   componentDidUpdate(prevProps) {
+    console.log("componentDidUpdate");
     var departmentId = this.props.match.params.departmentId;
     var prevDepartmentId = prevProps.match.params.departmentId;
 
@@ -54,15 +54,16 @@ class Report extends React.Component {
     var prevProjectId = prevProps.match.params.projectId;
     const { isFirstLoaded } = this.state;
     if (isReload === true) {
+      console.log("1");
       isReload = false;
       this.props.reloadByProject(departmentId, "0");
     }
 
     if (projectId !== prevProjectId) {
+      console.log("2");
       var id = projectId.substring(1);
       this.props.reloadByProject(departmentId, id);
     }
-    // console.log(this.props.projectId);
 
     if (projectId.substring(1) === this.props.projectId && running == true) {
       running = false;
@@ -76,48 +77,36 @@ class Report extends React.Component {
       this.props.reports.items.length > 0
     ) {
       this.setState({
-        reports: this.props.reports.items,
+        //reports: this.props.reports.items,
         isFirstLoaded: true
       });
     }
   }
 
   renderReportAndRead = (reportId, item) => {
-    var reports = this.state.reports;
+    var reports = this.props.reports.items;
 
     reports.forEach(report => {
       report.to.forEach(index => {
         if (index.applicationUserReportId === item.applicationUserReportId) {
-          index.isRead = true;
+          if (index.isRead == false) {
+            index.isRead = true;
+            this.props.readReport(index);
+          }
         }
       });
     });
 
-    this.setState({ reports: reports });
+    // this.setState({ reports: reports });
     this.renderReport(reportId);
-    this.props.readReport(item);
   };
 
   renderReport = reportId => {
-    // console.log(reportId);
-    var report = {};
-    if (
-      this.props.reports &&
-      this.props.reports.items &&
-      this.props.reports.items.length > 0
-    ) {
-      if (reportId === 0) {
-        // console.log(this.props.reports.items);
-        report = this.props.reports.items[0];
-      } else {
-        report = this.props.reports.items.find(o => o.reportId === reportId);
-      }
-      this.setState({
-        reportId: report.reportId,
-        report,
-        departmentId: this.props.match.params.departmentId
-      });
-    }
+    this.setState({
+      reportId: reportId,
+
+      departmentId: this.props.match.params.departmentId
+    });
   };
   renderFirst = reportId => {
     this.renderReport(reportId);
@@ -143,6 +132,13 @@ class Report extends React.Component {
   render() {
     var reports = this.props.reports;
     console.log(reports);
+    var report = reports
+      ? reports.items.find(o => o.reportId === this.state.reportId)
+      : undefined;
+
+    console.log(this.state.reportId);
+    console.log(report);
+
     return (
       <div>
         <div className="report-menu">
@@ -188,18 +184,12 @@ class Report extends React.Component {
           )}
         </div>
         <div>
-          <Body data={this.state.report} />
+          <Body data={report} />
         </div>
       </div>
     );
   }
 }
-
-// function Body({ match }) {
-//   // const report = getReport();
-//   console.log(this.props);
-//   return <div />;
-// }
 
 export default connect(
   state => state.report,

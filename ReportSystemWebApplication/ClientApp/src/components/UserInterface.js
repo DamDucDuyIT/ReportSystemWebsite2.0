@@ -45,13 +45,11 @@ export default class UserInterface extends Component {
     this.setState({
       composeDrawerVisible: true
     });
-    console.log(this.state.composeDrawerVisible);
   };
   closeComposeDrawer = () => {
     this.setState({
       composeDrawerVisible: false
     });
-    console.log(this.state.composeDrawerVisible);
   };
   toggleCollapsed = () => {
     this.setState({
@@ -59,7 +57,6 @@ export default class UserInterface extends Component {
     });
   };
   handleClick = e => {
-    console.log("click ", e);
     this.setState({
       current: e.key
     });
