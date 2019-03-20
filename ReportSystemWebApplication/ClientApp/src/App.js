@@ -52,7 +52,7 @@ library.add(
 
 var currentUrl = window.location.pathname;
 if (currentUrl === "/" || currentUrl === "/u" || currentUrl === "/u/inbox/") {
-  window.location.assign("/u/inbox/c/3");
+  window.location.assign("/u/inbox/c/0");
 } else if (currentUrl === "/p") {
   window.location.assign("/p/projects");
 }
