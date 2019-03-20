@@ -41,7 +41,7 @@ export const login = async data => {
       headers: getHeaderWithoutBearer()
     })
     .then(res => {
-      return res.data;
+      return res;
     })
     .catch(error => {
       return error.response;

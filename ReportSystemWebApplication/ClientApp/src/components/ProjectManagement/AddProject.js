@@ -63,14 +63,20 @@ class AddProject extends Component {
       if (!err) {
         const rangeValue = values["projectDeadline"];
         const dates = [
-          rangeValue[0].format("DD-MM-YYYY"),
-          rangeValue[1].format("DD-MM-YYYY")
+          rangeValue[0].format("YYYY-MM-DD"),
+          rangeValue[1].format("YYYY-MM-DD")
         ];
         values["projectDeadline"] = dates;
 
         this.props.addProject(values).then(res => {
           if (res.status === 200) {
             message.success("Đã tạo dự án thành công!", 3);
+            this.props.form.resetFields();
+          } else {
+            message.error(
+              "Có lỗi trong quá trình tạo dự án. Gợi ý: " + res.data,
+              3
+            );
             this.props.form.resetFields();
           }
         });
