@@ -54,6 +54,7 @@ export const actionCreators = {
 
   addProject: data => async dispatch => {
     var res = await AddNewProject(data);
+    console.log(res);
     return res;
   },
 
@@ -105,28 +106,29 @@ export const AddNewProject = async data => {
   try {
     var project = [];
     project = {
-      Code: data.code,
-      Name: data.name,
-      Description: data.description,
-      DepartmentId: departmentId,
-      From: data.projectDeadline[0],
-      To: data.projectDeadline[1],
-      CreatorEmail: email,
-      ProjectMembers: []
+      code: data.code,
+      name: data.name,
+      description: data.description,
+      departmentId: departmentId,
+      from: data.projectDeadline[0],
+      to: data.projectDeadline[1],
+      creatorEmail: email,
+      projectMembers: []
     };
     if (data.members.length > 0) {
       var members = [];
       for (var i = 0; i < data.members.length; i++) {
         var member = {
-          Name: data.memberNames[i],
-          PhoneNumber: data.memberPhoneNumbers[i],
-          Email: data.memberEmails[i],
-          Department: data.memberDepartments[i]
+          name: data.memberNames[i],
+          phoneNumber: data.memberPhoneNumbers[i],
+          email: data.memberEmails[i],
+          department: data.memberDepartments[i]
         };
         members.push(member);
       }
-      project.ProjectMembers = members;
+      project.projectMembers = members;
     }
+    console.log(project);
     var res = await dataService.post("api/projects/add", project);
     return res;
   } catch (e) {
