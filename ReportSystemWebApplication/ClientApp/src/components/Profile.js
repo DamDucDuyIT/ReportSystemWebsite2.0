@@ -109,10 +109,10 @@ class Profile extends React.Component {
         data.isDeleted = isDeleted;
         this.props.updateProfile(data).then(res => {
           if (res.status === 200) {
-            message.success("Đã cập nhật thông tin thành công!", 5);
+            message.success("Đã cập nhật thông tin thành công!", 3);
             this.handleCancel();
           } else {
-            message.error("Đã có lỗi trong quá trình cập nhật thông tin!", 5);
+            message.error("Đã có lỗi trong quá trình cập nhật thông tin!", 3);
           }
         });
       }

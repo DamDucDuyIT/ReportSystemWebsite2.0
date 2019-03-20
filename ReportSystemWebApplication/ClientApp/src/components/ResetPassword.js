@@ -124,7 +124,7 @@ class ResetPassword extends Component {
     if (password !== confirmPassword) {
       message.error(
         "Mật khẩu và Nhập lại mật khẩu không khớp. Vui lòng nhập lại",
-        10
+        3
       );
 
       return;
@@ -141,11 +141,11 @@ class ResetPassword extends Component {
         if (response && response.status === 200) {
           message.success(
             "Mật khẩu đã được thay đổi thành công",
-            10,
+            3,
             this.backToLogin()
           );
         } else {
-          message.error(response.data, 10);
+          message.error(response.data, 3);
         }
       });
   }

@@ -92,10 +92,10 @@ class ProjectDetail extends React.Component {
         const departmentId = this.state.fields.departmentId;
         this.props.updateDepartment(departmentId, values).then(res => {
           if (res.status === 200) {
-            message.success("Đã lưu thông tin thành công!", 5);
+            message.success("Đã lưu thông tin thành công!", 3);
             this.props.handleCancel();
           } else {
-            message.error("Đã có lỗi trong quá trình lưu tài khoản!", 5);
+            message.error("Đã có lỗi trong quá trình lưu tài khoản!", 3);
           }
         });
       }

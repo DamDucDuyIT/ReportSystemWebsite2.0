@@ -141,10 +141,10 @@ class ProjectDetail extends React.Component {
         values.isDeleted = this.state.fields.isDeleted.value;
         this.props.updateAccount(values).then(res => {
           if (res.status === 200) {
-            message.success("Đã lưu thông tin thành công!", 5);
+            message.success("Đã lưu thông tin thành công!", 3);
             this.props.handleCancel();
           } else {
-            message.error("Đã có lỗi trong quá trình lưu tài khoản!", 5);
+            message.error("Đã có lỗi trong quá trình lưu tài khoản!", 3);
           }
         });
       }
@@ -250,7 +250,7 @@ class ProjectDetail extends React.Component {
     const { password, confirmPassword } = this.state;
 
     if (password != confirmPassword) {
-      message.error("Hai mật khẩu không khớp với nhau", 5);
+      message.error("Hai mật khẩu không khớp với nhau", 3);
       return;
     }
 
@@ -263,9 +263,9 @@ class ProjectDetail extends React.Component {
             password: "",
             confirmPassword: ""
           });
-          message.success("Mật khẩu đã được thay đổi thành công.", 5);
+          message.success("Mật khẩu đã được thay đổi thành công.", 3);
         } else {
-          message.error(response.data, 5);
+          message.error(response.data, 3);
         }
       });
   }

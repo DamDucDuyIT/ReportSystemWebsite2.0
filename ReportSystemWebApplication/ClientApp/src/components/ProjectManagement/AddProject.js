@@ -70,7 +70,7 @@ class AddProject extends Component {
         console.log("Received values of form: ", values);
         this.props.addProject(values).then(res => {
           if (res.status === 200) {
-            message.success("Đã tạo dự án thành công!");
+            message.success("Đã tạo dự án thành công!", 3);
             this.props.form.resetFields();
           }
         });

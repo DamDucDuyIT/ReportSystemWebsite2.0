@@ -69,11 +69,11 @@ class Login extends Component {
   }
 
   registerSuccessed() {
-    message.success("Đã đăng ký thành công!", 5);
+    message.success("Đã đăng ký thành công!", 3);
   }
 
   registerFailed() {
-    message.error("Đã có lỗi trong quá trình tạo tài khoản!", 5);
+    message.error("Đã có lỗi trong quá trình tạo tài khoản!", 3);
   }
 
   handleRegisterAccount = e => {
@@ -95,14 +95,14 @@ class Login extends Component {
               this.registerSuccessed;
               notification.open({
                 message: "Thành công",
-                duration: 10,
+                duration: 3,
                 description: "Đã tạo tài khoản thành công!",
                 icon: <Icon type="warning" style={{ color: "#108ee9" }} />
               });
             } else {
               notification.open({
                 message: "Lỗi",
-                duration: 10,
+                duration: 3,
                 description: "Đã có lỗi trong quá trình tạo tài khoản!",
                 icon: <Icon type="warning" style={{ color: "#108ee9" }} />
               });
@@ -162,10 +162,10 @@ class Login extends Component {
         if (response && response.status === 200) {
           message.success(
             "Đã gửi liên kết thay đổi mật khẩu đến mail của bạn.",
-            10
+            3
           );
         } else {
-          message.error(response.data, 10);
+          message.error(response.data, 3);
         }
       });
     }
@@ -214,7 +214,7 @@ class Login extends Component {
         this.setState({
           loginLoading: false
         });
-        message.error(response.data, 5);
+        message.error(response.data, 3);
       });
     }
   };
