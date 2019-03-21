@@ -81,6 +81,7 @@ class Company extends Component {
 
   render() {
     const departmentList = this.props.departments.items;
+    const allUnread = this.props.allUnread;
 
     return (
       <Layout>
@@ -104,7 +105,12 @@ class Company extends Component {
             <Menu.Item key={0} className="first-item">
               <Link to={`/u/inbox/c/0`} />
               <Icon type="mail" />
-              <span>Tất cả</span>
+              <span>
+                Tất cả
+                <span style={{ float: "right" }}>
+                  <Badge count={allUnread} />
+                </span>
+              </span>
             </Menu.Item>
             {departmentList &&
               departmentList.length > 0 &&

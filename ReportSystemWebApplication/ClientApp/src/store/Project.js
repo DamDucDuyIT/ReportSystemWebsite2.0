@@ -10,7 +10,8 @@ const receiveUpdatePCount = "RECEIVE_UPDATE_P_COUNT";
 
 const initialState = {
   projects: [],
-  isLoading: false
+  isLoading: false,
+  allUnread: 0
 };
 
 export const actionCreators = {
@@ -59,9 +60,13 @@ export const updateCount = async dispatch => {
     `api/projects/getallprojectofuser?email=${email}`
   );
 
+  var allUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportproject/" + email
+  );
   dispatch({
     type: receiveProjectsType,
-    projects: projects.items
+    projects: projects.items,
+    allUnread
   });
 };
 
@@ -70,10 +75,15 @@ export const loadData = async (dispatch, isLoaded) => {
   const projects = await dataService.get(
     `api/projects/getallprojectofuser?email=${email}`
   );
+
+  var allUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportproject/" + email
+  );
   dispatch({
     type: receiveUpdatePCount,
     isLoaded,
-    projects: projects.items
+    projects: projects.items,
+    allUnread
   });
 };
 
@@ -92,14 +102,16 @@ export const reducer = (state, action) => {
     return {
       ...state,
       isLoaded: action.isLoaded,
-      projects: action.projects
+      projects: action.projects,
+      allUnread: action.allUnread
     };
   }
 
   if (action.type === receiveUpdatePCount) {
     return {
       ...state,
-      projects: action.projects
+      projects: action.projects,
+      allUnread: action.allUnread
     };
   }
 

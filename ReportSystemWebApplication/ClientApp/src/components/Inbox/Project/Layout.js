@@ -69,6 +69,7 @@ class Project extends Component {
 
   render() {
     const { projects } = this.props;
+    const allUnread = this.props.allUnread;
     console.log(projects);
     return (
       <Layout>
@@ -83,7 +84,12 @@ class Project extends Component {
             <Menu.Item key={0} className="first-item">
               <Link to={`/u/inbox/p/0+0`} />
               <Icon type="mail" />
-              <span>Tất cả</span>
+              <span>
+                Tất cả
+                <span style={{ float: "right" }}>
+                  <Badge count={allUnread} />
+                </span>
+              </span>
             </Menu.Item>
             {projects &&
               projects.map(

@@ -73,6 +73,7 @@ export const post = async (url, data) => {
 };
 
 export const upload = async (url, file) => {
+  console.log(file);
   var data = new FormData();
   data.append("file", file);
   return axios.post(constant.BASE_URL + url, data).then(res => {

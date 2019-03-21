@@ -13,5 +13,7 @@ namespace ReportSystemWebApplication.Persistences.IRepositories
         Task<QueryResult<Report>> GetReportsInDepartmentOfUser(Query queryObj);
         Task<QueryResult<Report>> GetReplies(Query queryObj);
         Task AddHighestChildDepartmentsOfTo(Report report, ReportResource reportResource);
+        Task<long> GetNumberOfUnreadProjectReport(string email);
+        Task<long> GetNumberOfUnreadDepartmentReport(string email);
     }
 }

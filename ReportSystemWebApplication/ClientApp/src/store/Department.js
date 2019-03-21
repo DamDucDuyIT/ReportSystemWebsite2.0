@@ -14,7 +14,8 @@ const receiveUpdateCount = "RECEIVE_HAU";
 const initialState = {
   departments: [],
   isLoading: false,
-  hubConnection: []
+  hubConnection: [],
+  allUnread: 0
 };
 
 export const actionCreators = {
@@ -106,10 +107,17 @@ export const updateCount = async dispatch => {
   if (departments && departments.items.length > 0) {
     totalUnread = departments.items[0].unread;
   }
+
+  var allUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportdepartment/" + email
+  );
+
+  allUnread;
   dispatch({
     type: receiveUpdateCount,
     departments: departmentList,
-    totalUnread
+    totalUnread,
+    allUnread
   });
 };
 
@@ -140,13 +148,18 @@ export const loadData = async (dispatch, isLoaded) => {
     totalUnread = departments.items[0].unread;
   }
 
+  var allUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportdepartment/" + email
+  );
+
   // console.log(totalUnread);
   // console.log(departmentList);
   dispatch({
     type: receiveDepartmentsType,
     isLoaded,
     departments: departmentList,
-    totalUnread
+    totalUnread,
+    allUnread
   });
 };
 
@@ -166,7 +179,8 @@ export const reducer = (state, action) => {
       ...state,
       isLoaded: action.isLoaded,
       departments: action.departments,
-      totalUnread: action.totalUnread
+      totalUnread: action.totalUnread,
+      allUnread: action.allUnread
     };
   }
 
@@ -174,7 +188,8 @@ export const reducer = (state, action) => {
     return {
       ...state,
       departments: action.departments,
-      totalUnread: action.totalUnread
+      totalUnread: action.totalUnread,
+      allUnread: action.allUnread
     };
   }
 

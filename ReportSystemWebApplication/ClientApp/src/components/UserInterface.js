@@ -72,13 +72,13 @@ export default class UserInterface extends Component {
           className="fixed-nav"
         >
           <Menu.Item key="inbox">
-            <Link to="/u/inbox/c/0">
+            <Link onClick={this.forceUpdate} to="/u/inbox/c/0">
               <Icon type="mail" />
               Đã nhận
             </Link>
           </Menu.Item>
           <Menu.Item key="sent">
-            <Link to="/u/sent/">
+            <Link onClick={this.forceUpdate} to="/u/sent/">
               <Icon type="appstore" />
               Đã gửi
             </Link>

@@ -348,6 +348,32 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 await AddReport(reports, childDepartment, reportsToUser);
             }
         }
+
+        public async Task<long> GetNumberOfUnreadProjectReport(string email)
+        {
+            var report = await context.Reports
+                        .Include(r => r.Project)
+                        .Include(r => r.To)
+                            .ThenInclude(t => t.ApplicationUser)
+                        .Where(r => r.IsDeleted == false && r.Project != null && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
+                        .ToListAsync();
+
+            var numberOfUnread = report.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false));
+
+            return numberOfUnread;
+        }
+
+        public async Task<long> GetNumberOfUnreadDepartmentReport(string email)
+        {
+            var report = await context.Reports
+                        .Include(r => r.To)
+                            .ThenInclude(t => t.ApplicationUser)
+                        .Where(r => r.IsDeleted == false && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
+                        .ToListAsync();
+            var numberOfUnread = report.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false));
+
+            return numberOfUnread;
+        }
         private async Task<bool> findDepartmentOfToUserFromReportDepartment(Department department, Report report, int level)
         {
             if (department.Children.Any(c => c.DepartmentId == report.Department.DepartmentId) && level == 1)

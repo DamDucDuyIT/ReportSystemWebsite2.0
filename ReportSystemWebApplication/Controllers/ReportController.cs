@@ -37,6 +37,23 @@ namespace ReportSystemWebApplication.Controllers
             this.applicationUserReportRepository = applicationUserReportRepository;
             this.hubContext = hubContext;
         }
+        // GET: api/reports/getreportsindepartmentofuser
+        [HttpGet]
+        [Route("getnumberofunreadreportdepartment/{email}")]
+        public async Task<IActionResult> GetNumberOfUnreadDepartmentReport(string email)
+        {
+            var numberOfUnread = await reportRepository.GetNumberOfUnreadDepartmentReport(email);
+            return Ok(numberOfUnread);
+        }
+
+        // GET: api/reports/getreportsindepartmentofuser
+        [HttpGet]
+        [Route("getnumberofunreadreportproject/{email}")]
+        public async Task<IActionResult> GetNumberOfUnreadProjecttReport(string email)
+        {
+            var numberOfUnread = await reportRepository.GetNumberOfUnreadProjectReport(email);
+            return Ok(numberOfUnread);
+        }
 
         // GET: api/reports/getreportsindepartmentofuser
         [HttpGet]

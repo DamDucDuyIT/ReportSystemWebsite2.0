@@ -64,8 +64,7 @@ class Register extends Component {
           values.departmentId = department.departmentId;
 
           this.props.register(values).then(response => {
-            if (response && response.status === 200) {
-              alert("OK ne");
+            if (response == undefined || response.status === 200) {
               this.setState({
                 registerModalVisible: false
               });
@@ -77,6 +76,7 @@ class Register extends Component {
                 description: "Đã tạo tài khoản thành công!",
                 icon: <Icon type="warning" style={{ color: "#108ee9" }} />
               });
+              window.location.assign("/");
             } else {
               notification.open({
                 message: "Lỗi",

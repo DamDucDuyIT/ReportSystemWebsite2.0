@@ -53,18 +53,15 @@ export const updateCount = async dispatch => {
   var departmentUnread = 0;
   var projectUnread = 0;
   const email = authService.getLoggedInUser().email;
-  const departments = await dataService.get(
-    `api/departments/getchilddepartmentofuser?email=${email}`
+
+  departmentUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportdepartment/" + email
   );
-  if (departments) {
-    departmentUnread = departments.items[0].unread;
-  }
-  const projects = await dataService.get(
-    `api/projects/getallprojectofuser?email=${email}`
+
+  projectUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportproject/" + email
   );
-  if (projects) {
-    projectUnread = projects.items[0].unread;
-  }
+
   dispatch({
     type: receiveUpdateLDCount,
     departmentUnread,
@@ -76,18 +73,14 @@ export const loadData = async (dispatch, isLoaded) => {
   var departmentUnread = 0;
   var projectUnread = 0;
   const email = authService.getLoggedInUser().email;
-  const departments = await dataService.get(
-    `api/departments/getchilddepartmentofuser?email=${email}`
+
+  departmentUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportdepartment/" + email
   );
-  if (departments) {
-    departmentUnread = departments.items[0].unread;
-  }
-  const projects = await dataService.get(
-    `api/projects/getallprojectofuser?email=${email}`
+
+  projectUnread = await dataService.get(
+    "api/reports/getnumberofunreadreportproject/" + email
   );
-  if (projects) {
-    projectUnread = projects.items[0].unread;
-  }
   dispatch({
     type: receiveLayoutDepartmentsType,
     isLoaded,

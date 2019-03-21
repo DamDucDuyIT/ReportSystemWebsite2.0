@@ -10,7 +10,6 @@ const initialState = {
 
 export const actionCreators = {
   requestRegisterForm: isLoaded => async (dispatch, getState) => {
-    console.log(isLoaded, getState().register.isLoaded);
     if (isLoaded === getState().register.isLoaded) {
       return;
     } else {
@@ -69,6 +68,7 @@ export const actionCreators = {
     };
 
     var res = await dataService.post(`api/accounts/register`, data);
+
     return res;
   }
 };
