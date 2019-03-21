@@ -25,7 +25,7 @@ export const clearLocalStorage = () => {
 
 export const logOut = () => {
   clearLocalStorage();
-  window.location.reload();
+  window.location.assign("/");
 };
 
 export const getLoggedInUser = () => {
