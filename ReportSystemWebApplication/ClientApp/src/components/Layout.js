@@ -162,7 +162,6 @@ class ReportSystem extends React.Component {
             <Content className="layout-content">{this.props.children}</Content>
             <Drawer
               title="Báo cáo mới"
-              width={640}
               placement="right"
               visible={this.state.composeDrawerVisible}
               onClose={this.closeComposeDrawer}

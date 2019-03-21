@@ -8,6 +8,7 @@ import { func } from "prop-types";
 import Body from "../ShareComponent/ReportContent";
 import * as ReportService from "../../services/ReportService";
 import * as authService from "../../services/Authentication";
+import AlertZone from "../ShareComponent/Alert";
 
 const userEmail = authService.getLoggedInUser().email;
 
@@ -90,42 +91,47 @@ class Report extends React.Component {
 
     return (
       <div>
-        {reports.length > 0 ? (
-          <div className="report-menu">
-            <Menu
-              mode="inline"
-              selectedKeys={[this.state.reportId + ""]}
-              className="menu-scroll report-list"
-            >
-              {reports.map(report => (
-                <Menu.Item
-                  key={report.reportId}
-                  id={report.reportId}
-                  className={`report-item ${
-                    ReportService.isRead(report) ? "read" : "unread"
-                  }`}
-                  onClick={() => this.renderReportAndRead(report)}
+        {reports ? (
+          reports.length > 0 ? (
+            <div>
+              <div className="report-menu">
+                <Menu
+                  mode="inline"
+                  selectedKeys={[this.state.reportId + ""]}
+                  className="menu-scroll report-list"
                 >
-                  <p className="email">{report.fromEmail}</p>
-                  <p className="title">{report.title}</p>
-                  <p className="shortContent">
-                    {report.shortContent === null
-                      ? "Null"
-                      : report.shortContent}
-                  </p>
-                </Menu.Item>
-              ))}
-            </Menu>
-          </div>
+                  {reports.map(report => (
+                    <Menu.Item
+                      key={report.reportId}
+                      id={report.reportId}
+                      className={`report-item ${
+                        ReportService.isRead(report) ? "read" : "unread"
+                      }`}
+                      onClick={() => this.renderReportAndRead(report)}
+                    >
+                      <p className="email">{report.fromEmail}</p>
+                      <p className="title">{report.title}</p>
+                      <p className="shortContent">
+                        {report.shortContent === null
+                          ? "Null"
+                          : report.shortContent}
+                      </p>
+                    </Menu.Item>
+                  ))}
+                </Menu>
+              </div>
+              <div style={{ height: maxHeight, overflow: "scroll" }}>
+                <Body data={this.state.report} />
+              </div>
+            </div>
+          ) : (
+            <AlertZone message="Không có dữ liệu!" type="file" />
+          )
         ) : (
-          <div>
+          <div className="loading-zone">
             <Icon type="loading" /> Đang tải dữ liệu!
           </div>
         )}
-
-        <div style={{ height: maxHeight, overflow: "scroll" }}>
-          <Body data={this.state.report} />
-        </div>
       </div>
     );
   }

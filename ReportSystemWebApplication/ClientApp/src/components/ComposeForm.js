@@ -33,27 +33,28 @@ class ComposeForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.content.length < 15) {
-      alert("Xin điền nội dung! Nhập tối thiểu 15 ký tự.");
-    }
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        var shortContent = document.createElement("html");
-        shortContent.innerHTML = this.state.content;
+      message.error("Nhập nội dung tối thiểu 20 ký tự!");
+    } else {
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          var shortContent = document.createElement("html");
+          shortContent.innerHTML = this.state.content;
 
-        const isLoaded = false;
-        addReport(
-          values,
-          this.state.content,
-          shortContent.textContent,
-          this.state.files
-        ).then(response => {
-          if (response === 200) {
-            alert("Đã gửi thành công!");
-            this.props.onClose();
-          }
-        });
-      }
-    });
+          const isLoaded = false;
+          addReport(
+            values,
+            this.state.content,
+            shortContent.textContent,
+            this.state.files
+          ).then(response => {
+            if (response === 200) {
+              alert("Đã gửi thành công!");
+              this.props.onClose();
+            }
+          });
+        }
+      });
+    }
   };
 
   componentDidMount() {
@@ -123,10 +124,9 @@ class ComposeForm extends React.Component {
             )}
           </Form.Item>
           <Form.Item>
-            {getFieldDecorator("projectId", {
-              rules: [{ required: true, message: "Xin nhập chủ đề!" }]
-            })(
+            {getFieldDecorator("projectId", {})(
               <Select placeholder="Dự án">
+                <Option value={null}>Chọn dự án</Option>
                 {projects.map(
                   project =>
                     project.department && (
