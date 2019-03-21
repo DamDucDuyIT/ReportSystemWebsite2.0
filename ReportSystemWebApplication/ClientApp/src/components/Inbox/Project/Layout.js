@@ -68,8 +68,8 @@ class Project extends Component {
   }
 
   render() {
-    const { projects, totalUnread } = this.props;
-
+    const { projects } = this.props;
+    console.log(projects);
     return (
       <Layout>
         <Sider className="company-menu">

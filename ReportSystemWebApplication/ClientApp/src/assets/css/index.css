@@ -94,11 +94,9 @@ p {
   z-index: 2;
   width: 100%;
   background: #c0dfd9;
-  /* border-top: 0.5px solid #9ab9b3; */
   border-bottom: 0;
-  -webkit-box-shadow: 0px 1px 14px 0px rgba(31, 31, 31, 1);
-  -moz-box-shadow: 0px 1px 14px 0px rgba(31, 31, 31, 1);
-  box-shadow: 0px 1px 14px 0px rgba(31, 31, 31, 1);
+  box-shadow: 0px 0px 40px 0px rgba(0, 0, 0, 0.12),
+    0px 6px 12px rgba(0, 0, 0, 0.08);
 }
 .layout-content .fixed-nav > li > a,
 .layout-content .fixed-nav > li > a > i {
@@ -106,15 +104,13 @@ p {
   font-size: 16px !important;
   font-weight: bold;
 }
-/* .ant-layout.ant-layout-has-sider {
-  min-height: 650px;
-} */
 .ant-layout-content {
   background: #fff;
 }
 .layout-main-content {
   margin-top: 114px;
 }
+
 .left-menu {
   position: fixed;
   background: #c0dfd9;
@@ -382,6 +378,11 @@ p {
   /* -webkit-box-shadow: 0px 0px 20px 0px rgba(135, 135, 135, 1);
   -moz-box-shadow: 0px 0px 20px 0px rgba(135, 135, 135, 1); */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.ant-menu .ant-menu-item {
+  margin-top: 0;
+  margin-bottom: 0 !important;
 }
 .admin-body .ant-menu {
   border-radius: 8px;

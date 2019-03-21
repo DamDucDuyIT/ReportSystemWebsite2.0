@@ -1,11 +1,13 @@
 import { applyMiddleware, combineReducers, compose, createStore } from "redux";
 import thunk from "redux-thunk";
 import { routerReducer, routerMiddleware } from "react-router-redux";
-import * as Counter from "./Counter";
-import * as ComposeForm from "./ComposeForm";
-import * as WeatherForecasts from "./WeatherForecasts";
+
 import * as Login from "./Login";
+import * as Register from "./Register";
 import * as ResetPassword from "./ResetPassword";
+import * as ForgetPassword from "./ForgetPassword";
+
+import * as ComposeForm from "./ComposeForm";
 
 import * as LayoutDepartment from "./LayoutDepartment";
 
@@ -24,12 +26,14 @@ import * as Admin_DepartmentDetail from "./Admin/DepartmentDetail";
 export default function configureStore(history, initialState) {
   const reducers = {
     login: Login.reducer,
+    register: Register.reducer,
     resetPassword: ResetPassword.reducer,
-    counter: Counter.reducer,
-    composeForm: ComposeForm.reducer,
-    report: Report.reducer,
+    forgetPassword: ForgetPassword.reducer,
 
     layoutDepartment: LayoutDepartment.reducer,
+
+    composeForm: ComposeForm.reducer,
+    report: Report.reducer,
 
     department: Department.reducer,
     project: Project.reducer,
@@ -39,8 +43,6 @@ export default function configureStore(history, initialState) {
     admin_AccountDetail: Admin_AccountDetail.reducer,
     admin_Department: Admin_Department.reducer,
     admin_DepartmentDetail: Admin_DepartmentDetail.reducer,
-
-    weatherForecasts: WeatherForecasts.reducer,
 
     projectManagement_Projects: ProjectManagement_Projects.reducer
   };

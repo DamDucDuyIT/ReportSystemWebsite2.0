@@ -2,12 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../../store/Report";
-import { maxHeight } from "../../Layout";
-import { Row, Col, Menu, Badge } from "antd";
-import { func } from "prop-types";
+import { Menu, Icon } from "antd";
 import Body from "../../ShareComponent/ReportContent";
 import * as authService from "../../../services/Authentication";
-const SubMenu = Menu.SubMenu;
+import AlertZone from "../../ShareComponent/Alert";
 
 var running = false;
 var isReload = false;
@@ -46,7 +44,6 @@ class Report extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate");
     var departmentId = this.props.match.params.departmentId;
     var prevDepartmentId = prevProps.match.params.departmentId;
 
@@ -54,13 +51,11 @@ class Report extends React.Component {
     var prevProjectId = prevProps.match.params.projectId;
     const { isFirstLoaded } = this.state;
     if (isReload === true) {
-      console.log("1");
       isReload = false;
       this.props.reloadByProject(departmentId, "0");
     }
 
     if (projectId !== prevProjectId) {
-      console.log("2");
       var id = projectId.substring(1);
       this.props.reloadByProject(departmentId, id);
     }
@@ -73,8 +68,7 @@ class Report extends React.Component {
     if (
       isFirstLoaded === false &&
       this.props.reports &&
-      this.props.reports.items &&
-      this.props.reports.items.length > 0
+      this.props.reports.length > 0
     ) {
       this.setState({
         //reports: this.props.reports.items,
@@ -84,7 +78,7 @@ class Report extends React.Component {
   }
 
   renderReportAndRead = (reportId, item) => {
-    var reports = this.props.reports.items;
+    var { reports } = this.props;
 
     reports.forEach(report => {
       report.to.forEach(index => {
@@ -117,7 +111,7 @@ class Report extends React.Component {
       this.state.report === undefined ||
       reportId !== this.state.report.reportId
     ) {
-      var mainReport = this.props.reports.items.find(
+      var mainReport = this.props.reports.find(
         o => o.reportId === mainReportId
       );
       var report = mainReport.reply.find(o => o.reportId === reportId);
@@ -130,57 +124,63 @@ class Report extends React.Component {
   };
 
   render() {
-    var reports = this.props.reports;
-    console.log(reports);
-    var report = reports
-      ? reports.items.find(o => o.reportId === this.state.reportId)
-      : undefined;
-
-    console.log(this.state.reportId);
-    console.log(report);
+    var { reports } = this.props;
+    var report;
+    if (reports) {
+      report = reports
+        ? reports.find(o => o.reportId === this.state.reportId)
+        : undefined;
+    }
 
     return (
       <div>
         <div className="report-menu">
-          {reports && reports.totalItems > 0 ? (
-            <Menu
-              mode="inline"
-              // openKeys={this.state.openKeys}
-              selectedKeys={[this.state.reportId + ""]}
-              onOpenChange={this.onOpenChange}
-              className="menu-scroll report-list"
-            >
-              {reports.items.map(
-                item =>
-                  item.projectId && (
-                    <Menu.Item
-                      key={item.reportId}
-                      id={item.reportId}
-                      className={`report-item ${
-                        item.to.find(t => t.email === userEmail).isRead === true
-                          ? "read"
-                          : "unread"
-                      }`}
-                      onClick={() =>
-                        this.renderReportAndRead(
-                          item.reportId,
-                          item.to.find(t => t.email === userEmail)
-                        )
-                      }
-                    >
-                      <p className="email">{item.fromEmail}</p>
-                      <p className="title">{item.title}</p>
-                      <p className="shortContent">
-                        {item.shortContent === null
-                          ? "Null"
-                          : item.shortContent}
-                      </p>
-                    </Menu.Item>
-                  )
-              )}
-            </Menu>
+          {reports ? (
+            reports.length > 0 ? (
+              <Menu
+                mode="inline"
+                // openKeys={this.state.openKeys}
+                selectedKeys={[this.state.reportId + ""]}
+                onOpenChange={this.onOpenChange}
+                className="menu-scroll report-list"
+              >
+                {reports.map(
+                  item =>
+                    item.projectId && (
+                      <Menu.Item
+                        key={item.reportId}
+                        id={item.reportId}
+                        className={`report-item ${
+                          item.to.find(t => t.email === userEmail).isRead ===
+                          true
+                            ? "read"
+                            : "unread"
+                        }`}
+                        onClick={() =>
+                          this.renderReportAndRead(
+                            item.reportId,
+                            item.to.find(t => t.email === userEmail)
+                          )
+                        }
+                      >
+                        <p className="email">{item.fromEmail}</p>
+                        <p className="title">{item.title}</p>
+                        <p className="shortContent">
+                          {item.shortContent === null
+                            ? "Null"
+                            : item.shortContent}
+                        </p>
+                      </Menu.Item>
+                    )
+                )}
+              </Menu>
+            ) : (
+              <AlertZone message="Không có dữ liệu!" type="file" />
+            )
           ) : (
-            <div>Đang tải dữ liệu!</div>
+            <div className="loading-zone">
+              <Icon type="loading" /> Đang tải dữ liệu!
+            </div>
           )}
         </div>
         <div>

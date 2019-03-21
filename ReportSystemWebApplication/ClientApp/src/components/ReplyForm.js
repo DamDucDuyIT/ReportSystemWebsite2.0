@@ -116,7 +116,7 @@ class ComposeForm extends React.Component {
   // }
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { report } = this.props;
+    const { report, toEmailsOfReport } = this.props;
     const { selectedItems } = this.state;
     console.log(report);
     var projects = [];
@@ -130,7 +130,7 @@ class ComposeForm extends React.Component {
     }
     return (
       <div>
-        {report ? (
+        {report && toEmailsOfReport ? (
           <Form className="compose-form">
             <Form.Item>
               {getFieldDecorator(
@@ -152,7 +152,7 @@ class ComposeForm extends React.Component {
             <Form.Item className="email-input">
               {getFieldDecorator(
                 "toEmails",
-                { initialValue: this.props.toEmailsOfReport },
+                { initialValue: toEmailsOfReport },
                 {
                   rules: [
                     { required: true, message: "Xin nhập địa chỉ gửi đến!" }

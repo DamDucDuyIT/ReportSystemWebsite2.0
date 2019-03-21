@@ -2,7 +2,6 @@ import { push } from "react-router-redux";
 import * as authService from "../services/Authentication";
 import * as dataService from "../services/DataService";
 import * as signalR from "@aspnet/signalr";
-import { departmentId } from "./../components/Inbox/Company/Layout";
 
 const requestReportsType = "REQUEST_REPORTS";
 const receiveReportsType = "RECEIVE_REPORTS";
@@ -220,12 +219,13 @@ export const loadReportsByProject = async (
       );
     }
   }
+  console.log(reports);
   dispatch({
     type: receiveReportsByProjectType,
     isLoaded,
     departmentId,
     projectId,
-    reports
+    reports: reports.items
   });
 };
 

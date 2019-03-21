@@ -98,7 +98,7 @@ class ReportSystem extends React.Component {
                   <div className="left-top-navbar">
                     <div
                       className="logo-navbar"
-                      onClick={() => redirect("/u/inbox/c/3")}
+                      onClick={() => redirect("/u/inbox/c/0")}
                     >
                       <img className="main-logo" src={mainLogo} alt="" />
                     </div>
