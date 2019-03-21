@@ -355,7 +355,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                         .Include(r => r.Project)
                         .Include(r => r.To)
                             .ThenInclude(t => t.ApplicationUser)
-                        .Where(r => r.IsDeleted == false && r.Project != null && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
+                        .Where(r => r.IsDeleted == false && r.IsReply == false && r.Project != null && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
                         .ToListAsync();
 
             var numberOfUnread = report.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false));
@@ -368,7 +368,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var report = await context.Reports
                         .Include(r => r.To)
                             .ThenInclude(t => t.ApplicationUser)
-                        .Where(r => r.IsDeleted == false && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
+                        .Where(r => r.IsDeleted == false && r.IsReply == false && r.To.Any(t => t.ApplicationUser.Email.Equals(email)))
                         .ToListAsync();
             var numberOfUnread = report.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false));
 

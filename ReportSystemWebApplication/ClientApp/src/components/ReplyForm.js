@@ -45,7 +45,7 @@ class ComposeForm extends React.Component {
           report.reportId,
           report.title,
           report.projectId,
-          this.props.toEmails,
+          this.props.toEmailsOfReport,
           this.state.content,
           shortContent.textContent,
           this.state.files

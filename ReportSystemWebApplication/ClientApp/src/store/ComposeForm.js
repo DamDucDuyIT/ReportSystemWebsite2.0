@@ -87,12 +87,12 @@ export const actionCreators = {
 
 export const addReport = async (data, content, shortContent, fileList) => {
   try {
-    // console.log(data);
     const fromEmail = authService.getLoggedInUser().email;
+    const departmentId = authService.getLoggedInUser().departmentId;
     data["fromEmail"] = fromEmail;
-    data["projectId"] = null;
     data["content"] = content;
     data["shortContent"] = shortContent;
+    data["departmentId"] = departmentId;
     const response = await dataService.post("api/reports/add", data);
 
     if (response.status === 200 && fileList) {
@@ -128,6 +128,7 @@ export const replyReport = async (
     const departmentId = authService.getLoggedInUser().departmentId;
     const report = await dataService.get("api/reports/getreport/" + reportId);
     var data = {};
+
     data["fromEmail"] = fromEmail;
     data["title"] = title;
     data["projectId"] = projectId;
@@ -138,6 +139,7 @@ export const replyReport = async (
     data["isReply"] = true;
     data["isReply"] = true;
     data["departmentId"] = departmentId;
+    console.log(fromEmail);
 
     const response = await dataService.post("api/reports/add", data);
 
