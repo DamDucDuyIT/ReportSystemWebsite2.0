@@ -179,7 +179,7 @@ export const loadData = async (dispatch, departmentId, isLoaded) => {
   dispatch({
     type: receiveSentReportsType,
     isLoaded,
-    reports
+    reports: reports.items
   });
 };
 
@@ -219,7 +219,6 @@ export const loadReportsByProject = async (
       );
     }
   }
-  console.log(reports);
   dispatch({
     type: receiveReportsByProjectType,
     isLoaded,

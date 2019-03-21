@@ -79,7 +79,7 @@ class Report extends React.Component {
   }
 
   renderReportAndRead = report => {
-    var reports = this.props.reports ? this.props.reports.items : [];
+    var { reports } = this.props;
     var reportTemp = report.to.find(t => t.email === userEmail);
 
     reportTemp &&
@@ -97,34 +97,19 @@ class Report extends React.Component {
       });
 
     this.renderReport(report.reportId);
-    // this.setState({ reports });
-    // this.renderReport(report.reportId);
-    // var reports = this.state.reports;
-
-    // reports.forEach(report => {
-    //   report.to.forEach(index => {
-    //     if (index.applicationUserReportId === item.applicationUserReportId) {
-    //       index.isRead = true;
-    //     }
-    //   });
-    // });
-
-    // this.setState({ reports: reports });
-    // this.renderReport(reportId);
-    // this.props.readReport(item);
   };
 
   renderReport = reportId => {
-    const reports = this.props.reports.items;
+    const { reports } = this.props;
     if (
       this.state.report === undefined ||
       reportId !== this.state.report.reportId
     ) {
       var report = {};
       if (reportId === 0) {
-        report = this.props.reports.items[0];
+        report = reports[0];
       } else {
-        report = this.props.reports.items.find(o => o.reportId === reportId);
+        report = reports.find(o => o.reportId === reportId);
       }
 
       this.setState({
@@ -137,11 +122,14 @@ class Report extends React.Component {
 
   render() {
     // var reports = this.props.reports;
-    var reports = this.props.reports ? this.props.reports.items : [];
-
-    var report = reports
-      ? reports.find(o => o.reportId === this.state.reportId)
-      : undefined;
+    var { reports } = this.props;
+    console.log(reports);
+    var report;
+    if (reports) {
+      report = reports
+        ? reports.find(o => o.reportId === this.state.reportId)
+        : undefined;
+    }
 
     return (
       <div>

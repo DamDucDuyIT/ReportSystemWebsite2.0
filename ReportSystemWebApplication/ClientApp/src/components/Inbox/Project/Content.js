@@ -127,6 +127,7 @@ class Report extends React.Component {
     var { reports } = this.props;
     var report;
     if (reports) {
+      console.log(reports);
       report = reports
         ? reports.find(o => o.reportId === this.state.reportId)
         : undefined;
