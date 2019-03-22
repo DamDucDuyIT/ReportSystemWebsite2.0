@@ -39,7 +39,6 @@ class Report extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    console.log("componentDidUpdate");
     const departmentId = this.props.match.params.departmentId;
     const prevDepartmentId = prevProps.match.params.departmentId;
     const { isFirstLoaded } = this.state;
@@ -74,7 +73,6 @@ class Report extends React.Component {
   }
 
   componentDidMount() {
-    console.log("componentDidMount");
     const isLoaded = false;
     const departmentId = this.props.match.params.departmentId;
     this.props.requestReports(departmentId, isLoaded);
@@ -125,7 +123,7 @@ class Report extends React.Component {
   render() {
     // var reports = this.props.reports;
     var { reports } = this.props;
-    console.log(reports);
+
     var report;
     if (reports) {
       report = reports

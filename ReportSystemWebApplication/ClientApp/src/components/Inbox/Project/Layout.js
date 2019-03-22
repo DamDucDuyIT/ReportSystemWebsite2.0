@@ -70,7 +70,7 @@ class Project extends Component {
   render() {
     const { projects } = this.props;
     const allUnread = this.props.allUnread;
-    console.log(projects);
+
     return (
       <Layout>
         <Sider className="company-menu">

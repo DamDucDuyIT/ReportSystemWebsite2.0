@@ -8,6 +8,7 @@ import * as ResetPassword from "./ResetPassword";
 import * as ForgetPassword from "./ForgetPassword";
 
 import * as ComposeForm from "./ComposeForm";
+import * as ReplyForm from "./ReplyForm";
 
 import * as LayoutDepartment from "./LayoutDepartment";
 
@@ -32,7 +33,7 @@ export default function configureStore(history, initialState) {
     forgetPassword: ForgetPassword.reducer,
 
     layoutDepartment: LayoutDepartment.reducer,
-
+    replyForm: ReplyForm.reducer,
     composeForm: ComposeForm.reducer,
     report: Report.reducer,
 

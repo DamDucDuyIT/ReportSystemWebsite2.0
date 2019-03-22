@@ -254,6 +254,10 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             {
                 query = query.Where(q => q.Department.DepartmentId == queryObj.DepartmentId);
             }
+            if (queryObj.IsHaveProject == true)
+            {
+                query = query.Where(q => q.Project != null);
+            }
             // if (queryObj.SubjectId != null)
             // {
             //     query = query.Where(q => q.Subject.SubjectId == queryObj.SubjectId);

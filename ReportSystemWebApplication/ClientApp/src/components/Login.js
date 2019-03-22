@@ -101,9 +101,8 @@ class Login extends Component {
           loginLoading: true
         });
         const { email, password } = values;
-        console.log(email, password);
+
         this.props.logIn(email, password).then(response => {
-          console.log(response);
           if (response.status !== 200) {
             this.setState({
               loginLoading: false

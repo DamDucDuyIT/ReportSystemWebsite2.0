@@ -113,7 +113,7 @@ export const actionCreators = {
       const defaultId = window.location.pathname.split("/")[4];
       const splitId = defaultId.split("+");
       hubConnectionProject.on(authService.getLoggedInUser().email, () => {
-        if (window.location.pathname.split("/")[3] === "c") {
+        if (window.location.pathname.split("/")[3] === "p") {
           loadReportsByProject(
             dispatch,
             splitId[0],
@@ -126,7 +126,7 @@ export const actionCreators = {
       hubConnectionProject.on(
         authService.getLoggedInUser().email + "_NewReport",
         (report, title) => {
-          if (window.location.pathname.split("/")[3] === "c") {
+          if (window.location.pathname.split("/")[3] === "p") {
             loadReportsByProject(
               dispatch,
               splitId[0],
@@ -231,15 +231,17 @@ export const loadReportsByProject = async (
   var reports = [];
 
   if (departmentId === "0" && projectId === "0") {
-    reports = await dataService.get(`api/reports/getall?toemail=${userEmail}`);
+    reports = await dataService.get(
+      `api/reports/getall?isHaveproject=true&toemail=${userEmail}`
+    );
   } else {
     if (projectId === "0") {
       reports = await dataService.get(
-        `api/reports/getall?toDepartmentId=${departmentId}&toemail=${userEmail}`
+        `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}`
       );
     } else {
       reports = await dataService.get(
-        `api/reports/getall?projectId=${projectId}&toemail=${userEmail}`
+        `api/reports/getall?projectId=${projectId}&isHaveproject=true&toemail=${userEmail}`
       );
     }
   }

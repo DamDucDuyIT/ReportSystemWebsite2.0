@@ -46,7 +46,6 @@ class AddDepartment extends Component {
   };
 
   reloadDepartments = department => {
-    console.log(department);
     const { reloadDepartments } = this.props;
 
     if (department !== -1) {

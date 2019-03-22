@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators, replyReport } from "../store/ComposeForm";
+import { actionCreators } from "../store/ReplyForm";
 import { Form, Icon, Input, Button, Select } from "antd";
 import * as authService from "../services/Authentication";
 import { FilePond, registerPlugin } from "react-filepond";
@@ -34,37 +34,39 @@ class ComposeForm extends React.Component {
     if (this.state.content.length < 15) {
       alert("Xin điền nội dung! Nhập tối thiểu 15 ký tự.");
     }
-    const { report } = this.props;
+
     this.props.form.validateFields((err, values) => {
       if (!err) {
         var shortContent = document.createElement("html");
         shortContent.innerHTML = this.state.content;
 
         const isLoaded = false;
-        replyReport(
-          report.reportId,
-          report.title,
-          report.projectId,
-          this.props.toEmailsOfReport,
-          this.state.content,
-          shortContent.textContent,
-          this.state.files
-        ).then(response => {
-          if (response === 200) {
-            this.setState({
-              content: "",
-              shortContent: ""
-            });
-            alert("Đã gửi thành công!");
-            this.props.onClose();
-          }
-        });
+        this.props
+          .replyReport(
+            this.props.toEmailsOfReport,
+            this.state.content,
+            shortContent.textContent,
+            this.state.files
+          )
+          .then(response => {
+            if (response === 200) {
+              this.setState({
+                content: "",
+                shortContent: ""
+              });
+              alert("Đã gửi thành công!");
+              this.props.onClose();
+            } else {
+              alert(
+                "Đã có lỗi xảy ra trong quá trình gửi trả lời. Vui lòng thử lại"
+              );
+            }
+          });
       }
     });
   };
 
   componentDidMount() {
-    console.log("componentDidMount");
     const isLoaded = false;
     const { report } = this.props;
 
@@ -80,7 +82,6 @@ class ComposeForm extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log("componentDidUpdate");
     const { report } = this.props;
     const reportId = this.props.reportId;
 
@@ -117,10 +118,11 @@ class ComposeForm extends React.Component {
   //   props.onChange(changedFields);
   // }
   render() {
+    console.log(this.props.report);
     const { getFieldDecorator } = this.props.form;
     const { report, toEmailsOfReport } = this.props;
     const { selectedItems } = this.state;
-    console.log(report);
+
     var projects = [];
     if (this.props.accounts && this.props.accounts.items) {
       this.props.projects &&
@@ -244,6 +246,6 @@ class ComposeForm extends React.Component {
 const Page = Form.create()(ComposeForm);
 
 export default connect(
-  state => state.composeForm,
+  state => state.replyForm,
   dispatch => bindActionCreators(actionCreators, dispatch)
 )(Page);

@@ -22,6 +22,7 @@ namespace ReportSystemWebApplication.Resources
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public bool IsReply { get; set; }
+        public bool IsHaveProject { get; set; }
         public int? Level { get; set; }
         public string SenderEmail { get; set; }
     }
