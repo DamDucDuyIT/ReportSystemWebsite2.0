@@ -34,6 +34,9 @@ class AddDepartment extends Component {
             message.success("Tạo phòng bàn thành công!", 3);
             this.props.form.resetFields();
             this.reloadDepartments(-1);
+            this.setState({
+              departments: []
+            });
           } else {
             message.success("Tạo phòng ban không thành công!", 3);
           }
@@ -43,6 +46,7 @@ class AddDepartment extends Component {
   };
 
   reloadDepartments = department => {
+    console.log(department);
     const { reloadDepartments } = this.props;
 
     if (department !== -1) {

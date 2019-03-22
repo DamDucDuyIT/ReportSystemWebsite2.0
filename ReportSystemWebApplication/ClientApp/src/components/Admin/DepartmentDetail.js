@@ -26,6 +26,10 @@ const ProjectDetailForm = Form.create({
       name: Form.createFormField({
         ...props.name,
         value: props.name.value
+      }),
+      parentName: Form.createFormField({
+        ...props.parentName,
+        value: props.parentName.value
       })
     };
   },
@@ -39,6 +43,9 @@ const ProjectDetailForm = Form.create({
       </Form.Item>
       <Form.Item label="Tên">
         {getFieldDecorator("name", {})(<Input />)}
+      </Form.Item>
+      <Form.Item label="Thuộc phòng ban">
+        {getFieldDecorator("parentName", {})(<Input disabled />)}
       </Form.Item>
     </Form>
   );
@@ -62,6 +69,9 @@ class ProjectDetail extends React.Component {
       },
       name: {
         value: data.name
+      },
+      parentName: {
+        value: data.pp
       }
     };
     this.setState(({ fields }) => ({

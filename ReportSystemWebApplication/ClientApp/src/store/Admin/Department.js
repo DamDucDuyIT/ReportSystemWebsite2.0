@@ -6,8 +6,8 @@ import * as signalR from "@aspnet/signalr";
 const requestDepartmentsType = "REQUEST_DEPARTMENTS";
 const receiveDepartmentsType = "RECEIVE_DEPARTMENTS";
 
-const requestDepartmentType = "REQUEST_DEPARTMENT";
-const receiveDepartmentType = "RECEIVE_DEPARTMENT";
+// const requestDepartmentType = "REQUEST_DEPARTMENT";
+// const receiveDepartmentType = "RECEIVE_DEPARTMENT";
 
 const initialState = {
   departments: [],
@@ -54,14 +54,12 @@ export const actionCreators = {
     }
   },
 
-  requestDepartment: (isLoaded, id) => async dispatch => {
-    dispatch({
-      type: requestDepartmentType,
-      isLoaded,
-      id
-    });
-    loadDepartment(dispatch, isLoaded, id);
-    // return res;
+  getDepartment: id => async dispatch => {
+    // dispatch({
+    //   type: requestDepartmentType
+    // });
+    const department = await loadDepartment(dispatch, id);
+    return department;
   },
 
   updateDepartment: (departmentId, data) => async dispatch => {
@@ -85,16 +83,15 @@ export const loadData = async (dispatch, isLoaded) => {
   });
 };
 
-export const loadDepartment = async (dispatch, isLoaded, id) => {
+export const loadDepartment = async (dispatch, id) => {
   const department = await dataService.get(
     `api/departments/getdepartment/${id}`
   );
-
-  dispatch({
-    type: receiveDepartmentType,
-    isLoaded,
-    department
-  });
+  return department;
+  // dispatch({
+  //   type: receiveDepartmentType,
+  //   department
+  // });
 };
 
 export const UpdateDepartment = async (departmentId, data) => {
@@ -129,21 +126,20 @@ export const reducer = (state, action) => {
     };
   }
 
-  if (action.type === requestDepartmentType) {
-    return {
-      ...state,
-      isLoaded: action.isLoaded,
-      hubConnection: action.hubConnection
-    };
-  }
+  // if (action.type === requestDepartmentType) {
+  //   return {
+  //     ...state,
+  //     isLoaded: action.isLoaded,
+  //     hubConnection: action.hubConnection
+  //   };
+  // }
 
-  if (action.type === receiveDepartmentType) {
-    return {
-      ...state,
-      isLoaded: action.isLoaded,
-      department: action.department
-    };
-  }
+  // if (action.type === receiveDepartmentType) {
+  //   return {
+  //     ...state,
+  //     department: action.department
+  //   };
+  // }
 
   return state;
 };

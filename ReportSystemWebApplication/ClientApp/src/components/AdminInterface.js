@@ -116,14 +116,6 @@ export default class AdminInterface extends React.Component {
                 <span>Phòng ban</span>
               </Link>
             </Menu.Item>
-            {/* <Menu.Item key="department">
-              <FontAwesomeIcon icon="users" className="anticon" />
-              <span>Nhóm Tài Khoản</span>
-            </Menu.Item> */}
-            <Menu.Item key="subject">
-              <FontAwesomeIcon icon="sun" className="anticon" />
-              <span>Danh Mục Chủ Đề</span>
-            </Menu.Item>
           </Menu>
         </Sider>
         <Content>
