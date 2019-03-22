@@ -33,7 +33,7 @@ class ComposeForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.content.length < 15) {
-      message.error("Nhập nội dung tối thiểu 20 ký tự!");
+      message.error("Nhập nội dung tối thiểu 15 ký tự!");
     } else {
       this.props.form.validateFields((err, values) => {
         if (!err) {

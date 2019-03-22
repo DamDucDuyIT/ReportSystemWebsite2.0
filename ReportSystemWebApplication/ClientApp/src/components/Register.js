@@ -77,6 +77,16 @@ class Register extends Component {
                 icon: <Icon type="warning" style={{ color: "#108ee9" }} />
               });
               window.location.assign("/");
+            } else if (
+              response.status === 400 &&
+              response.data === "Mã xác nhận không đúng. Vui lòng kiểm tra lại."
+            ) {
+              notification.open({
+                message: "Lỗi",
+                duration: 3,
+                description: "Mã xác nhận không đúng. Vui lòng kiểm tra lại.",
+                icon: <Icon type="warning" style={{ color: "#108ee9" }} />
+              });
             } else {
               notification.open({
                 message: "Lỗi",

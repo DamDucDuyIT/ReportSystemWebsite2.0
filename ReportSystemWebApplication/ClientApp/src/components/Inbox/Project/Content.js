@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../../store/Report";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Badge } from "antd";
 import Body from "../../ShareComponent/ReportContent";
 import * as authService from "../../../services/Authentication";
 import AlertZone from "../../ShareComponent/Alert";
@@ -165,6 +165,16 @@ class Report extends React.Component {
                         }
                       >
                         <p className="email">{item.fromEmail}</p>
+                        {item.projectId && (
+                          <Badge
+                            style={{ backgroundColor: "#1890FF" }}
+                            count={
+                              item.departmentNameOfProject +
+                              " - " +
+                              item.projectName
+                            }
+                          />
+                        )}
                         <p className="title">{item.title}</p>
                         <p className="shortContent">
                           {item.shortContent === null

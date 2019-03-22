@@ -157,6 +157,16 @@ class Report extends React.Component {
                         onClick={() => this.renderReportAndRead(report)}
                       >
                         <p className="email">{report.fromEmail}</p>
+                        {report.projectId && (
+                          <Badge
+                            style={{ backgroundColor: "#1890FF" }}
+                            count={
+                              report.departmentNameOfProject +
+                              " - " +
+                              report.projectName
+                            }
+                          />
+                        )}
                         <p className="title">{report.title}</p>
                         <p className="shortContent">
                           {report.shortContent === null

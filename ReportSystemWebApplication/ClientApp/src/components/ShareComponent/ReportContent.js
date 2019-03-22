@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Drawer, Icon, Row, Col, Avatar, Modal } from "antd";
+import { Button, Drawer, Icon, Row, Col, Avatar, Modal, Badge } from "antd";
 import ReplyForm from "../ReplyForm";
 import "../../assets/css/report.css";
 import imageExtentions from "image-extensions";
@@ -98,6 +98,14 @@ export default class Body extends React.Component {
             </Drawer>
             <div className="report-header">
               <p className="title">{data.title}</p>
+              {data.projectId && (
+                <Badge
+                  style={{ backgroundColor: "#1890FF" }}
+                  count={
+                    data.departmentNameOfProject + " - " + data.projectName
+                  }
+                />
+              )}
               <Button
                 className="reply-button"
                 shape="circle"

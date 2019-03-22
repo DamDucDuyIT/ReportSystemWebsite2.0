@@ -38,6 +38,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 .Include(r => r.From)
                 .Include(r => r.Files)
                 .Include(r => r.Project)
+                    .ThenInclude(p => p.Department)
                 .Include(r => r.HighestChildDepartmentsOfTo)
                     .ThenInclude(t => t.Department)
                 .Include(r => r.Department)
@@ -46,6 +47,9 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                         .ThenInclude(t => t.ApplicationUser)
                 .Include(r => r.Reply)
                     .ThenInclude(re => re.From)
+                .Include(r => r.Reply)
+                    .ThenInclude(re => re.Project)
+                        .ThenInclude(p => p.Department)
                 //.Include(r => r.Read)
                 .SingleOrDefaultAsync(r => r.ReportId == id);
 
@@ -141,12 +145,16 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                                 .Include(r => r.From)
                                 .Include(r => r.Files)
                                 .Include(r => r.Project)
+                                    .ThenInclude(p => p.Department)
                                 .Include(r => r.HighestChildDepartmentsOfTo)
                                     .ThenInclude(t => t.Department)
                                 .Include(r => r.Department)
                                 .Include(r => r.Reply)
                                     .ThenInclude(re => re.To)
                                         .ThenInclude(t => t.ApplicationUser)
+                                .Include(r => r.Reply)
+                                    .ThenInclude(re => re.Project)
+                                        .ThenInclude(t => t.Department)
                                 .Include(r => r.Reply)
                                     .ThenInclude(re => re.From)
                                 .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.ToEmail)) && r.IsReply == false)
@@ -201,12 +209,16 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                       .Include(r => r.From)
                       .Include(r => r.Files)
                       .Include(r => r.Project)
+                        .ThenInclude(p => p.Department)
                       .Include(r => r.HighestChildDepartmentsOfTo)
                         .ThenInclude(t => t.Department)
                       .Include(r => r.Department)
                       .Include(r => r.Reply)
                         .ThenInclude(re => re.To)
                             .ThenInclude(t => t.ApplicationUser)
+                      .Include(r => r.Reply)
+                         .ThenInclude(re => re.Project)
+                             .ThenInclude(t => t.Department)
                        .Include(r => r.Reply)
                         .ThenInclude(re => re.From)
                     .AsNoTracking()
@@ -374,6 +386,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
             return numberOfUnread;
         }
+
         private async Task<bool> findDepartmentOfToUserFromReportDepartment(Department department, Report report, int level)
         {
             if (department.Children.Any(c => c.DepartmentId == report.Department.DepartmentId) && level == 1)
