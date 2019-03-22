@@ -100,13 +100,12 @@ class Department extends Component {
 
   showDepartmentDetailModal = data => {
     this.props.getDepartment(data.parentId).then(department => {
-      data.pp = department.name;
-    });
-    console.log(data);
+      data.parentName = department.name;
 
-    this.setState({
-      visible: true,
-      data
+      this.setState({
+        visible: true,
+        data
+      });
     });
   };
 

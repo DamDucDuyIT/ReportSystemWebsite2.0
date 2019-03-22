@@ -48,7 +48,7 @@ class ComposeForm extends React.Component {
             this.state.files
           ).then(response => {
             if (response === 200) {
-              alert("Đã gửi thành công!");
+              message.success("Đã gửi thành công!");
               this.props.onClose();
             }
           });

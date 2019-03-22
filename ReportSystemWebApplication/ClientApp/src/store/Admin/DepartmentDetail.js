@@ -33,8 +33,10 @@ export const actionCreators = {
       loadDepartment(dispatch, isLoaded, id);
     }
   },
+
   updateDepartment: (departmentId, data) => async () => {
     const res = await UpdateDepartment(departmentId, data);
+
     return res;
   }
 };
@@ -60,7 +62,6 @@ export const UpdateDepartment = async (departmentId, data) => {
     `api/departments/update/${departmentId}`,
     department
   );
-  console.log(res);
   return res;
 };
 

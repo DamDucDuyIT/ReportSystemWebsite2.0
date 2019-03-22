@@ -53,15 +53,10 @@ export const actionCreators = {
       loadData(dispatch, isLoaded);
     }
   },
-
-  getDepartment: id => async dispatch => {
-    // dispatch({
-    //   type: requestDepartmentType
-    // });
-    const department = await loadDepartment(dispatch, id);
+  getDepartment: id => async () => {
+    const department = await getDepartment(id);
     return department;
   },
-
   updateDepartment: (departmentId, data) => async dispatch => {
     const res = await UpdateDepartment(departmentId, data);
     if (res.status === 200) {
@@ -83,15 +78,11 @@ export const loadData = async (dispatch, isLoaded) => {
   });
 };
 
-export const loadDepartment = async (dispatch, id) => {
+export const getDepartment = async id => {
   const department = await dataService.get(
     `api/departments/getdepartment/${id}`
   );
   return department;
-  // dispatch({
-  //   type: receiveDepartmentType,
-  //   department
-  // });
 };
 
 export const UpdateDepartment = async (departmentId, data) => {

@@ -1,10 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { actionCreators, addReport } from "../../store/Admin/Department";
+import { actionCreators, addReport } from "../../store/Admin/DepartmentDetail";
 import { Form, Icon, message, Input, Button, Select, DatePicker } from "antd";
-import moment from "moment";
-import * as FormatDate from "../../services/FormatDate";
 
 const { Option, OptGroup } = Select;
 const { RangePicker } = DatePicker;
@@ -54,7 +52,8 @@ const ProjectDetailForm = Form.create({
 class ProjectDetail extends React.Component {
   constructor(props) {
     super(props);
-    const { data } = props;
+    const { data } = this.props;
+
     this.updateFields(data);
     this.state = {
       fields: newFields
@@ -71,7 +70,7 @@ class ProjectDetail extends React.Component {
         value: data.name
       },
       parentName: {
-        value: data.pp
+        value: data.parentName
       }
     };
     this.setState(({ fields }) => ({

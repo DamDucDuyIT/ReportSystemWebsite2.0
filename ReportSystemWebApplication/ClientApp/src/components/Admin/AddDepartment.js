@@ -29,16 +29,16 @@ class AddDepartment extends Component {
         }
         values.isDeleted = false;
         this.props.addDepartment(values).then(res => {
-          console.log(res);
           if (res.status === 200) {
             message.success("Tạo phòng bàn thành công!", 3);
-            this.props.form.resetFields();
-            this.reloadDepartments(-1);
-            this.setState({
-              departments: []
-            });
+            // this.props.form.resetFields();
+            // this.reloadDepartments(-1);
+            // this.setState({
+            //   departments: []
+            // });
+            window.location.reload();
           } else {
-            message.success("Tạo phòng ban không thành công!", 3);
+            message.error("Tạo phòng ban không thành công!", 3);
           }
         });
       }
