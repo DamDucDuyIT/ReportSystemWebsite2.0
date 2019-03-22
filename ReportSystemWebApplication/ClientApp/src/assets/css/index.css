@@ -104,9 +104,7 @@ p {
   font-size: 16px !important;
   font-weight: bold;
 }
-.ant-layout-content {
-  background: #fff;
-}
+
 .layout-main-content {
   margin-top: 114px;
 }
@@ -365,10 +363,27 @@ p {
 .admin-body {
   background: #f2f2f2;
   padding: 2em;
-  -webkit-box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
-  -moz-box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
-  box-shadow: inset 0px 5px 20px -10px rgba(135, 135, 135, 1);
   margin-top: 68px;
+}
+
+.admin-body > .ant-layout-content {
+  padding: 2em;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.admin-body > .ant-layout-content .header {
+  margin-bottom: 1em;
+}
+.admin-body > .ant-layout-content .header h2 {
+  display: inline-block;
+}
+.admin-body > .ant-layout-content .header button {
+  float: right;
+}
+
+.admin-body > .ant-layout-content .ant-table tbody {
+  background: rgb(230, 230, 230);
 }
 
 .admin-body > .ant-layout-sider {

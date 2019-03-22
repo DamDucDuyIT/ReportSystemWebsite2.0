@@ -1,12 +1,12 @@
 import React from "react";
-import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Menu, Button, Layout } from "antd";
+import { Menu, Layout } from "antd";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Account from "./Admin/Account";
 import AccountDetail from "./Admin/AccountDetail";
 import Department from "./Admin/Department";
-const SubMenu = Menu.SubMenu;
+import AddDepartment from "./Admin/AddDepartment";
+
 const { Sider, Content } = Layout;
 
 const routes = [
@@ -24,13 +24,12 @@ const routes = [
     path: "/a/department",
     component: Department,
     label: "Department"
+  },
+  {
+    path: "/a/adddepartment",
+    component: AddDepartment,
+    label: "AddDepartment"
   }
-
-  // {
-  //   path: "/admin",
-  //   component: AdminInterface,
-  //   label: "AdminInterface"
-  // }
 ];
 
 function RouteWithSubRoutes(route) {

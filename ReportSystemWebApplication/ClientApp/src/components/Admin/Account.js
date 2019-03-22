@@ -184,6 +184,9 @@ class Account extends Component {
         {/* <div className="table-operations">
           <Button onClick={this.clearFilters}>Thanh tẩy</Button>
         </div> */}
+        <div className="header">
+          <h2>Danh sách tài khoản</h2>
+        </div>
         <Table
           columns={columns}
           dataSource={accounts}

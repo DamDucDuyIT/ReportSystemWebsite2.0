@@ -22,6 +22,7 @@ import * as Admin_Account from "./Admin/Account";
 import * as Admin_AccountDetail from "./Admin/AccountDetail";
 import * as Admin_Department from "./Admin/Department";
 import * as Admin_DepartmentDetail from "./Admin/DepartmentDetail";
+import * as Admin_AddDepartment from "./Admin/AddDepartment";
 
 export default function configureStore(history, initialState) {
   const reducers = {
@@ -43,6 +44,7 @@ export default function configureStore(history, initialState) {
     admin_AccountDetail: Admin_AccountDetail.reducer,
     admin_Department: Admin_Department.reducer,
     admin_DepartmentDetail: Admin_DepartmentDetail.reducer,
+    admin_AddDepartment: Admin_AddDepartment.reducer,
 
     projectManagement_Projects: ProjectManagement_Projects.reducer
   };

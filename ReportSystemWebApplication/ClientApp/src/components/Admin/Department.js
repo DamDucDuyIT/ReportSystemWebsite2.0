@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/Admin/Department";
@@ -164,6 +165,12 @@ class Department extends Component {
         {/* <div className="table-operations">
           <Button onClick={this.clearFilters}>Thanh tẩy</Button>
         </div> */}
+        <div className="header">
+          <h2>Danh sách phòng ban</h2>
+          <Link to="/a/adddepartment">
+            <Button shape="circle" icon="plus" type="primary" />
+          </Link>
+        </div>
         <Table
           className="no-expand"
           columns={columns}
