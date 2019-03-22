@@ -78,19 +78,19 @@ class UserInterface extends Component {
             style={{ lineHeight: 64, height: "100%" }}
           >
             <Menu.Item key="c" onClick={() => this.handleClick("c")}>
-              <Link to={`/u/inbox/c/0`}>
+              <a href={`/u/inbox/c/0`}>
                 <Icon type="appstore" theme="filled" />
                 <span>Nhóm </span>
                 <Badge count={departmentUnread} className="custom-badge" />
-              </Link>
+              </a>
             </Menu.Item>
 
             <Menu.Item key="p" onClick={() => this.handleClick("p")}>
-              <Link to={`/u/inbox/p/0+0`}>
+              <a href={`/u/inbox/p/0+0`}>
                 <Icon type="project" theme="filled" />
                 <span>Dự án </span>
                 <Badge count={projectUnread} className="custom-badge" />
-              </Link>
+              </a>
             </Menu.Item>
           </Menu>
         </Sider>
