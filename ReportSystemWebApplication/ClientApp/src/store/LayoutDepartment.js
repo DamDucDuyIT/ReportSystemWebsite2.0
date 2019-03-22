@@ -30,6 +30,13 @@ export const actionCreators = {
         updateCount(dispatch);
       });
 
+      hubConnection.on(
+        authService.getLoggedInUser().email + "_NewReport",
+        (report, title) => {
+          updateCount(dispatch);
+        }
+      );
+
       hubConnection
         .start()
         .then(() => {

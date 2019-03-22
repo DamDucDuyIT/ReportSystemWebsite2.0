@@ -47,6 +47,16 @@ export const actionCreators = {
         }
       });
 
+      hubConnectionDepartment.on(
+        authService.getLoggedInUser().email + "_NewReport",
+        (report, title) => {
+          const departmentId = window.location.pathname.split("/")[4];
+          if (window.location.pathname.split("/")[3] === "c") {
+            loadData(dispatch, departmentId, getState().report.isLoaded);
+          }
+        }
+      );
+
       hubConnectionDepartment
         .start()
         .then(() => {
@@ -112,6 +122,20 @@ export const actionCreators = {
           );
         }
       });
+
+      hubConnectionProject.on(
+        authService.getLoggedInUser().email + "_NewReport",
+        (report, title) => {
+          if (window.location.pathname.split("/")[3] === "c") {
+            loadReportsByProject(
+              dispatch,
+              splitId[0],
+              splitId[1],
+              getState().report.isLoaded
+            );
+          }
+        }
+      );
 
       hubConnectionProject
         .start()

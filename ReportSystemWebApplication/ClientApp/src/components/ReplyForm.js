@@ -64,6 +64,7 @@ class ComposeForm extends React.Component {
   };
 
   componentDidMount() {
+    console.log("componentDidMount");
     const isLoaded = false;
     const { report } = this.props;
 
@@ -79,6 +80,7 @@ class ComposeForm extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log("componentDidUpdate");
     const { report } = this.props;
     const reportId = this.props.reportId;
 

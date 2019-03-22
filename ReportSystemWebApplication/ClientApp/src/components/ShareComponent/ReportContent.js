@@ -166,7 +166,7 @@ export default class Body extends React.Component {
                         <Col span={8}>
                           <p className="item-header-info">
                             <span>
-                              <span className="time">14:13, 4 thg 3, 2019</span>
+                              <span className="time">{report.createdOn}</span>
                             </span>
                           </p>
                         </Col>

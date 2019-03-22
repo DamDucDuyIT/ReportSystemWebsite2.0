@@ -168,10 +168,11 @@ class Report extends React.Component {
                           />
                         )}
                         <p className="title">{report.title}</p>
+
                         <p className="shortContent">
-                          {report.shortContent === null
-                            ? "Null"
-                            : report.shortContent}
+                          {report.reply.length === 0
+                            ? report.shortContent
+                            : report.reply[0].shortContent}
                         </p>
                       </Menu.Item>
                     ))}

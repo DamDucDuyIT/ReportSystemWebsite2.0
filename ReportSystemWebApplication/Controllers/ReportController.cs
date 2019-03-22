@@ -209,10 +209,26 @@ namespace ReportSystemWebApplication.Controllers
             //get report for converting to json result
             report = await reportRepository.GetReport(report.ReportId, true);
 
-            foreach (var user in report.To)
+            if (report.IsReply == true)
             {
-                //send for receiver
-                await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", report.ReportId, report.Title);
+                var mainReport = await reportRepository.GetReport(report.MainReport.ReportId, true);
+                foreach (var user in mainReport.To)
+                {
+                    if (!user.ApplicationUser.Email.Equals(report.From.Email))
+                    {
+                        //send for receiver
+                        await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", mainReport.ReportId, mainReport.Title);
+                    }
+                }
+
+            }
+            else
+            {
+                foreach (var user in report.To)
+                {
+                    //send for receiver
+                    await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", report.ReportId, report.Title);
+                }
             }
 
             //send for sender to reload data
