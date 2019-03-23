@@ -155,11 +155,13 @@ class Report extends React.Component {
                         onClick={() => this.renderReportAndRead(report)}
                       >
                         <p className="email">{report.fromEmail}</p>
+
+                        <Badge count={report.departmentName} />
                         {report.projectId && (
                           <Badge
                             style={{ backgroundColor: "#1890FF" }}
                             count={
-                              report.departmentNameOfProject +
+                              report.departmentCodeOfProject +
                               " - " +
                               report.projectName
                             }

@@ -47,6 +47,7 @@ namespace ReportSystemWebApplication.Mapping
 
             CreateMap<Report, ReportResource>()
                 .ForMember(rr => rr.DepartmentId, opt => opt.MapFrom(r => r.Department.DepartmentId))
+                .ForMember(rr => rr.DepartmentName, opt => opt.MapFrom(r => r.Department.Name))
                 .ForMember(rr => rr.ProjectId, opt => opt.MapFrom(r => r.Project.ProjectId))
                 .ForMember(rr => rr.FromId, opt => opt.MapFrom(r => r.From.Id))
                 .ForMember(rr => rr.MainReportId, opt => opt.MapFrom(r => r.MainReport.ReportId))
@@ -58,6 +59,7 @@ namespace ReportSystemWebApplication.Mapping
                 //.ForMember(rr => rr.Files, opt => opt.MapFrom(r => r.Files.Select(rf => rf.FileId)))
                 .ForMember(rr => rr.ProjectName, opt => opt.MapFrom(r => r.Project != null ? r.Project.Name : null))
                 .ForMember(rr => rr.DepartmentNameOfProject, opt => opt.MapFrom(r => r.Project.Department.Name))
+                .ForMember(rr => rr.DepartmentCodeOfProject, opt => opt.MapFrom(r => r.Project.Department.Code))
                 .ForMember(rr => rr.Reply, opt => opt.MapFrom(r => r.Reply.Select(rf => rf)))
                 .ForMember(rr => rr.CreatedOn, opt => opt.MapFrom(r => r.CreatedOn.ToString("dd/M/yyyy hh:mm:ss", CultureInfo.InvariantCulture)));
 

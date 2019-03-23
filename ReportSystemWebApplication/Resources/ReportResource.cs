@@ -15,7 +15,9 @@ namespace ReportSystemWebApplication.Resources
         public string CreatedOn { get; set; }
         public string ProjectName { get; set; }
         public string DepartmentNameOfProject { get; set; }
+        public string DepartmentCodeOfProject { get; set; }
         public long? DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
         public string FromId { get; set; }
         public string FromEmail { get; set; }
         public ICollection<long> HighestChildDepartmentsOfTo { get; set; }

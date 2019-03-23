@@ -45,7 +45,7 @@ class UserInterface extends Component {
     if (zone === "c") {
       window.location.assign("/u/inbox/c/0");
     } else if (zone === "p") {
-      window.location.assign("/u/inbox/p/0+0");
+      window.location.assign("/u/inbox/p");
     }
   }
   componentDidMount() {

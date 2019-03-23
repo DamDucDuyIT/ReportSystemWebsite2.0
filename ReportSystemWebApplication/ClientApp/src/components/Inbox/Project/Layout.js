@@ -33,7 +33,7 @@ function RouteWithSubRoutes(route) {
     />
   );
 }
-
+var firstTime = true;
 class Project extends Component {
   constructor() {
     super();
@@ -53,6 +53,15 @@ class Project extends Component {
   };
 
   componentDidMount() {
+    console.log(firstTime);
+    if (window.location.pathname === "/u/inbox/p" && firstTime === true) {
+      firstTime = false;
+      this.props.history.push("/u/inbox/p/0+0");
+    }
+
+    // if (window.location.pathname === "/u/inbox/p/0+0" && firstTime === true) {
+    //   window.location.assign("/u/inbox/p");
+    // }
     const isLoaded = false;
     this.props.requestProjects(isLoaded);
   }

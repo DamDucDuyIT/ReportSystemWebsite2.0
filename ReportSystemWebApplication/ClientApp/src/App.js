@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Route } from "react-router";
 import Layout from "./components/Layout";
 import Login from "./components/Login";
@@ -10,6 +10,8 @@ import UserInterface from "./components/UserInterface";
 import AdminInterface from "./components/AdminInterface";
 import ProjectManagement from "./components/ProjectManagementInterface";
 import Profile from "./components/Profile";
+import * as constant from "../src/services/Constant";
+
 import {
   faInbox,
   faPaperPlane,
@@ -55,6 +57,8 @@ if (currentUrl === "/" || currentUrl === "/u" || currentUrl === "/u/inbox/") {
   window.location.assign("/u/inbox/c/0");
 } else if (currentUrl === "/p") {
   window.location.assign("/p/projects");
+} else if (currentUrl === "/u/inbox/p/0+0") {
+  window.location.replace(constant.BASE_URL + "u/inbox/p");
 }
 
 export default () => (
@@ -63,6 +67,7 @@ export default () => (
     <Route path="/a" component={AdminInterface} />
     <Route path="/p" component={ProjectManagement} />
     <Route path="/profile" component={Profile} />
+
     {/* <Route exact path="/admin/home" component={Home} /> */}
     <Route path="/login" component={Login} />
     <Route path="/resetpassword/:code?" component={ResetPassword} />
