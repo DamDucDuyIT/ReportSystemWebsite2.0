@@ -92,20 +92,10 @@ export default class Body extends React.Component {
                 fromEmail={data.fromEmail}
                 toEmails={this.state.toEmails}
                 title={this.state.title}
-                // onClose={this.closeComposeDrawer}
-                // showDrawer={this.showReplyDrawer}
               />
             </Drawer>
             <div className="report-header">
-              <p className="title">{data.title}</p>
-              {data.projectId && (
-                <Badge
-                  style={{ backgroundColor: "#1890FF" }}
-                  count={
-                    data.departmentNameOfProject + " - " + data.projectName
-                  }
-                />
-              )}
+              <p className="title">{data.title}</p>9
               <Button
                 className="reply-button"
                 shape="circle"

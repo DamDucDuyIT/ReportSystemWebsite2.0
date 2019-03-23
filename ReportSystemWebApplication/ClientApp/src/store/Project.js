@@ -9,7 +9,7 @@ const receiveProjectsType = "RECEIVE_PROJECTS";
 const receiveUpdatePCount = "RECEIVE_UPDATE_P_COUNT";
 
 const initialState = {
-  projects: [],
+  projects: undefined,
   isLoading: false,
   allUnread: 0
 };

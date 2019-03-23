@@ -12,7 +12,7 @@ const receiveUpdateCount = "RECEIVE_HAU";
 // const receiveDepartmentsByProjectType = "RECEIVE_DEPARTMENTSBYPROJECT";
 
 const initialState = {
-  departments: [],
+  departments: undefined,
   isLoading: false,
   hubConnection: [],
   allUnread: 0

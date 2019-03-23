@@ -38,15 +38,10 @@ function RouteWithSubRoutes(route) {
 class UserInterface extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      loading: false
-    };
+    this.state = {};
   }
   handleChange(value) {}
   handleClick(zone) {
-    this.setState({
-      loading: true
-    });
     if (zone === "c") {
       window.location.assign("/u/inbox/c/0");
     } else if (zone === "p") {
@@ -62,49 +57,39 @@ class UserInterface extends Component {
 
   render() {
     const { departmentUnread, projectUnread } = this.props;
-    const { loading } = this.state;
     const link3 = window.location.pathname.split("/")[3];
 
     return (
       <div>
-        {loading ? (
-          <div
-            className="loading-page"
-            style={{ width: "100%", textAlign: "center", padding: "3em 0" }}
-          >
-            <Spin size="large" />
-          </div>
-        ) : (
-          <Layout className="custom-layout">
-            <Sider collapsed={true}>
-              <Menu
-                className="collapsed-menu left-menu"
-                mode="inline"
-                defaultSelectedKeys={[link3]}
-                style={{ lineHeight: 64, height: "100%" }}
-              >
-                <Menu.Item key="c" onClick={() => this.handleClick("c")}>
-                  <Icon type="appstore" theme="filled" />
-                  <span>Nhóm </span>
-                  <Badge count={departmentUnread} className="custom-badge" />
-                </Menu.Item>
+        <Layout className="custom-layout">
+          <Sider collapsed={true}>
+            <Menu
+              className="collapsed-menu left-menu"
+              mode="inline"
+              defaultSelectedKeys={[link3]}
+              style={{ lineHeight: 64, height: "100%" }}
+            >
+              <Menu.Item key="c" onClick={() => this.handleClick("c")}>
+                <Icon type="appstore" theme="filled" />
+                <span>Nhóm </span>
+                <Badge count={departmentUnread} className="custom-badge" />
+              </Menu.Item>
 
-                <Menu.Item key="p" onClick={() => this.handleClick("p")}>
-                  <Icon type="project" theme="filled" />
-                  <span>Dự án </span>
-                  <Badge count={projectUnread} className="custom-badge" />
-                </Menu.Item>
-              </Menu>
-            </Sider>
-            <Content className="no-padding">
-              <Layout>
-                {routes.map((route, i) => (
-                  <RouteWithSubRoutes key={i} {...route} />
-                ))}
-              </Layout>
-            </Content>
-          </Layout>
-        )}
+              <Menu.Item key="p" onClick={() => this.handleClick("p")}>
+                <Icon type="project" theme="filled" />
+                <span>Dự án </span>
+                <Badge count={projectUnread} className="custom-badge" />
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Content className="no-padding">
+            <Layout>
+              {routes.map((route, i) => (
+                <RouteWithSubRoutes key={i} {...route} />
+              ))}
+            </Layout>
+          </Content>
+        </Layout>
       </div>
     );
   }
