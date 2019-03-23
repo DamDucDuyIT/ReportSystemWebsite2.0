@@ -3,26 +3,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../../store/Department";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {
-  Row,
-  Col,
-  List,
-  Layout,
-  Menu,
-  Select,
-  Tabs,
-  Badge,
-  Icon,
-  Button
-} from "antd";
+import { Layout, Menu, Badge, Icon } from "antd";
 import ReportContent from "./Content";
 import * as ContentService from "./Content";
-import { maxHeight } from "../../Layout";
-// const Option = Select.Option;
-// const { TabPane } = Tabs;
 const SubMenu = Menu.SubMenu;
-// const MenuItemGroup = Menu.ItemGroup;
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 export var departmentId = window.location.pathname.split("/")[4];
 const routes = [
   {
@@ -80,20 +65,11 @@ class Company extends Component {
   }
 
   render() {
-    const departmentList = this.props.departments.items;
+    const departmentList = this.props.departments;
     const allUnread = this.props.allUnread;
 
     return (
       <Layout>
-        {/* <button
-          onClick={() =>
-            this.setState({
-              totalUnread: this.state.totalUnread + 1
-            })
-          }
-        >
-          Minus
-        </button> */}
         <Sider className="company-menu">
           <Menu
             onClick={this.handleClick}

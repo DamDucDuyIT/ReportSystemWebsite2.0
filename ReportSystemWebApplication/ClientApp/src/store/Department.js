@@ -164,7 +164,7 @@ export const loadData = async (dispatch, isLoaded) => {
   dispatch({
     type: receiveDepartmentsType,
     isLoaded,
-    departments: departmentList,
+    departments: departmentList.items,
     totalUnread,
     allUnread
   });

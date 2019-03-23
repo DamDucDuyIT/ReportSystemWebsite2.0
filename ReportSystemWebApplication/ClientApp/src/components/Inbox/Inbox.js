@@ -2,27 +2,12 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import {
-  Row,
-  Col,
-  List,
-  Button,
-  Layout,
-  Breadcrumb,
-  Menu,
-  Select,
-  Tabs,
-  Badge,
-  Icon
-} from "antd";
+import { Layout, Menu, Badge, Icon, Spin } from "antd";
 import { actionCreators } from "../../store/LayoutDepartment";
 import Company from "./Company/Layout";
 import Project from "./Project/Layout";
-import * as ProjectContentService from "./Project/Content";
-import * as CompanyContentService from "./Company/Content";
-import { CompanyTotalUnread } from "./Company/Layout";
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 const routes = [
   {
@@ -51,12 +36,21 @@ function RouteWithSubRoutes(route) {
 }
 
 class UserInterface extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    };
+  }
   handleChange(value) {}
   handleClick(zone) {
+    this.setState({
+      loading: true
+    });
     if (zone === "c") {
-      CompanyContentService.reload();
+      window.location.assign("/u/inbox/c/0");
     } else if (zone === "p") {
-      ProjectContentService.reload();
+      window.location.assign("/u/inbox/p/0+0");
     }
   }
   componentDidMount() {
@@ -64,44 +58,54 @@ class UserInterface extends Component {
     this.props.requestDepartments(isLoaded);
   }
 
+  componentDidUpdate() {}
+
   render() {
     const { departmentUnread, projectUnread } = this.props;
+    const { loading } = this.state;
     const link3 = window.location.pathname.split("/")[3];
 
     return (
-      <Layout className="custom-layout">
-        <Sider collapsed={true}>
-          <Menu
-            className="collapsed-menu left-menu"
-            mode="inline"
-            defaultSelectedKeys={[link3]}
-            style={{ lineHeight: 64, height: "100%" }}
+      <div>
+        {loading ? (
+          <div
+            className="loading-page"
+            style={{ width: "100%", textAlign: "center", padding: "3em 0" }}
           >
-            <Menu.Item key="c" onClick={() => this.handleClick("c")}>
-              <a href={`/u/inbox/c/0`}>
-                <Icon type="appstore" theme="filled" />
-                <span>Nhóm </span>
-                <Badge count={departmentUnread} className="custom-badge" />
-              </a>
-            </Menu.Item>
+            <Spin size="large" />
+          </div>
+        ) : (
+          <Layout className="custom-layout">
+            <Sider collapsed={true}>
+              <Menu
+                className="collapsed-menu left-menu"
+                mode="inline"
+                defaultSelectedKeys={[link3]}
+                style={{ lineHeight: 64, height: "100%" }}
+              >
+                <Menu.Item key="c" onClick={() => this.handleClick("c")}>
+                  <Icon type="appstore" theme="filled" />
+                  <span>Nhóm </span>
+                  <Badge count={departmentUnread} className="custom-badge" />
+                </Menu.Item>
 
-            <Menu.Item key="p" onClick={() => this.handleClick("p")}>
-              <a href={`/u/inbox/p/0+0`}>
-                <Icon type="project" theme="filled" />
-                <span>Dự án </span>
-                <Badge count={projectUnread} className="custom-badge" />
-              </a>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Content className="no-padding">
-          <Layout>
-            {routes.map((route, i) => (
-              <RouteWithSubRoutes key={i} {...route} />
-            ))}
+                <Menu.Item key="p" onClick={() => this.handleClick("p")}>
+                  <Icon type="project" theme="filled" />
+                  <span>Dự án </span>
+                  <Badge count={projectUnread} className="custom-badge" />
+                </Menu.Item>
+              </Menu>
+            </Sider>
+            <Content className="no-padding">
+              <Layout>
+                {routes.map((route, i) => (
+                  <RouteWithSubRoutes key={i} {...route} />
+                ))}
+              </Layout>
+            </Content>
           </Layout>
-        </Content>
-      </Layout>
+        )}
+      </div>
     );
   }
 }
