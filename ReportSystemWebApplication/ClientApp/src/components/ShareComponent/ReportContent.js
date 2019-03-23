@@ -254,6 +254,7 @@ export default class Body extends React.Component {
                             className="report-content"
                             dangerouslySetInnerHTML={{ __html: data.content }}
                           />
+                          {console.log(data.files)}
                           {data.files.length > 0 && (
                             <div className="report-files">
                               {data.files.map(item =>
@@ -268,7 +269,7 @@ export default class Body extends React.Component {
                                       />
                                       <div className="figcaption">
                                         <div>
-                                          <h5>Anh chi yeu em ma thoi</h5>
+                                          <h5>{item.title}</h5>
                                         </div>
                                         <div>
                                           <p>
@@ -296,12 +297,9 @@ export default class Body extends React.Component {
                                         )}
                                       />
                                     </Modal>
-                                    {/* <div className="image-file">
-                                      <img src="https://kenh14cdn.com/2017/1-1506422137960.jpg"/>
-                                  </div> */}
                                   </div>
                                 ) : (
-                                  <div>Deo phai hinh</div>
+                                  <div className="other-file">{item.title}</div>
                                 )
                               )}
                             </div>
