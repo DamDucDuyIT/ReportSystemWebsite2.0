@@ -268,6 +268,21 @@ namespace ReportSystemWebApplication.Controllers
             return mapper.Map<QueryResult<ApplicationUser>, QueryResultResource<ApplicationUserResource>>(queryResult);
         }
 
+        // GET: api/accounts/getallinbranch/5
+        [HttpGet]
+        [Route("getallinbranch/{departmentId}")]
+        public async Task<QueryResultResource<ApplicationUserResource>> GetApplicationUsersInBranch(long departmentId, QueryResource queryResource)
+        {
+            //convert queryresource json into query object
+            var query = mapper.Map<QueryResource, Query>(queryResource);
+
+            //get all the fans with filter and sorting form of the query
+            var queryResult = await applicationUserRepository.GetApplicationUsersInBranch(query, departmentId);
+
+            //convert all of fans into ApplicationUserResource json
+            return mapper.Map<QueryResult<ApplicationUser>, QueryResultResource<ApplicationUserResource>>(queryResult);
+        }
+
         [HttpGet]
         [Route("getaccount/{id}")]
         public async Task<IActionResult> GetAccount(string id)

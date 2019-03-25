@@ -70,7 +70,10 @@ export const actionCreators = {
 };
 
 export const loadData = async (dispatch, isLoaded) => {
-  const projects = await dataService.get("api/projects/getall");
+  const projects = await dataService.get(
+    "api/projects/getprojectsusercreateandreceive?sortby=code&issortascending=true&email=" +
+      authService.getLoggedInUser().email
+  );
   var projectList = [];
 
   projects.items.map(project => {

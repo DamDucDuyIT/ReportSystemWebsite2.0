@@ -36,6 +36,7 @@ class Report extends React.Component {
       isFirstLoaded: false
     };
     this.renderReport = this.renderReport.bind(this);
+    this.onDownload = this.onDownload.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -183,7 +184,7 @@ class Report extends React.Component {
                   </Menu>
                 </div>
                 <div>
-                  <Body data={report} />
+                  <Body data={report} onDownload={this.onDownload} />
                 </div>
               </div>
             ) : (
@@ -197,6 +198,11 @@ class Report extends React.Component {
         </div>
       </div>
     );
+  }
+
+  onDownload(fileId, fileName) {
+    console.log(fileId + " " + fileName);
+    this.props.download(fileId, fileName);
   }
 }
 

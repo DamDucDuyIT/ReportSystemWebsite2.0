@@ -199,7 +199,10 @@ export default class Body extends React.Component {
                                                 <Icon
                                                   type="download"
                                                   onClick={() =>
-                                                    console.log("download")
+                                                    this.props.onDownload(
+                                                      item.fileId,
+                                                      item.title
+                                                    )
                                                   }
                                                 />
                                               </p>
@@ -223,7 +226,12 @@ export default class Body extends React.Component {
                                     ) : (
                                       <div
                                         className="other-file"
-                                        onClick={() => console.log("download")}
+                                        onClick={() =>
+                                          this.props.onDownload(
+                                            item.fileId,
+                                            item.title
+                                          )
+                                        }
                                       >
                                         {item.title}
                                       </div>
@@ -330,7 +338,10 @@ export default class Body extends React.Component {
                                               <Icon
                                                 type="download"
                                                 onClick={() =>
-                                                  console.log("download")
+                                                  this.props.onDownload(
+                                                    item.fileId,
+                                                    item.title
+                                                  )
                                                 }
                                               />
                                             </p>
@@ -354,7 +365,12 @@ export default class Body extends React.Component {
                                   ) : (
                                     <div
                                       className="other-file"
-                                      onClick={() => console.log("download")}
+                                      onClick={() =>
+                                        this.props.onDownload(
+                                          item.fileId,
+                                          item.title
+                                        )
+                                      }
                                     >
                                       {item.title}
                                     </div>

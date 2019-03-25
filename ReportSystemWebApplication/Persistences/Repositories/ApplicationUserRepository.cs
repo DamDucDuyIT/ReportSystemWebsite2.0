@@ -114,7 +114,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
             var userList = await context.ApplicationUsers
                                 .Include(a => a.Department)
-                                .Where(a => departmentIdList.Contains(a.Department.DepartmentId) && a.IsActived == true)
+                                .Where(a => departmentIdList.Contains(a.Department.DepartmentId) && a.IsActived == true && a.IsDeleted == false)
                                 .AsNoTracking()
                                 .ToListAsync();
 
@@ -145,7 +145,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
         public async Task AddParentDepartment(HashSet<long> parentDepartmentIdList, Department department)
         {
-            while (department.Parent != null)
+            if (department.Parent != null)
             {
                 var parentDepartment = await context.Departments
                                     .Include(d => d.Parent)
