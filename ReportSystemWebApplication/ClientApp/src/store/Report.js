@@ -90,10 +90,13 @@ export const actionCreators = {
       loadSentReports(dispatch, isLoaded);
     }
   },
-  requestReportsByProject: (departmentId, projectId, isLoaded) => async (
-    dispatch,
-    getState
-  ) => {
+  requestReportsByProject: (
+    departmentId,
+    projectId,
+    page,
+    pageSize,
+    isLoaded
+  ) => async (dispatch, getState) => {
     //check if user dont log in
     if (!authService.isUserAuthenticated() || authService.isExpired()) {
       authService.clearLocalStorage();
@@ -153,7 +156,14 @@ export const actionCreators = {
         isLoaded,
         hubConnectionProject
       });
-      loadReportsByProject(dispatch, departmentId, projectId, isLoaded);
+      loadReportsByProject(
+        dispatch,
+        departmentId,
+        projectId,
+        page,
+        pageSize,
+        isLoaded
+      );
     }
   },
 
@@ -162,9 +172,19 @@ export const actionCreators = {
     await loadData(dispatch, departmentId, isLoaded);
   },
 
-  reloadByProject: (departmentId, projectId) => async (dispatch, getState) => {
+  reloadByProject: (departmentId, projectId, page, pageSize) => async (
+    dispatch,
+    getState
+  ) => {
     const isLoaded = getState().report.isLoaded;
-    loadReportsByProject(dispatch, departmentId, projectId, isLoaded);
+    loadReportsByProject(
+      dispatch,
+      departmentId,
+      projectId,
+      page,
+      pageSize,
+      isLoaded
+    );
   },
 
   loadReport: reportId => async dispatch => {
@@ -185,6 +205,13 @@ export const actionCreators = {
         );
       }
     } catch (e) {}
+  },
+
+  loadNext: (departmentId, projectId, page, pageSize) => async (
+    dispatch,
+    getState
+  ) => {
+    loadReportsByProject(dispatch, departmentId, projectId, page, pageSize);
   }
 };
 
@@ -225,32 +252,45 @@ export const loadReportsByProject = async (
   dispatch,
   departmentId,
   projectId,
+  page,
+  pageSize,
   isLoaded
 ) => {
   const userEmail = authService.getLoggedInUser().email;
   var reports = [];
 
   if (departmentId === "0" && projectId === "0") {
+    // reports = await dataService.get(
+    //   `api/reports/getall?isHaveproject=true&toemail=${userEmail}`
+    // );
     reports = await dataService.get(
-      `api/reports/getall?isHaveproject=true&toemail=${userEmail}`
+      `api/reports/getall?isHaveproject=true&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
     );
   } else {
     if (projectId === "0") {
+      // reports = await dataService.get(
+      //   `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}`
+      // );
       reports = await dataService.get(
-        `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}`
+        `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
       );
     } else {
+      // reports = await dataService.get(
+      //   `api/reports/getall?projectId=${projectId}&isHaveproject=true&toemail=${userEmail}`
+      // );
       reports = await dataService.get(
-        `api/reports/getall?projectId=${projectId}&isHaveproject=true&toemail=${userEmail}`
+        `api/reports/getall?isHaveproject=true&projectId=${projectId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
       );
     }
   }
+  console.log(reports);
   dispatch({
     type: receiveReportsByProjectType,
     isLoaded,
     departmentId,
     projectId,
-    reports: reports.items
+    reports: reports.items,
+    totalItems: reports.totalItems
   });
 };
 
@@ -317,7 +357,8 @@ export const reducer = (state, action) => {
       isLoaded: action.isLoaded,
       departmentId: action.departmentId,
       projectId: action.projectId,
-      reports: action.reports
+      reports: action.reports,
+      totalItems: action.totalItems
     };
   }
 

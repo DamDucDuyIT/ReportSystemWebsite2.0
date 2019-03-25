@@ -83,16 +83,9 @@ export default class UserInterface extends Component {
               Đã gửi
             </Link>
           </Menu.Item>
-          <Button
-            shape="circle"
-            style={{
-              float: "right",
-              margin: "12px 20px 0 0"
-            }}
-            className="refresh-icon"
-          >
+          {/* <Button shape="circle" className="refresh-icon" onClick={}>
             <Icon type="redo" />
-          </Button>
+          </Button> */}
         </Menu>
         <Content className="no-padding layout-main-content">
           <div className="">

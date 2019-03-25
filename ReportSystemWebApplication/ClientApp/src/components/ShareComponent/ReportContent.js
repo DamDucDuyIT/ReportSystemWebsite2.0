@@ -140,9 +140,9 @@ export default class Body extends React.Component {
                             <span style={{ display: "inline-block" }}>
                               Tới:
                             </span>
-                            <span style={{ display: "inline-block" }}>
+                            <div style={{ display: "inline-block" }}>
                               <ToEmails toEmails={report.toEmails} />
-                            </span>
+                            </div>
                           </p>
                         </Col>
                         <Col span={8}>
@@ -177,7 +177,7 @@ export default class Body extends React.Component {
                                   <div className="file-item">
                                     {item.icon === "picture" ? (
                                       <div className="image-file">
-                                        <div class="figure">
+                                        <div className="figure">
                                           <img
                                             src={GlobalService.imageUrl(
                                               item.fileId
@@ -272,9 +272,9 @@ export default class Body extends React.Component {
                           }`}
                         >
                           <span style={{ display: "inline-block" }}>Tới:</span>
-                          <span style={{ display: "inline-block" }}>
+                          <div style={{ display: "inline-block" }}>
                             <ToEmails toEmails={data.toEmails} />
-                          </span>
+                          </div>
                         </p>
                       </Col>
                       <Col span={8}>
@@ -308,7 +308,7 @@ export default class Body extends React.Component {
                                 <div className="file-item">
                                   {item.icon === "picture" ? (
                                     <div className="image-file">
-                                      <div class="figure">
+                                      <div className="figure">
                                         <img
                                           src={GlobalService.imageUrl(
                                             item.fileId

@@ -159,7 +159,10 @@ class Report extends React.Component {
                         <Badge count={report.departmentName} />
                         {report.projectId && (
                           <Badge
-                            style={{ backgroundColor: "#1890FF" }}
+                            style={{
+                              backgroundColor: "#1890FF",
+                              margin: "0 10px"
+                            }}
                             count={
                               report.departmentCodeOfProject +
                               " - " +
@@ -167,6 +170,7 @@ class Report extends React.Component {
                             }
                           />
                         )}
+                        <Badge count={report.reply.length} />
                         <p className="title">{report.title}</p>
 
                         <p className="shortContent">
