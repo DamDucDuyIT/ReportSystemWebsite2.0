@@ -10,6 +10,7 @@ namespace ReportSystemWebApplication.Persistences.IRepositories
         void AddProject(Project project);
         void RemoveProject(Project project);
         Task<QueryResult<Project>> GetProjects(Query queryObj);
+        Task<QueryResult<Project>> GetProjectsUserCreatedAndReceived(Query queryObj);
         Task<Project> GetProjectByCode(string code, bool includeRelated = true);
         Task<QueryResult<ProjectByDepartment>> GetProjectOfUserWithEmail(Query queryObj);
     }

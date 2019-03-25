@@ -11,6 +11,14 @@ function getHeader() {
   return header;
 }
 
+function getHeaderDownload() {
+  var header = {
+    "Content-Type": "application/octet-stream",
+    Authorization: "Bearer " + authService.getLoggedInUser().access_token
+  };
+  return header;
+}
+
 // function handleErrors(response) {
 //   if (!response.ok) {
 //     throw Error(response.statusText);
@@ -116,4 +124,19 @@ export const remove = async url => {
     .catch(error => {
       return error.response;
     });
+};
+
+export const download = async (url, fileName) => {
+  axios({
+    url: constant.BASE_URL + url,
+    method: "GET",
+    responseType: "blob" // important
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    document.body.appendChild(link);
+    link.click();
+  });
 };

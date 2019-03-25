@@ -22,6 +22,7 @@ class Report extends React.Component {
       isFirstLoaded: false
     };
     this.renderReport = this.renderReport.bind(this);
+    this.onDownload = this.onDownload.bind(this);
   }
 
   componentDidMount() {
@@ -35,19 +36,17 @@ class Report extends React.Component {
     if (
       isFirstLoaded === false &&
       this.props.reports &&
-      this.props.reports.items &&
-      this.props.reports.items.length > 0
+      this.props.reports.length > 0
     ) {
       this.setState({
-        reports: this.props.reports.items,
+        //reports: this.props.reports.items,
         isFirstLoaded: true
       });
     }
   }
 
   renderReportAndRead = report => {
-    console.log(report);
-    var reports = this.state.reports;
+    var reports = this.props.reports;
     var reportTemp = report.to.find(t => t.email === userEmail);
 
     reportTemp &&
@@ -62,33 +61,39 @@ class Report extends React.Component {
         });
       });
 
-    this.setState({ reports });
+    //this.setState({ reports });
     this.renderReport(report.reportId);
   };
 
   renderReport = reportId => {
-    const reports = this.props.reports.items;
+    const reports = this.props.reports;
     if (
       this.state.report === undefined ||
       reportId !== this.state.report.reportId
     ) {
       var report = {};
       if (reportId === 0) {
-        report = this.props.reports.items[0];
+        report = this.props.reports[0];
       } else {
-        report = this.props.reports.items.find(o => o.reportId === reportId);
+        report = this.props.reports.find(o => o.reportId === reportId);
       }
 
       this.setState({
-        reportId: report.reportId,
-        report,
-        reports
+        reportId: report.reportId
+        // report,
+        // reports
       });
     }
   };
 
   render() {
-    const { reports } = this.state;
+    const { reports } = this.props;
+    var report;
+    if (reports) {
+      report = reports
+        ? reports.find(o => o.reportId === this.state.reportId)
+        : undefined;
+    }
 
     return (
       <div>
@@ -122,7 +127,7 @@ class Report extends React.Component {
                 </Menu>
               </div>
               <div>
-                <Body data={this.state.report} />
+                <Body data={report} onDownload={this.onDownload} />
               </div>
             </div>
           ) : (
@@ -135,6 +140,11 @@ class Report extends React.Component {
         )}
       </div>
     );
+  }
+
+  onDownload(fileId, fileName) {
+    console.log(fileId + " " + fileName);
+    this.props.download(fileId, fileName);
   }
 }
 

@@ -167,7 +167,9 @@ export const addReport = async (data, content, shortContent, fileList) => {
 // Load Compose Form
 export const loadComposeForm = async (dispatch, isLoaded) => {
   const currentEmail = authService.getLoggedInUser().email;
-  const accounts = await dataService.get("api/accounts/getall");
+  const accounts = await dataService.get(
+    "api/accounts/getallinbranch/" + authService.getLoggedInUser().departmentId
+  );
   const projects = await dataService.get(
     "api/projects/getallprojectofuser?email=a@a.com"
   );

@@ -27,6 +27,22 @@ namespace ReportSystemWebApplication.Controllers
             this.departmentRepository = departmentRepository;
         }
 
+
+        // GET: api/projects/getprojectsusercreatedandreceived
+        [HttpGet]
+        [Route("getprojectsusercreateandreceive")]
+        public async Task<QueryResultResource<ProjectResource>> GetProjectsUserCreatedAndReceived(QueryResource queryResource)
+        {
+            //convert queryresource json into query object
+            var query = mapper.Map<QueryResource, Query>(queryResource);
+
+            //get all the Projects with filter and sorting form of the query
+            var queryResult = await projectRepository.GetProjectsUserCreatedAndReceived(query);
+
+            //convert all of Projects into ProjectResource json
+            return mapper.Map<QueryResult<Project>, QueryResultResource<ProjectResource>>(queryResult);
+        }
+
         // GET: api/projects/getall
         [HttpGet]
         [Route("getall")]

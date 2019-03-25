@@ -44,6 +44,8 @@ export const actionCreators = {
         const departmentId = window.location.pathname.split("/")[4];
         if (window.location.pathname.split("/")[3] === "c") {
           loadData(dispatch, departmentId, getState().report.isLoaded);
+        } else if (window.location.pathname.split("/")[2] === "sent") {
+          loadSentReports(dispatch, getState().report.isLoaded);
         }
       });
 
@@ -53,6 +55,8 @@ export const actionCreators = {
           const departmentId = window.location.pathname.split("/")[4];
           if (window.location.pathname.split("/")[3] === "c") {
             loadData(dispatch, departmentId, getState().report.isLoaded);
+          } else if (window.location.pathname.split("/")[2] === "sent") {
+            loadSentReports(dispatch, getState().report.isLoaded);
           }
         }
       );
@@ -185,6 +189,10 @@ export const actionCreators = {
         );
       }
     } catch (e) {}
+  },
+
+  download: (fileId, fileName) => async (dispatch, getState) => {
+    await dataService.download(`api/files/download/` + fileId, fileName);
   }
 };
 
@@ -217,7 +225,7 @@ export const loadSentReports = async (dispatch, isLoaded) => {
   dispatch({
     type: receiveReportsType,
     isLoaded,
-    reports
+    reports: reports.items
   });
 };
 

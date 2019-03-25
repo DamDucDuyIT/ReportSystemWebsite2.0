@@ -94,7 +94,7 @@ export const actionCreators = {
 export const loadReplyForm = async (dispatch, isLoaded, reportId) => {
   const currentEmail = authService.getLoggedInUser().email;
   const report = await dataService.get("api/reports/getreport/" + reportId);
-  const accounts = await dataService.get("api/accounts/getall");
+  // const accounts = await dataService.get("api/accounts/getall");
   const projects = await dataService.get(
     "api/projects/getallprojectofuser?email=a@a.com"
   );
@@ -111,7 +111,7 @@ export const loadReplyForm = async (dispatch, isLoaded, reportId) => {
     isLoaded,
     currentEmail,
     report,
-    accounts,
+    //accounts,
     projects,
     toEmailsOfReport
   });
@@ -134,7 +134,7 @@ export const reducer = (state, action) => {
       isLoaded: action.isLoaded,
       currentEmail: action.currentEmail,
       report: action.report,
-      accounts: action.accounts,
+      //accounts: action.accounts,
       projects: action.projects,
       toEmailsOfReport: action.toEmailsOfReport
     };

@@ -12,5 +12,6 @@ namespace ReportSystemWebApplication.Persistences.IRepositories
         void RemoveApplicationUser(ApplicationUser applicationUser);
         Task<QueryResult<ApplicationUser>> GetApplicationUsers(Query queryObj);
         void UpdateUserInformation(ApplicationUser user, ApplicationUserResource applicationUserResource);
+        Task<QueryResult<ApplicationUser>> GetApplicationUsersInBranch(Query queryObj, long departmentId);
     }
 }
