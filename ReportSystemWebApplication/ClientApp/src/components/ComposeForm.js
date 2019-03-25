@@ -40,7 +40,6 @@ class ComposeForm extends React.Component {
           var shortContent = document.createElement("html");
           shortContent.innerHTML = this.state.content;
 
-          const isLoaded = false;
           addReport(
             values,
             this.state.content,
@@ -49,7 +48,14 @@ class ComposeForm extends React.Component {
           ).then(response => {
             if (response === 200) {
               message.success("Đã gửi thành công!");
+              this.props.form.resetFields();
+              this.setState({
+                content: "",
+                files: []
+              });
               this.props.onClose();
+            } else {
+              message.error("Gửi báo cáo không thành công!");
             }
           });
         }
@@ -60,16 +66,6 @@ class ComposeForm extends React.Component {
   componentDidMount() {
     const isLoaded = false;
     this.props.requestComposeForm(isLoaded);
-  }
-
-  setFileList(info) {
-    var fileList = [];
-    for (var i = 0; i < info.length; i++) {
-      fileList.push(info[i].originFileObj);
-    }
-    this.setState({
-      fileList: fileList
-    });
   }
 
   render() {
@@ -146,12 +142,6 @@ class ComposeForm extends React.Component {
             )}
           </Form.Item>
 
-          {/* <LzEditor
-            active={false}
-            importContent={this.state.htmlContent}
-            cbReceiver={this.receiveHtml}
-            // convertFormat="raw"
-          /> */}
           <JoditEditor
             editorRef={this.setRef}
             value={this.state.content}

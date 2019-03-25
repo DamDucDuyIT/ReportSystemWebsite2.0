@@ -46,6 +46,7 @@ class Report extends React.Component {
   }
 
   renderReportAndRead = report => {
+    console.log(report);
     var reports = this.state.reports;
     var reportTemp = report.to.find(t => t.email === userEmail);
 
@@ -120,7 +121,7 @@ class Report extends React.Component {
                   ))}
                 </Menu>
               </div>
-              <div style={{ height: maxHeight, overflow: "scroll" }}>
+              <div>
                 <Body data={this.state.report} />
               </div>
             </div>

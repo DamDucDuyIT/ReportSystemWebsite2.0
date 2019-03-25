@@ -48,6 +48,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 .Include(r => r.Reply)
                     .ThenInclude(re => re.From)
                 .Include(r => r.Reply)
+                    .ThenInclude(re => re.Files)
+                .Include(r => r.Reply)
                     .ThenInclude(re => re.Project)
                         .ThenInclude(p => p.Department)
                 //.Include(r => r.Read)
@@ -157,6 +159,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                                         .ThenInclude(t => t.Department)
                                 .Include(r => r.Reply)
                                     .ThenInclude(re => re.From)
+                                .Include(r => r.Reply)
+                                    .ThenInclude(re => re.Files)
                                 .Where(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.ToEmail)) && r.IsReply == false)
                                 .AsNoTracking()
                                 .ToListAsync();
@@ -221,6 +225,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                              .ThenInclude(t => t.Department)
                        .Include(r => r.Reply)
                         .ThenInclude(re => re.From)
+                    .Include(r => r.Reply)
+                        .ThenInclude(re => re.Files)
                     .AsNoTracking()
                     //.Include(r => r.Read)
                     .AsQueryable();

@@ -24,11 +24,15 @@
 }
 
 .report-files {
+  display: flex;
   margin-top: 1em;
   border-top: 1px solid #dddddd;
   padding: 1em 0;
 }
 
+.report-files > .file-item {
+  margin-right: 1em;
+}
 .file {
   height: 120px;
   /* background: red; */

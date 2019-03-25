@@ -63,11 +63,6 @@ export default class Body extends React.Component {
   };
   render() {
     const { data } = this.props;
-    var content = "";
-    if (data !== undefined) {
-      content = data.content;
-    }
-    // image = require("../../upload/file/1.jpg");
     return (
       <div className="report-group">
         {data ? (
@@ -95,21 +90,18 @@ export default class Body extends React.Component {
               />
             </Drawer>
             <div className="report-header">
-              <p className="title">{data.title}</p>9
+              <p className="title">{data.title}</p>
               <Button
                 className="reply-button"
                 shape="circle"
                 icon="form"
-                onClick={
-                  console.log(data) ||
-                  this.showReplyDrawer.bind(
-                    this,
-                    data.reportId,
-                    data.toEmails,
-                    data.projectId,
-                    data.title
-                  )
-                }
+                onClick={this.showReplyDrawer.bind(
+                  this,
+                  data.reportId,
+                  data.toEmails,
+                  data.projectId,
+                  data.title
+                )}
               />
             </div>
 
@@ -179,9 +171,65 @@ export default class Body extends React.Component {
                                 __html: report.content
                               }}
                             />
-                            {data.files.length > 0 && (
+                            {report.files.length > 0 && (
                               <div className="report-files">
-                                {data.files.length}
+                                {report.files.map(item => (
+                                  <div className="file-item">
+                                    {item.icon === "picture" ? (
+                                      <div className="image-file">
+                                        <div class="figure">
+                                          <img
+                                            src={GlobalService.imageUrl(
+                                              item.fileId
+                                            )}
+                                            alt="image"
+                                          />
+                                          <div className="figcaption">
+                                            <div>
+                                              <h5>{item.title}</h5>
+                                            </div>
+                                            <div>
+                                              <p>
+                                                <Icon
+                                                  type="eye"
+                                                  onClick={() =>
+                                                    this.zoomImage(item.fileId)
+                                                  }
+                                                />
+                                                <Icon
+                                                  type="download"
+                                                  onClick={() =>
+                                                    console.log("download")
+                                                  }
+                                                />
+                                              </p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <Modal
+                                          title="Basic Modal"
+                                          visible={this.state.visible}
+                                          className="image-modal"
+                                          onCancel={this.handleCancel}
+                                          style={{ height: mh - 200 }}
+                                        >
+                                          <img
+                                            src={GlobalService.imageUrl(
+                                              this.state.fileId
+                                            )}
+                                          />
+                                        </Modal>
+                                      </div>
+                                    ) : (
+                                      <div
+                                        className="other-file"
+                                        onClick={() => console.log("download")}
+                                      >
+                                        {item.title}
+                                      </div>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
                             )}
                           </div>
@@ -232,7 +280,7 @@ export default class Body extends React.Component {
                       <Col span={8}>
                         <p className="item-header-info">
                           <span>
-                            <span className="time">14:13, 4 thg 3, 2019</span>
+                            <span className="time">{data.createOn}</span>
                           </span>
                         </p>
                       </Col>
@@ -254,64 +302,65 @@ export default class Body extends React.Component {
                             className="report-content"
                             dangerouslySetInnerHTML={{ __html: data.content }}
                           />
-                          {console.log(data.files)}
                           {data.files.length > 0 && (
                             <div className="report-files">
-                              {data.files.map(item =>
-                                item.icon === "picture" ? (
-                                  <div className="image-file">
-                                    <div class="figure">
-                                      <img
-                                        src={GlobalService.imageUrl(
-                                          item.fileId
-                                        )}
-                                        alt="image"
-                                      />
-                                      <div className="figcaption">
-                                        <div>
-                                          <h5>{item.title}</h5>
-                                        </div>
-                                        <div>
-                                          <p>
-                                            <Icon
-                                              type="eye"
-                                              onClick={() =>
-                                                this.zoomImage(item.fileId)
-                                              }
-                                            />
-                                            <Icon
-                                              type="download"
-                                              onClick={() =>
-                                                console.log("download")
-                                              }
-                                            />
-                                          </p>
+                              {data.files.map(item => (
+                                <div className="file-item">
+                                  {item.icon === "picture" ? (
+                                    <div className="image-file">
+                                      <div class="figure">
+                                        <img
+                                          src={GlobalService.imageUrl(
+                                            item.fileId
+                                          )}
+                                          alt="image"
+                                        />
+                                        <div className="figcaption">
+                                          <div>
+                                            <h5>{item.title}</h5>
+                                          </div>
+                                          <div>
+                                            <p>
+                                              <Icon
+                                                type="eye"
+                                                onClick={() =>
+                                                  this.zoomImage(item.fileId)
+                                                }
+                                              />
+                                              <Icon
+                                                type="download"
+                                                onClick={() =>
+                                                  console.log("download")
+                                                }
+                                              />
+                                            </p>
+                                          </div>
                                         </div>
                                       </div>
+                                      <Modal
+                                        title="Basic Modal"
+                                        visible={this.state.visible}
+                                        className="image-modal"
+                                        onCancel={this.handleCancel}
+                                        style={{ height: mh - 200 }}
+                                      >
+                                        <img
+                                          src={GlobalService.imageUrl(
+                                            this.state.fileId
+                                          )}
+                                        />
+                                      </Modal>
                                     </div>
-                                    <Modal
-                                      title="Basic Modal"
-                                      visible={this.state.visible}
-                                      className="image-modal"
-                                      onCancel={this.handleCancel}
-                                      style={{ height: mh - 200 }}
+                                  ) : (
+                                    <div
+                                      className="other-file"
+                                      onClick={() => console.log("download")}
                                     >
-                                      <img
-                                        src={GlobalService.imageUrl(
-                                          this.state.fileId
-                                        )}
-                                      />
-                                    </Modal>
-                                  </div>
-                                ) : (
-                                  <div
-                                    className="other-file"
-                                    onClick={() => console.log("download")}
-                                  >
-                                    {item.title}
-                                  </div>
-                                )
-                              )}
+                                      {item.title}
+                                    </div>
+                                  )}
+                                </div>
+                              ))}
                             </div>
                           )}
                         </div>

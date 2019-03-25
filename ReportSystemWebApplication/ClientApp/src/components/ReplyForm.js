@@ -2,9 +2,9 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../store/ReplyForm";
-import { Form, Icon, Input, Button, Select } from "antd";
+import { Form, Icon, Input, Button, Select, message } from "antd";
 import * as authService from "../services/Authentication";
-import { FilePond, registerPlugin } from "react-filepond";
+import { FilePond } from "react-filepond";
 import "filepond/dist/filepond.min.css";
 
 // import { Editor } from "@tinymce/tinymce-react";
@@ -22,50 +22,10 @@ class ComposeForm extends React.Component {
       responseList: [],
       selectedItems: [],
       toEmails: [],
-      files: []
+      fileList: []
     };
     this.updateContent = this.updateContent.bind(this);
   }
-  updateContent(content) {
-    this.setState({ content });
-  }
-  handleSubmit = e => {
-    e.preventDefault();
-    if (this.state.content.length < 15) {
-      alert("Xin điền nội dung! Nhập tối thiểu 15 ký tự.");
-    }
-
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        var shortContent = document.createElement("html");
-        shortContent.innerHTML = this.state.content;
-
-        const isLoaded = false;
-        this.props
-          .replyReport(
-            this.props.toEmailsOfReport,
-            this.state.content,
-            shortContent.textContent,
-            this.state.files
-          )
-          .then(response => {
-            if (response === 200) {
-              this.setState({
-                content: "",
-                shortContent: ""
-              });
-              alert("Đã gửi thành công!");
-              this.props.onClose();
-            } else {
-              alert(
-                "Đã có lỗi xảy ra trong quá trình gửi trả lời. Vui lòng thử lại"
-              );
-            }
-          });
-      }
-    });
-  };
-
   componentDidMount() {
     const isLoaded = false;
     const { report } = this.props;
@@ -90,38 +50,52 @@ class ComposeForm extends React.Component {
         this.props.requestReplyForm(!this.props.isLoaded, reportId);
       }
     }
-    // console.log(this.state.toEmails);
-    // if (this.state.toEmails.length < 1) {
-    //   console.log("dsdsdsds");
-    //   const fromEmail = this.props.fromEmail;
-    //   var toEmails = [];
-    //   if (this.props.accounts && this.props.accounts.items) {
-    //     if (fromEmail === userEmail) {
-    //       toEmails = this.props.report.toEmails;
-    //     } else {
-    //       this.props.report.toEmails.map(item => {
-    //         if (item !== userEmail) {
-    //           toEmails.push(item);
-    //         }
-    //       });
-    //       if (!toEmails.includes(fromEmail)) {
-    //         toEmails.push(fromEmail);
-    //       }
-    //     }
-    //     this.setState({
-    //       toEmails
-    //     });
-    //   }
-    // }
   }
-  // onFieldsChange(props, changedFields) {
-  //   props.onChange(changedFields);
-  // }
+
+  updateContent(content) {
+    this.setState({ content });
+  }
+  handleSubmit = e => {
+    e.preventDefault();
+    if (this.state.content.length < 15) {
+      alert("Xin điền nội dung! Nhập tối thiểu 15 ký tự.");
+    }
+
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        var shortContent = document.createElement("html");
+        shortContent.innerHTML = this.state.content;
+
+        const { files, content } = this.state;
+
+        this.props
+          .replyReport(
+            values.toEmails,
+            content,
+            shortContent.textContent,
+            files
+          )
+          .then(res => {
+            if (res.status === 200) {
+              message.success("Đã gửi thành công!");
+              this.props.form.resetFields();
+              this.setState({
+                content: "",
+                files: []
+              });
+              this.props.onClose();
+            } else {
+              message.error("Gửi báo cáo không thành công!");
+            }
+          });
+      }
+    });
+  };
+
   render() {
     console.log(this.props.report);
     const { getFieldDecorator } = this.props.form;
     const { report, toEmailsOfReport } = this.props;
-    const { selectedItems } = this.state;
 
     var projects = [];
     if (this.props.accounts && this.props.accounts.items) {
@@ -204,6 +178,9 @@ class ComposeForm extends React.Component {
             />
             <br />
             <FilePond
+              ref={ref => (this.pond = ref)}
+              files={this.state.files}
+              allowMultiple={true}
               onupdatefiles={fileItems => {
                 this.setState({
                   files: fileItems.map(fileItem => fileItem.file)

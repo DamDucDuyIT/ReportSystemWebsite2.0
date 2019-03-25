@@ -47,6 +47,7 @@ export const actionCreators = {
     fileList
   ) => async (dispatch, getState) => {
     try {
+      console.log(fileList);
       const fromEmail = authService.getLoggedInUser().email;
 
       const report = await dataService.get(
@@ -81,11 +82,10 @@ export const actionCreators = {
           var fileId = file.data.fileId;
           await dataService.upload("api/files/upload/" + fileId, fileList[i]);
         }
+        return response;
+      } else {
+        throw "Error!";
       }
-
-      // const response = {};
-      // response["status"] = 200
-      return response.status;
     } catch (e) {}
   }
 };

@@ -312,6 +312,9 @@ p {
   min-height: 40px;
   border-radius: 20px !important;
 }
+.compose-form .ant-select-search__field {
+  margin-left: 5px;
+}
 .compose-form .ant-select-selection__rendered {
   margin-top: 4px;
   margin-left: 8px;
@@ -542,6 +545,9 @@ p {
   background: #c4c4c4;
   color: #313131;
 }
+.ant-modal-mask {
+  background: rgba(58, 57, 57, 0.45);
+}
 .membersForm {
   margin-top: 10px;
   line-height: 20px;
@@ -698,4 +704,10 @@ p {
 .other-file:hover {
   background: rgb(145, 145, 145);
   color: #fff;
+}
+
+.refresh-icon {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
