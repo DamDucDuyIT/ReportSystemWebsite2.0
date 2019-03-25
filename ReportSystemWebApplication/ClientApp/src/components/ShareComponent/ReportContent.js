@@ -279,7 +279,12 @@ export default class Body extends React.Component {
                                                 this.zoomImage(item.fileId)
                                               }
                                             />
-                                            <Icon type="download" />
+                                            <Icon
+                                              type="download"
+                                              onClick={() =>
+                                                console.log("download")
+                                              }
+                                            />
                                           </p>
                                         </div>
                                       </div>
@@ -299,7 +304,12 @@ export default class Body extends React.Component {
                                     </Modal>
                                   </div>
                                 ) : (
-                                  <div className="other-file">{item.title}</div>
+                                  <div
+                                    className="other-file"
+                                    onClick={() => console.log("download")}
+                                  >
+                                    {item.title}
+                                  </div>
                                 )
                               )}
                             </div>
