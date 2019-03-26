@@ -180,18 +180,42 @@ p {
   color: #313131;
   background: #53cdd6bb;
 }
-/* .ck.ck-toolbar {
-  border-radius: 4px 4px 0 0 !important;
+
+.report-menu .toolbar {
+  height: 50px;
+  background: #40a9ff;
+  padding: 8px 15px;
+  color: #fff;
 }
-.ck.ck-content {
-  min-height: 200px;
-  border: #ececec 1px solid;
-  transition: border-color 0.5s;
-  border-radius: 0 0 4px 4px !important;
+
+.report-menu .toolbar .pages {
+  display: flex;
+  justify-content: flex-end;
 }
-.ck.ck-content:focus {
-  border-color: #20e75c !important;
-} */
+
+.report-menu .toolbar .pages .numbers {
+  padding-top: 5px;
+  margin-right: 10px;
+}
+
+.report-menu .toolbar .pages .n-p-btns button {
+  border: none;
+  color: rgb(214, 214, 214);
+  background: transparent;
+}
+.report-menu .toolbar .pages .n-p-btns button:hover {
+  background: rgba(207, 207, 207, 0.342);
+  color: #fff;
+}
+.report-menu .toolbar .pages .n-p-btns button[disabled] {
+  color: rgb(185, 185, 185);
+}
+.report-menu .toolbar .pages .n-p-btns button[disabled]:hover {
+  background: transparent;
+  cursor: default;
+  color: rgb(185, 185, 185);
+}
+/* Jodit */
 .jodit_toolbar {
   border-radius: 20px 20px 0 0;
   padding: 5px !important;
@@ -203,6 +227,8 @@ p {
   border-radius: 0 0 20px 20px;
   padding: 5px 10px;
 }
+
+/*  */
 .compose .ant-drawer-content-wrapper,
 .reply .ant-drawer-content-wrapper {
   width: 50% !important;

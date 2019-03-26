@@ -24,18 +24,15 @@ class Report extends React.Component {
     super(props);
     const defaultId = window.location.pathname.split("/")[4];
     const splitId = defaultId.split("+");
-    const pageSize = 3;
+
     this.state = {
       departmentId: splitId[0],
       projectId: splitId[1],
       reportId: 0,
       openKeys: [],
       loading: false,
-      isFirstLoaded: false,
       page: 1,
-      pageSize: pageSize,
-      start: 1,
-      end: pageSize
+      pageSize: 40
     };
     this.renderReport = this.renderReport.bind(this);
   }
@@ -60,7 +57,7 @@ class Report extends React.Component {
 
     var projectId = this.props.match.params.projectId;
     var prevProjectId = prevProps.match.params.projectId;
-    const { isFirstLoaded, pageSize } = this.state;
+    const { pageSize } = this.state;
     if (isReload === true) {
       isReload = false;
       this.props.reloadByProject(departmentId, "0", 1, pageSize);
@@ -128,34 +125,31 @@ class Report extends React.Component {
     }
   };
   next() {
-    const { page, pageSize, start, end } = this.state;
-    const { totalItems } = this.props;
+    var { page, pageSize } = this.state;
     const departmentId = this.props.match.params.departmentId;
     const projectId = this.props.match.params.projectId.substring(1);
     this.props.loadNext(departmentId, projectId, page + 1, pageSize);
+
     this.setState({
-      page: page + 1,
-      start: start + pageSize,
-      end: end + pageSize > totalItems ? totalItems : end + pageSize
+      page: page + 1
     });
   }
 
   previous() {
-    const { page, pageSize, start, end } = this.state;
-    const { totalItems } = this.props;
+    var { page, pageSize } = this.state;
+
     const departmentId = this.props.match.params.departmentId;
     const projectId = this.props.match.params.projectId.substring(1);
     this.props.loadNext(departmentId, projectId, page - 1, pageSize);
+
     this.setState({
-      page: page - 1,
-      start: start - pageSize < 0 ? 0 : start - pageSize,
-      end: end - pageSize
+      page: page - 1
     });
   }
 
   render() {
-    var { reports, totalItems } = this.props;
-    const { start, end } = this.state;
+    var { reports, totalItems, isLoaded, start, end } = this.props;
+
     var report;
     if (reports) {
       report = reports
@@ -169,13 +163,25 @@ class Report extends React.Component {
             reports.length > 0 ? (
               <div>
                 <div className="toolbar">
-                  {start} - {end} - {totalItems}
-                  {start > 1 && (
-                    <Button onClick={() => this.previous()}>Previous</Button>
-                  )}
-                  {end < totalItems && (
-                    <Button onClick={() => this.next()}>Next</Button>
-                  )}
+                  <div className="pages">
+                    <div className="numbers">
+                      {start} - {end} trong số {totalItems}
+                    </div>
+                    <div className="n-p-btns">
+                      <Button
+                        onClick={() => this.previous()}
+                        icon="left"
+                        shape="circle"
+                        disabled={start > 1 ? false : true}
+                      />
+                      <Button
+                        onClick={() => this.next()}
+                        icon="right"
+                        shape="circle"
+                        disabled={end < totalItems ? false : true}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <Menu
                   mode="inline"

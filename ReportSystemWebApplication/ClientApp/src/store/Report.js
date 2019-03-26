@@ -19,7 +19,9 @@ const initialState = {
   reports: [],
   isLoading: false,
   hubConnectionDepartment: [],
-  hubConnectionProject: []
+  hubConnectionProject: [],
+  start: 1,
+  end: 1
 };
 
 export const actionCreators = {
@@ -180,7 +182,7 @@ export const actionCreators = {
     dispatch,
     getState
   ) => {
-    const isLoaded = getState().report.isLoaded;
+    const isLoaded = false;
     loadReportsByProject(
       dispatch,
       departmentId,
@@ -291,14 +293,20 @@ export const loadReportsByProject = async (
       );
     }
   }
-  console.log(reports);
+
+  const start = pageSize * (page - 1) + 1;
+  const end = start + (reports.items.length - 1);
+
+  isLoaded = true;
   dispatch({
     type: receiveReportsByProjectType,
     isLoaded,
     departmentId,
     projectId,
     reports: reports.items,
-    totalItems: reports.totalItems
+    totalItems: reports.totalItems,
+    start,
+    end
   });
 };
 
@@ -366,7 +374,9 @@ export const reducer = (state, action) => {
       departmentId: action.departmentId,
       projectId: action.projectId,
       reports: action.reports,
-      totalItems: action.totalItems
+      totalItems: action.totalItems,
+      start: action.start,
+      end: action.end
     };
   }
 
