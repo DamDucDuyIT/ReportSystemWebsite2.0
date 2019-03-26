@@ -35,6 +35,7 @@ class Report extends React.Component {
       pageSize: 40
     };
     this.renderReport = this.renderReport.bind(this);
+    this.onDownload = this.onDownload.bind(this);
   }
 
   componentDidMount() {
@@ -128,7 +129,7 @@ class Report extends React.Component {
     var { page, pageSize } = this.state;
     const departmentId = this.props.match.params.departmentId;
     const projectId = this.props.match.params.projectId.substring(1);
-    this.props.loadNext(departmentId, projectId, page + 1, pageSize);
+    this.props.reloadByProject(departmentId, projectId, page + 1, pageSize);
 
     this.setState({
       page: page + 1
@@ -148,7 +149,7 @@ class Report extends React.Component {
   }
 
   render() {
-    var { reports, totalItems, isLoaded, start, end } = this.props;
+    var { reports, totalItems, start, end } = this.props;
 
     var report;
     if (reports) {
@@ -158,89 +159,96 @@ class Report extends React.Component {
     }
     return (
       <div>
-        <div className="report-menu">
+        <div>
           {reports ? (
             reports.length > 0 ? (
               <div>
-                <div className="toolbar">
-                  <div className="pages">
-                    <div className="numbers">
-                      {start} - {end} trong số {totalItems}
-                    </div>
-                    <div className="n-p-btns">
-                      <Button
-                        onClick={() => this.previous()}
-                        icon="left"
-                        shape="circle"
-                        disabled={start > 1 ? false : true}
-                      />
-                      <Button
-                        onClick={() => this.next()}
-                        icon="right"
-                        shape="circle"
-                        disabled={end < totalItems ? false : true}
-                      />
+                <div className="report-menu">
+                  <div className="toolbar">
+                    <div className="pages">
+                      <div className="numbers">
+                        {start} - {end} trong số {totalItems}
+                      </div>
+                      <div className="n-p-btns">
+                        <Button
+                          onClick={() => this.previous()}
+                          icon="left"
+                          shape="circle"
+                          disabled={start > 1 ? false : true}
+                        />
+                        <Button
+                          onClick={() => this.next()}
+                          icon="right"
+                          shape="circle"
+                          disabled={end < totalItems ? false : true}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <Menu
-                  mode="inline"
-                  // openKeys={this.state.openKeys}
-                  selectedKeys={[this.state.reportId + ""]}
-                  onOpenChange={this.onOpenChange}
-                  className="menu-scroll report-list"
-                >
-                  {reports.map(
-                    report =>
-                      report.projectId && (
-                        <Menu.Item
-                          key={report.reportId}
-                          id={report.reportId}
-                          className={`report-item ${
-                            report.to.find(t => t.email === userEmail)
-                              .isRead === true
-                              ? "read"
-                              : "unread"
-                          }`}
-                          onClick={() =>
-                            this.renderReportAndRead(
-                              report.reportId,
+                  <Menu
+                    mode="inline"
+                    // openKeys={this.state.openKeys}
+                    selectedKeys={[this.state.reportId + ""]}
+                    onOpenChange={this.onOpenChange}
+                    className="menu-scroll report-list"
+                  >
+                    {reports.map(
+                      report =>
+                        report.projectId && (
+                          <Menu.Item
+                            key={report.reportId}
+                            id={report.reportId}
+                            className={`report-item ${
                               report.to.find(t => t.email === userEmail)
-                            )
-                          }
-                        >
-                          <p className="email">{report.fromEmail}</p>
-
-                          <div className="badge-zone">
-                            <div className="badge-item department">
-                              {report.departmentName}
-                            </div>
-                            {report.projectId && (
-                              <div className="badge-item project">
-                                <span className="department-code">
-                                  {report.departmentCodeOfProject}
+                                .isRead === true
+                                ? "read"
+                                : "unread"
+                            }`}
+                            onClick={() =>
+                              this.renderReportAndRead(
+                                report.reportId,
+                                report.to.find(t => t.email === userEmail)
+                              )
+                            }
+                          >
+                            <div>
+                              <span className="email">{report.fromEmail}</span>
+                              {report.reply.length > 0 && (
+                                <span className="reply-count">
+                                  {report.reply.length}
                                 </span>
-                                <i>~</i>
-                                <span>{report.projectName}</span>
-                              </div>
-                            )}
-                            {report.reply.length > 0 && (
-                              <div className="badge-item count">
-                                {report.reply.length}
-                              </div>
-                            )}
-                          </div>
+                              )}
+                            </div>
 
-                          <p className="title">{report.title}</p>
-                          <p className="shortContent">
-                            {report.reply.length === 0
-                              ? report.shortContent
-                              : report.reply[0].shortContent}
-                          </p>
-                        </Menu.Item>
-                      )
-                  )}
-                </Menu>
+                            <div className="badge-zone">
+                              <div className="badge-item department">
+                                {report.departmentName}
+                              </div>
+                              {report.projectId && (
+                                <div className="badge-item project">
+                                  <span className="department-code">
+                                    {report.departmentCodeOfProject}
+                                  </span>
+                                  <i>~</i>
+                                  <span>{report.projectName}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            <p className="title">{report.title}</p>
+                            <p className="shortContent">
+                              {report.reply.length === 0
+                                ? report.shortContent
+                                : report.reply[0].shortContent}
+                            </p>
+                          </Menu.Item>
+                        )
+                    )}
+                  </Menu>
+                </div>
+                <div>
+                  <Body data={report} onDownload={this.onDownload} />
+                </div>
               </div>
             ) : (
               <AlertZone message="Không có dữ liệu!" type="file" />
@@ -251,11 +259,12 @@ class Report extends React.Component {
             </div>
           )}
         </div>
-        <div>
-          <Body data={report} />
-        </div>
       </div>
     );
+  }
+  onDownload(fileId, fileName) {
+    console.log(fileId + " " + fileName);
+    this.props.download(fileId, fileName);
   }
 }
 

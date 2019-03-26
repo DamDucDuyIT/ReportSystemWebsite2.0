@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../store/Report";
 import { maxHeight } from "../Layout";
-import { Row, Col, Menu, Badge, Icon } from "antd";
+import { Button, Menu, Badge, Icon } from "antd";
 import { func } from "prop-types";
 import Body from "../ShareComponent/ReportContent";
 import * as ReportService from "../../services/ReportService";
@@ -19,7 +19,9 @@ class Report extends React.Component {
       reportId: 0,
       openKeys: [],
       reports: [],
-      isFirstLoaded: false
+      isFirstLoaded: false,
+      page: 1,
+      pageSize: 3
     };
     this.renderReport = this.renderReport.bind(this);
     this.onDownload = this.onDownload.bind(this);
@@ -27,7 +29,8 @@ class Report extends React.Component {
 
   componentDidMount() {
     const isLoaded = false;
-    this.props.requestSentReports(isLoaded);
+    const { pageSize } = this.state;
+    this.props.requestSentReports(1, pageSize, isLoaded);
   }
 
   componentDidUpdate(prevProps) {
@@ -86,8 +89,29 @@ class Report extends React.Component {
     }
   };
 
+  next() {
+    var { page, pageSize } = this.state;
+    const departmentId = this.props.match.params.departmentId;
+    this.props.reloadData(departmentId, page + 1, pageSize);
+
+    this.setState({
+      page: page + 1
+    });
+  }
+
+  previous() {
+    var { page, pageSize } = this.state;
+
+    const departmentId = this.props.match.params.departmentId;
+    this.props.reloadData(departmentId, page - 1, pageSize);
+
+    this.setState({
+      page: page - 1
+    });
+  }
+
   render() {
-    const { reports } = this.props;
+    var { reports, totalItems, start, end } = this.props;
     var report;
     if (reports) {
       report = reports
@@ -101,6 +125,28 @@ class Report extends React.Component {
           reports.length > 0 ? (
             <div>
               <div className="report-menu">
+                <div className="toolbar">
+                  <div className="pages">
+                    <div className="numbers">
+                      {start} - {end} trong số {totalItems}
+                    </div>
+                    <div className="n-p-btns">
+                      <Button
+                        onClick={() => this.previous()}
+                        icon="left"
+                        shape="circle"
+                        disabled={start > 1 ? false : true}
+                      />
+                      <Button
+                        onClick={() => this.next()}
+                        icon="right"
+                        shape="circle"
+                        disabled={end < totalItems ? false : true}
+                      />
+                    </div>
+                  </div>
+                </div>
+
                 <Menu
                   mode="inline"
                   selectedKeys={[this.state.reportId + ""]}
@@ -115,7 +161,30 @@ class Report extends React.Component {
                       }`}
                       onClick={() => this.renderReportAndRead(report)}
                     >
-                      <p className="email">{report.fromEmail}</p>
+                      <div>
+                        <span className="email">{report.fromEmail}</span>
+                        {report.reply.length > 0 && (
+                          <span className="reply-count">
+                            {report.reply.length}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="badge-zone">
+                        <div className="badge-item department">
+                          {report.departmentName}
+                        </div>
+                        {report.projectId && (
+                          <div className="badge-item project">
+                            <span className="department-code">
+                              {report.departmentCodeOfProject}
+                            </span>
+                            <i>~</i>
+                            <span>{report.projectName}</span>
+                          </div>
+                        )}
+                      </div>
+
                       <p className="title">{report.title}</p>
                       <p className="shortContent">
                         {report.shortContent === null

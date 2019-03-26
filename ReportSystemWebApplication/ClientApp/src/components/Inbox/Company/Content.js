@@ -2,22 +2,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../../../store/Report";
-import { Row, Col, Menu, Badge, Icon, Alert } from "antd";
+import { Menu, Badge, Icon, Button } from "antd";
 import Body from "../../ShareComponent/ReportContent";
 import * as authService from "../../../services/Authentication";
 import * as ReportService from "../../../services/ReportService";
 import AlertZone from "../../ShareComponent/Alert";
 
-const SubMenu = Menu.SubMenu;
-
 var running = false;
-var isReload = false;
-var callbackFromReply = false;
 const userEmail = authService.getLoggedInUser().email;
-
-export const reload = () => {
-  isReload = true;
-};
 
 export const callback = async () => {
   running = true;
@@ -26,14 +18,15 @@ export const callback = async () => {
 class Report extends React.Component {
   constructor(props) {
     super(props);
-    const link3 = window.location.pathname.split("/")[3];
     const link4 = window.location.pathname.split("/")[4];
     this.state = {
       departmentId: link4,
       reportId: 0,
       openKeys: [],
       reports: [],
-      isFirstLoaded: false
+      isFirstLoaded: false,
+      page: 1,
+      pageSize: 40
     };
     this.renderReport = this.renderReport.bind(this);
     this.onDownload = this.onDownload.bind(this);
@@ -42,10 +35,10 @@ class Report extends React.Component {
   componentDidUpdate(prevProps) {
     const departmentId = this.props.match.params.departmentId;
     const prevDepartmentId = prevProps.match.params.departmentId;
-    const { isFirstLoaded } = this.state;
+    const { isFirstLoaded, pageSize } = this.state;
 
     if (departmentId !== prevDepartmentId) {
-      this.props.reloadData(departmentId).then(() => {
+      this.props.reloadData(departmentId, 1, pageSize).then(() => {
         this.setState({
           report: undefined,
           reportId: 0
@@ -76,7 +69,8 @@ class Report extends React.Component {
   componentDidMount() {
     const isLoaded = false;
     const departmentId = this.props.match.params.departmentId;
-    this.props.requestReports(departmentId, isLoaded);
+    const { pageSize } = this.state;
+    this.props.requestReports(departmentId, 1, pageSize, isLoaded);
   }
 
   renderReportAndRead = report => {
@@ -121,9 +115,29 @@ class Report extends React.Component {
     }
   };
 
+  next() {
+    var { page, pageSize } = this.state;
+    const departmentId = this.props.match.params.departmentId;
+    this.props.reloadData(departmentId, page + 1, pageSize);
+
+    this.setState({
+      page: page + 1
+    });
+  }
+
+  previous() {
+    var { page, pageSize } = this.state;
+
+    const departmentId = this.props.match.params.departmentId;
+    this.props.reloadData(departmentId, page - 1, pageSize);
+
+    this.setState({
+      page: page - 1
+    });
+  }
+
   render() {
-    // var reports = this.props.reports;
-    var { reports } = this.props;
+    var { reports, totalItems, start, end } = this.props;
 
     var report;
     if (reports) {
@@ -134,68 +148,95 @@ class Report extends React.Component {
 
     return (
       <div>
-        <div>
-          {reports ? (
-            reports.length > 0 ? (
-              <div>
-                <div className="report-menu">
-                  <Menu
-                    mode="inline"
-                    // openKeys={this.state.openKeys}
-                    selectedKeys={[this.state.reportId + ""]}
-                    // onOpenChange={this.onOpenChange}
-                    className="menu-scroll report-list"
-                  >
-                    {reports.map(report => (
-                      <Menu.Item
-                        key={report.reportId}
-                        id={report.reportId}
-                        className={`report-item ${
-                          ReportService.isRead(report) ? "read" : "unread"
-                        }`}
-                        onClick={() => this.renderReportAndRead(report)}
-                      >
-                        <p className="email">{report.fromEmail}</p>
+        {reports ? (
+          reports.length > 0 ? (
+            <div>
+              <div className="report-menu">
+                <div className="toolbar">
+                  <div className="pages">
+                    <div className="numbers">
+                      {start} - {end} trong số {totalItems}
+                    </div>
+                    <div className="n-p-btns">
+                      <Button
+                        onClick={() => this.previous()}
+                        icon="left"
+                        shape="circle"
+                        disabled={start > 1 ? false : true}
+                      />
+                      <Button
+                        onClick={() => this.next()}
+                        icon="right"
+                        shape="circle"
+                        disabled={end < totalItems ? false : true}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-                        <Badge count={report.departmentName} />
-                        {report.projectId && (
-                          <Badge
-                            style={{
-                              backgroundColor: "#1890FF",
-                              margin: "0 10px"
-                            }}
-                            count={
-                              report.departmentCodeOfProject +
-                              " - " +
-                              report.projectName
-                            }
-                          />
+                <Menu
+                  mode="inline"
+                  // openKeys={this.state.openKeys}
+                  selectedKeys={[this.state.reportId + ""]}
+                  // onOpenChange={this.onOpenChange}
+                  className="menu-scroll report-list"
+                >
+                  {reports.map(report => (
+                    <Menu.Item
+                      key={report.reportId}
+                      id={report.reportId}
+                      className={`report-item ${
+                        ReportService.isRead(report) ? "read" : "unread"
+                      }`}
+                      onClick={() => this.renderReportAndRead(report)}
+                    >
+                      <div>
+                        <span className="email">{report.fromEmail}</span>
+                        {report.reply.length > 0 && (
+                          <span className="reply-count">
+                            {report.reply.length}
+                          </span>
                         )}
-                        <Badge count={report.reply.length} />
-                        <p className="title">{report.title}</p>
+                      </div>
 
-                        <p className="shortContent">
-                          {report.reply.length === 0
-                            ? report.shortContent
-                            : report.reply[0].shortContent}
-                        </p>
-                      </Menu.Item>
-                    ))}
-                  </Menu>
-                </div>
-                <div>
-                  <Body data={report} onDownload={this.onDownload} />
-                </div>
+                      <div className="badge-zone">
+                        <div className="badge-item department">
+                          {report.departmentName}
+                        </div>
+                        {report.projectId && (
+                          <div className="badge-item project">
+                            <span className="department-code">
+                              {report.departmentCodeOfProject}
+                            </span>
+                            <i>~</i>
+                            <span>{report.projectName}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <p className="title">{report.title}</p>
+
+                      <p className="shortContent">
+                        {report.reply.length === 0
+                          ? report.shortContent
+                          : report.reply[0].shortContent}
+                      </p>
+                    </Menu.Item>
+                  ))}
+                </Menu>
               </div>
-            ) : (
-              <AlertZone message="Không có dữ liệu!" type="file" />
-            )
-          ) : (
-            <div className="loading-zone">
-              <Icon type="loading" /> Đang tải dữ liệu!
+              <div>
+                <Body data={report} onDownload={this.onDownload} />
+              </div>
             </div>
-          )}
-        </div>
+          ) : (
+            <AlertZone message="Không có dữ liệu!" type="file" />
+          )
+        ) : (
+          <div className="loading-zone">
+            <Icon type="loading" /> Đang tải dữ liệu!
+          </div>
+        )}
       </div>
     );
   }

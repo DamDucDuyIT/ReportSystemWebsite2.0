@@ -183,9 +183,9 @@ p {
 
 .report-menu .toolbar {
   height: 50px;
-  background: #40a9ff;
+  background: #d0d8de;
   padding: 8px 15px;
-  color: #fff;
+  color: #313131;
 }
 
 .report-menu .toolbar .pages {
@@ -200,11 +200,11 @@ p {
 
 .report-menu .toolbar .pages .n-p-btns button {
   border: none;
-  color: rgb(214, 214, 214);
+  color: #313131;
   background: transparent;
 }
 .report-menu .toolbar .pages .n-p-btns button:hover {
-  background: rgba(207, 207, 207, 0.342);
+  background: rgba(161, 161, 161, 0.342);
   color: #fff;
 }
 .report-menu .toolbar .pages .n-p-btns button[disabled] {
@@ -308,9 +308,9 @@ p {
 .custom-badge.ant-badge {
   margin-bottom: 5px;
 }
-.custom-badge > .ant-scroll-number.ant-badge-count {
-  font-size: 10px;
-  margin-left: 5px;
+.reply-count {
+  font-weight: bold;
+  float: right;
 }
 .form-drawer .ant-drawer-header {
   border-radius: 0;
