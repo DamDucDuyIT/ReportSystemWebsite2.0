@@ -163,5 +163,26 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             user.PhoneNumber = applicationUserResource.PhoneNumber;
             user.FullName = applicationUserResource.FullName;
         }
+
+        public void AddFCMToken(FCMToken fcmToken)
+        {
+            var checkFCMTokenExisted = context.FCMTokens.Any(f => f.Token.Equals(fcmToken.Token));
+
+            if (checkFCMTokenExisted == false)
+            {
+                context.FCMTokens.Add(fcmToken);
+            }
+
+        }
+
+        public async Task<IEnumerable<FCMToken>> GetFCMTokensOfEmail(string email)
+        {
+            var fcmTokens = await context.FCMTokens
+                            .Where(f => f.Email == email && f.IsDeleted == false)
+
+                            .ToListAsync();
+
+            return fcmTokens;
+        }
     }
 }

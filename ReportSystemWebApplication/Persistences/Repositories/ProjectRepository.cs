@@ -150,8 +150,6 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                                     .Where(p => p.Department.DepartmentId == userDepartment.DepartmentId)
                                     .ToList();
 
-
-
             var projectOfUserDepart = new HashSet<ProjectWithUnread>();
             foreach (var project in projectInReportInUserDepartment)
             {
@@ -267,7 +265,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var projectInReportInChildDepartment = new HashSet<Project>();
             foreach (var project in projectInReportInChildDepartmentList)
             {
-                projectInReportInChildDepartment.Add(project);
+                var projectInDB = await context.Projects.FindAsync(project.ProjectId);
+                projectInReportInChildDepartment.Add(projectInDB);
             }
 
             foreach (var project in projectInReportInChildDepartment)

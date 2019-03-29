@@ -22,7 +22,8 @@ class ComposeForm extends React.Component {
       responseList: [],
       selectedItems: [],
       fileList: [],
-      uploading: false
+      uploading: false,
+      loading: false
     };
     this.updateContent = this.updateContent.bind(this);
   }
@@ -37,6 +38,9 @@ class ComposeForm extends React.Component {
     } else {
       this.props.form.validateFields((err, values) => {
         if (!err) {
+          this.setState({
+            loading: true
+          });
           var shortContent = document.createElement("html");
           shortContent.innerHTML = this.state.content;
 
@@ -57,6 +61,10 @@ class ComposeForm extends React.Component {
             } else {
               message.error("Gửi báo cáo không thành công!");
             }
+
+            this.setState({
+              loading: false
+            });
           });
         }
       });
@@ -179,6 +187,7 @@ class ComposeForm extends React.Component {
             }}
           >
             <Button
+              loading={this.state.loading}
               type="primary"
               onClick={this.handleSubmit}
               className="round-button"

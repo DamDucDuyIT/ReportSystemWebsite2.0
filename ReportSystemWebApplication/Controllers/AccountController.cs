@@ -448,5 +448,26 @@ namespace ReportSystemWebApplication.Controllers
 
             return BadRequest(" Something wrong. We cannot update your password. Something wrong");
         }
+
+        // POST: api/accounts/addfcmtoken
+        [HttpPost]
+        [Route("addfcmtoken")]
+        public async Task<IActionResult> CreateFCMToken([FromBody] FCMTokenResource fcmTokenResource)
+        {
+            //check model is valid?
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            //map FCMTokenResource json into FCMToken model
+            var fcmToken = mapper.Map<FCMTokenResource, FCMToken>(fcmTokenResource);
+
+            //add fcmToken into database
+            applicationUserRepository.AddFCMToken(fcmToken);
+            await unitOfWork.Complete();
+
+            return Ok();
+        }
     }
 }

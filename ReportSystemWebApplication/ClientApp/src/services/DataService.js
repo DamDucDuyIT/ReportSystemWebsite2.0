@@ -73,6 +73,7 @@ export const post = async (url, data) => {
       headers: getHeader()
     })
     .then(res => {
+      console.log(res);
       return res;
     })
     .catch(error => {

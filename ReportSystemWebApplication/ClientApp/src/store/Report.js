@@ -2,6 +2,7 @@ import { push } from "react-router-redux";
 import * as authService from "../services/Authentication";
 import * as dataService from "../services/DataService";
 import * as signalR from "@aspnet/signalr";
+import { departmentId } from "./../components/Inbox/Project/Layout";
 
 const requestReportsType = "REQUEST_REPORTS";
 const receiveReportsType = "RECEIVE_REPORTS";
@@ -15,13 +16,17 @@ const receiveReportType = "RECEIVE_REPORT";
 const requestReportsByProjectType = "REQUEST_REPORTSBYPROJECT";
 const receiveReportsByProjectType = "RECEIVE_REPORTSBYPROJECT";
 
+const updateSearchParam = "UPDATE_SEARCH_PARAM";
 const initialState = {
   reports: [],
   isLoading: false,
   hubConnectionDepartment: [],
   hubConnectionProject: [],
   start: 1,
-  end: 1
+  end: 1,
+  searchparam: "",
+  page: 1,
+  pageSize: 40
 };
 
 export const actionCreators = {
@@ -48,9 +53,22 @@ export const actionCreators = {
       hubConnectionDepartment.on(authService.getLoggedInUser().email, () => {
         const departmentId = window.location.pathname.split("/")[4];
         if (window.location.pathname.split("/")[3] === "c") {
-          loadData(dispatch, departmentId, getState().report.isLoaded);
+          loadData(
+            getState,
+            dispatch,
+            departmentId,
+            getState().report.page,
+            getState().report.pageSize,
+            getState().report.isLoaded
+          );
         } else if (window.location.pathname.split("/")[2] === "sent") {
-          loadSentReports(dispatch, getState().report.isLoaded);
+          loadSentReports(
+            getState,
+            dispatch,
+            getState().report.page,
+            getState().report.pageSize,
+            getState().report.isLoaded
+          );
         }
       });
 
@@ -61,18 +79,20 @@ export const actionCreators = {
 
           if (window.location.pathname.split("/")[3] === "c") {
             loadData(
+              getState,
               dispatch,
               departmentId,
-              page,
-              pageSize,
+              getState().report.page,
+              getState().report.pageSize,
               getState().report.isLoaded
             );
           } else if (window.location.pathname.split("/")[2] === "sent") {
             loadSentReports(
+              getState,
               dispatch,
-              getState().report.isLoaded,
-              page,
-              pageSize
+              getState().report.page,
+              getState().report.pageSize,
+              getState().report.isLoaded
             );
           }
         }
@@ -94,7 +114,7 @@ export const actionCreators = {
         isLoaded,
         hubConnectionDepartment
       });
-      loadData(dispatch, departmentId, page, pageSize, isLoaded);
+      loadData(getState, dispatch, departmentId, page, pageSize, isLoaded);
     }
   },
 
@@ -110,9 +130,11 @@ export const actionCreators = {
     } else {
       dispatch({
         type: requestSentReportsType,
+        page,
+        pageSize,
         isLoaded
       });
-      loadSentReports(dispatch, page, pageSize, isLoaded);
+      loadSentReports(getState, dispatch, page, pageSize, isLoaded);
     }
   },
   //#endregion
@@ -146,9 +168,12 @@ export const actionCreators = {
       hubConnectionProject.on(authService.getLoggedInUser().email, () => {
         if (window.location.pathname.split("/")[3] === "p") {
           loadReportsByProject(
+            getState,
             dispatch,
             splitId[0],
             splitId[1],
+            getState().report.page,
+            getState().report.pageSize,
             getState().report.isLoaded
           );
         }
@@ -159,9 +184,12 @@ export const actionCreators = {
         (report, title) => {
           if (window.location.pathname.split("/")[3] === "p") {
             loadReportsByProject(
+              getState,
               dispatch,
               splitId[0],
               splitId[1],
+              getState().report.page,
+              getState().report.pageSize,
               getState().report.isLoaded
             );
           }
@@ -185,6 +213,7 @@ export const actionCreators = {
         hubConnectionProject
       });
       loadReportsByProject(
+        getState,
         dispatch,
         departmentId,
         projectId,
@@ -199,7 +228,7 @@ export const actionCreators = {
 
   reloadData: (departmentId, page, pageSize) => async (dispatch, getState) => {
     const isLoaded = getState().report.isLoaded;
-    await loadData(dispatch, departmentId, page, pageSize, isLoaded);
+    await loadData(getState, dispatch, departmentId, page, pageSize, isLoaded);
   },
 
   reloadByProject: (departmentId, projectId, page, pageSize) => async (
@@ -208,6 +237,7 @@ export const actionCreators = {
   ) => {
     const isLoaded = false;
     loadReportsByProject(
+      getState,
       dispatch,
       departmentId,
       projectId,
@@ -239,10 +269,47 @@ export const actionCreators = {
 
   download: (fileId, fileName) => async (dispatch, getState) => {
     await dataService.download(`api/files/download/` + fileId, fileName);
+  },
+
+  updateParamSearch: searchparam => async (dispatch, getState) => {
+    dispatch({
+      type: updateSearchParam,
+      searchparam
+    });
+
+    if (window.location.pathname.split("/")[3] === "c") {
+      var departmentId = window.location.pathname.split("/")[4];
+      loadData(
+        getState,
+        dispatch,
+        departmentId,
+        1,
+        40,
+        getState().report.isLoaded
+      );
+    } else if (window.location.pathname.split("/")[3] === "p") {
+      console.log("dsa");
+      const defaultId = window.location.pathname.split("/")[4];
+      const splitId = defaultId.split("+");
+
+      console.log(splitId);
+      loadReportsByProject(
+        getState,
+        dispatch,
+        splitId[0],
+        splitId[1],
+        1,
+        40,
+        getState().report.isLoaded
+      );
+    } else if (window.location.pathname.split("/")[2] === "sent") {
+      loadSentReports(getState, dispatch, 1, 40, getState().report.isLoaded);
+    }
   }
 };
 
 export const loadData = async (
+  getState,
   dispatch,
   departmentId,
   page,
@@ -251,15 +318,33 @@ export const loadData = async (
 ) => {
   const userEmail = authService.getLoggedInUser().email;
 
+  const searchparam = getState().report.searchparam;
+
   var reports = [];
-  if (departmentId === "0" || departmentId === undefined) {
-    reports = await dataService.get(
-      `api/reports/getall?toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
-    );
+  if (searchparam && searchparam !== "") {
+    if (departmentId === "0" || departmentId === undefined) {
+      reports = await dataService.get(
+        `api/reports/getall?toemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+      );
+      console.log(reports);
+    } else {
+      reports = await dataService.get(
+        `api/reports/getreportsindepartmentofuser?toemail=${userEmail}&departmentId=${departmentId}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+      );
+      console.log(reports);
+    }
   } else {
-    reports = await dataService.get(
-      `api/reports/getreportsindepartmentofuser?toemail=${userEmail}&departmentId=${departmentId}&page=${page}&pagesize=${pageSize}`
-    );
+    if (departmentId === "0" || departmentId === undefined) {
+      reports = await dataService.get(
+        `api/reports/getall?toemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+      );
+      console.log(reports);
+    } else {
+      reports = await dataService.get(
+        `api/reports/getreportsindepartmentofuser?toemail=${userEmail}&departmentId=${departmentId}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+      );
+      console.log(reports);
+    }
   }
 
   const start = pageSize * (page - 1) + 1;
@@ -271,16 +356,34 @@ export const loadData = async (
     reports: reports.items,
     totalItems: reports.totalItems,
     start,
-    end
+    end,
+    page,
+    pageSize
   });
 };
 
-export const loadSentReports = async (dispatch, page, pageSize, isLoaded) => {
+export const loadSentReports = async (
+  getState,
+  dispatch,
+  page,
+  pageSize,
+  isLoaded
+) => {
   const userEmail = authService.getLoggedInUser().email;
 
-  var reports = await dataService.get(
-    `api/reports/getall?senderemail=${userEmail}&page=${page}&pagesize=${pageSize}`
-  );
+  const searchparam = getState().report.searchparam;
+
+  var reports = [];
+  if (searchparam && searchparam !== "") {
+    reports = await dataService.get(
+      `api/reports/getall?senderemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+    );
+  } else {
+    reports = await dataService.get(
+      `api/reports/getall?senderemail=${userEmail}&page=${page}&pagesize=${pageSize}`
+    );
+  }
+
   const start = pageSize * (page - 1) + 1;
   const end = start + (reports.items.length - 1);
 
@@ -290,11 +393,14 @@ export const loadSentReports = async (dispatch, page, pageSize, isLoaded) => {
     reports: reports.items,
     totalItems: reports.totalItems,
     start,
-    end
+    end,
+    page,
+    pageSize
   });
 };
 
 export const loadReportsByProject = async (
+  getState,
   dispatch,
   departmentId,
   projectId,
@@ -303,21 +409,42 @@ export const loadReportsByProject = async (
   isLoaded
 ) => {
   const userEmail = authService.getLoggedInUser().email;
+
+  const searchparam = getState().report.searchparam;
+
   var reports = [];
 
-  if (departmentId === "0" && projectId === "0") {
-    reports = await dataService.get(
-      `api/reports/getall?isHaveproject=true&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
-    );
-  } else {
-    if (projectId === "0") {
+  if (searchparam && searchparam !== "") {
+    if (departmentId === "0" && projectId === "0") {
       reports = await dataService.get(
-        `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
+        `api/reports/getall?isHaveproject=true&toemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
       );
     } else {
+      if (projectId === "0") {
+        reports = await dataService.get(
+          `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+        );
+      } else {
+        reports = await dataService.get(
+          `api/reports/getall?isHaveproject=true&projectId=${projectId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}&searchparam=${searchparam}`
+        );
+      }
+    }
+  } else {
+    if (departmentId === "0" && projectId === "0") {
       reports = await dataService.get(
-        `api/reports/getall?isHaveproject=true&projectId=${projectId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
+        `api/reports/getall?isHaveproject=true&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
       );
+    } else {
+      if (projectId === "0") {
+        reports = await dataService.get(
+          `api/reports/getall?isHaveproject=true&toDepartmentId=${departmentId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
+        );
+      } else {
+        reports = await dataService.get(
+          `api/reports/getall?isHaveproject=true&projectId=${projectId}&toemail=${userEmail}&page=${page}&pagesize=${pageSize}`
+        );
+      }
     }
   }
 
@@ -333,7 +460,9 @@ export const loadReportsByProject = async (
     reports: reports.items,
     totalItems: reports.totalItems,
     start,
-    end
+    end,
+    page,
+    pageSize
   });
 };
 
@@ -356,7 +485,9 @@ export const reducer = (state, action) => {
       reports: action.reports,
       totalItems: action.totalItems,
       start: action.start,
-      end: action.end
+      end: action.end,
+      page: action.page,
+      pageSize: action.pageSize
     };
   }
 
@@ -374,7 +505,9 @@ export const reducer = (state, action) => {
       reports: action.reports,
       totalItems: action.totalItems,
       start: action.start,
-      end: action.end
+      end: action.end,
+      page: action.page,
+      pageSize: action.pageSize
     };
   }
 
@@ -409,7 +542,16 @@ export const reducer = (state, action) => {
       reports: action.reports,
       totalItems: action.totalItems,
       start: action.start,
-      end: action.end
+      end: action.end,
+      page: action.page,
+      pageSize: action.pageSize
+    };
+  }
+
+  if (action.type === updateSearchParam) {
+    return {
+      ...state,
+      searchparam: action.searchparam
     };
   }
 

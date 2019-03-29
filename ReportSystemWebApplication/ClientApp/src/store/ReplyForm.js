@@ -47,7 +47,6 @@ export const actionCreators = {
     fileList
   ) => async (dispatch, getState) => {
     try {
-      console.log(fileList);
       const fromEmail = authService.getLoggedInUser().email;
 
       const report = await dataService.get(
@@ -67,21 +66,24 @@ export const actionCreators = {
       data["isReply"] = true;
       data["departmentId"] = report.departmentId;
 
-      const response = await dataService.post("api/reports/add", data);
+      var response = await dataService.post("api/reports/add", data);
 
       if (response.status === 200) {
         var reportId = response.data.reportId;
-        for (var i = 0; i < fileList.length; i++) {
-          var fileData = {
-            fileName: fileList[i].name.split(".")[0],
-            title: fileList[i].name,
-            reportId: reportId
-          };
-          var file = await dataService.post("api/files/add", fileData);
+        if (fileList) {
+          for (var i = 0; i < fileList.length; i++) {
+            var fileData = {
+              fileName: fileList[i].name.split(".")[0],
+              title: fileList[i].name,
+              reportId: reportId
+            };
+            var file = await dataService.post("api/files/add", fileData);
 
-          var fileId = file.data.fileId;
-          await dataService.upload("api/files/upload/" + fileId, fileList[i]);
+            var fileId = file.data.fileId;
+            await dataService.upload("api/files/upload/" + fileId, fileList[i]);
+          }
         }
+
         return response;
       } else {
         throw "Error!";

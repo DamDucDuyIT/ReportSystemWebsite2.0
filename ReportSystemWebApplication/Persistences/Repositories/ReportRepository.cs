@@ -171,6 +171,19 @@ namespace ReportSystemWebApplication.Persistences.Repositories
 
             var query = reports.AsQueryable();
 
+            //filter
+
+            if (queryObj.SearchParam != null)
+            {
+                query = query.Where(q => q.Title.Contains(queryObj.SearchParam) || q.Content.Contains(queryObj.SearchParam) ||
+                 q.From.Email.Contains(queryObj.SearchParam) || q.To.Any(t => t.ApplicationUser.Email.Contains(queryObj.SearchParam)));
+            }
+
+            // if (queryObj.FromDepartmentId != null)
+            // {
+            //     query = query.Where(q => q.HighestChildDepartmentsOfTo.Any(h => h.DepartmentId == queryObj.ToDepartmentId));
+            // }
+
             //sort
             var columnsMap = new Dictionary<string, Expression<Func<Report, object>>>()
             {
@@ -275,6 +288,11 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             if (queryObj.ToDepartmentId != null)
             {
                 query = query.Where(q => q.HighestChildDepartmentsOfTo.Any(h => h.Department.DepartmentId == queryObj.ToDepartmentId));
+            }
+            if (queryObj.SearchParam != null)
+            {
+                query = query.Where(q => q.Title.Contains(queryObj.SearchParam) || q.Content.Contains(queryObj.SearchParam) ||
+                 q.From.Email.Contains(queryObj.SearchParam) || q.To.Any(t => t.ApplicationUser.Email.Contains(queryObj.SearchParam)));
             }
 
             // if (queryObj.FromDepartmentId != null)

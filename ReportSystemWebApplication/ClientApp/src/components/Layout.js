@@ -1,4 +1,7 @@
 import React from "react";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../../src/store/Report";
 import * as authService from "../services/Authentication";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
@@ -73,7 +76,8 @@ class ReportSystem extends React.Component {
     super(props);
 
     this.state = {
-      composeDrawerVisible: false
+      composeDrawerVisible: false,
+      search: ""
     };
   }
   showComposeDrawer = () => {
@@ -108,7 +112,9 @@ class ReportSystem extends React.Component {
                   <div className="search-global">
                     <Search
                       placeholder="Tìm kiếm trong thư"
-                      onSearch={value => console.log(value)}
+                      onSearch={value => {
+                        this.searchReport(value);
+                      }}
                       enterButton
                     />
                   </div>
@@ -180,8 +186,17 @@ class ReportSystem extends React.Component {
       </div>
     );
   }
+
+  searchReport(value) {
+    this.props.updateParamSearch(value.trim());
+  }
 }
 
 const WrappedComponent = Form.create()(ReportSystem);
 
-export default WrappedComponent;
+// export default WrappedComponent;
+
+export default connect(
+  state => state.report,
+  dispatch => bindActionCreators(actionCreators, dispatch)
+)(WrappedComponent);

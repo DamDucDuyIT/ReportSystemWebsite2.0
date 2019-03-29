@@ -16,7 +16,7 @@ namespace ReportSystemWebApplication.Resources
         public string CreatorEmail { get; set; }
         public DateTime CreateOn { get; set; }
         public long? DepartmentId { get; set; }
-        public ICollection<long> Reports { get; set; }
+        // public ICollection<long> Reports { get; set; }
         public ICollection<ProjectMemberResource> ProjectMembers { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using ReportSystemWebApplication.Extensions;
 using ReportSystemWebApplication.Hubs;
 using ReportSystemWebApplication.Models;
 using ReportSystemWebApplication.Persistences.IRepositories;
@@ -46,7 +47,7 @@ namespace ReportSystemWebApplication.Controllers
             return Ok(numberOfUnread);
         }
 
-        // GET: api/reports/getreportsindepartmentofuser
+        // GET: api/reports/getnumberofunreadreportproject
         [HttpGet]
         [Route("getnumberofunreadreportproject/{email}")]
         public async Task<IActionResult> GetNumberOfUnreadProjecttReport(string email)
@@ -218,6 +219,20 @@ namespace ReportSystemWebApplication.Controllers
                     {
                         //send for receiver
                         await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", mainReport.ReportId, mainReport.Title);
+
+                        var fcmTokens = await applicationUserRepository.GetFCMTokensOfEmail(user.ApplicationUser.Email);
+
+                        foreach (var token in fcmTokens)
+                        {
+                            var sendResult = await SendMessageToFirebase.Send(user.ApplicationUser.Email, mainReport.Title, mainReport.ReportId, token.Token);
+
+                            if (sendResult.Contains("InvalidRegistration"))
+                            {
+                                token.IsDeleted = true;
+                            }
+                        }
+
+                        await unitOfWork.Complete();
                     }
                 }
 
@@ -228,6 +243,20 @@ namespace ReportSystemWebApplication.Controllers
                 {
                     //send for receiver
                     await hubContext.Clients.All.SendAsync(user.ApplicationUser.Email + "_NewReport", report.ReportId, report.Title);
+
+                    var fcmTokens = await applicationUserRepository.GetFCMTokensOfEmail(user.ApplicationUser.Email);
+
+                    foreach (var token in fcmTokens)
+                    {
+                        var sendResult = await SendMessageToFirebase.Send(user.ApplicationUser.Email, report.Title, report.ReportId, token.Token);
+
+                        if (sendResult.Contains("InvalidRegistration"))
+                        {
+                            token.IsDeleted = true;
+                        }
+                    }
+
+                    await unitOfWork.Complete();
                 }
             }
 

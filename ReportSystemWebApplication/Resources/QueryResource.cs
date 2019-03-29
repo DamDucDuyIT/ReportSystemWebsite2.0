@@ -25,5 +25,6 @@ namespace ReportSystemWebApplication.Resources
         public bool IsHaveProject { get; set; }
         public int? Level { get; set; }
         public string SenderEmail { get; set; }
+        public string SearchParam { get; set; }
     }
 }
