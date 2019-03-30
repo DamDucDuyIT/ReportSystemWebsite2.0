@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReportSystemWebApplication.Models
 {
@@ -22,7 +23,9 @@ namespace ReportSystemWebApplication.Models
         public string Title { get; set; }
         public Project Project { get; set; }
         public Report MainReport { get; set; }
+        [Column(TypeName = "ntext")]
         public string Content { get; set; }
+        [Column(TypeName = "ntext")]
         public string ShortContent { get; set; }
         public DateTime CreatedOn { get; set; }
         public Department Department { get; set; }

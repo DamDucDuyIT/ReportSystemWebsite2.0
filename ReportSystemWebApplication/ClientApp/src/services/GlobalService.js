@@ -16,9 +16,11 @@ export const getProgress = (first, last) => {
   var daysTotal = Math.round(
     Math.abs((firstDate.getTime() - secondDate.getTime()) / oneDay)
   );
-  var daysPassed = Math.round(
-    Math.abs((firstDate.getTime() - new Date()) / oneDay)
-  );
-  var res = Math.ceil((daysPassed / daysTotal) * 100);
+
+  var daysPassed = Math.round((firstDate.getTime() - new Date()) / oneDay);
+  if (daysPassed > 0) {
+    daysPassed = 0;
+  }
+  var res = Math.ceil((Math.abs(daysPassed) / daysTotal) * 100);
   return res;
 };

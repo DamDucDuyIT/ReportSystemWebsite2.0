@@ -45,6 +45,15 @@ class AddProject extends Component {
     });
   };
 
+  isHaveUnicodeCharacter = str => {
+    for (var i = 0, n = str.length; i < n; i++) {
+      if (str.charCodeAt(i) > 127) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   addMember = () => {
     const { form } = this.props;
     // can use data-binding to get
@@ -62,6 +71,16 @@ class AddProject extends Component {
     e.preventDefault();
 
     this.props.form.validateFields((err, values) => {
+      values["code"] = values["code"].trim();
+      if (values["code"] === "") {
+        message.error("Vui lòng kiểm tra lại mã dự án", 3);
+        return;
+      }
+
+      if (this.isHaveUnicodeCharacter(values["code"])) {
+        message.error("Mã dự án không cho phép kí tự có dấu", 3);
+        return;
+      }
       if (!err) {
         this.setState({
           addLoading: true

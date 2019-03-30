@@ -171,7 +171,7 @@ export const loadComposeForm = async (dispatch, isLoaded) => {
     "api/accounts/getallinbranch/" + authService.getLoggedInUser().departmentId
   );
   const projects = await dataService.get(
-    "api/projects/getallprojectofuser?email=a@a.com"
+    "api/projects/getallprojectofuser?email=" + currentEmail
   );
   dispatch({
     type: receiveComposeFormType,

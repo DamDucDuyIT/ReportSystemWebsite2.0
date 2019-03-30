@@ -168,6 +168,12 @@ class Account extends Component {
         render: val => FormatDate.formatDate(val)
       },
       {
+        title: "Người tạo",
+        dataIndex: "creatorEmail",
+        key: "creatorEmail",
+        ...this.getColumnSearchProps("creatorEmail")
+      },
+      {
         title: "Mô tả",
         dataIndex: "description",
         key: "description",

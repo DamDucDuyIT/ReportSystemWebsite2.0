@@ -103,9 +103,8 @@ class ComposeForm extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { report, toEmailsOfReport } = this.props;
+    const { report, toEmailsOfReport, projects } = this.props;
 
-    var projects = [];
     if (this.props.accounts && this.props.accounts.items) {
       this.props.projects &&
         this.props.projects.items.map(item => {
@@ -114,6 +113,7 @@ class ComposeForm extends React.Component {
           });
         });
     }
+
     return (
       <div>
         {report && toEmailsOfReport ? (
@@ -155,25 +155,25 @@ class ComposeForm extends React.Component {
             </Form.Item>
             {this.props.projectId && (
               <Form.Item>
-                {getFieldDecorator(
-                  "projectId",
-                  {
-                    initialValue: this.props.projectId
-                  },
-                  {
-                    rules: [{ required: true, message: "Xin nhập chủ đề!" }]
-                  }
-                )(
-                  <Select placeholder="Chủ đề" disabled>
-                    {projects.map(project => (
-                      <Select.Option
-                        key={project.projectId}
-                        value={project.projectId}
-                      >
-                        {project.name}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                {getFieldDecorator("projectId", {
+                  initialValue:
+                    this.props.report.projectId == null
+                      ? ""
+                      : this.props.report.projectName
+                })(
+                  <Input placeholder="Dự án" disabled />
+                  // <Select placeholder="Dự án" disabled>
+                  //   {projects &&
+                  //     projects.items &&
+                  //     projects.items.map(project => (
+                  //       <Select.Option
+                  //         key={project.projectId}
+                  //         value={project.name}
+                  //       >
+                  //         {project.name}
+                  //       </Select.Option>
+                  //     ))}
+                  // </Select>
                 )}
               </Form.Item>
             )}

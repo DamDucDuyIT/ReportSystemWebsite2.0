@@ -54,11 +54,11 @@ const ProjectDetailForm = Form.create({
       isDeleted: Form.createFormField({
         ...props.isDeleted,
         value: props.isDeleted.value ? "Tạm ngưng" : "Hoạt động"
-      }),
-      reportNumbers: Form.createFormField({
-        ...props.reportNumbers,
-        value: props.reportNumbers.value
       })
+      // reportNumbers: Form.createFormField({
+      //   ...props.reportNumbers,
+      //   value: props.reportNumbers.value
+      // })
     };
   },
   onValuesChange(_, values) {}
@@ -69,7 +69,8 @@ const ProjectDetailForm = Form.create({
     dateRanges[0].format("YYYY-MM-DD"),
     dateRanges[1].format("YYYY-MM-DD")
   ];
-  const progress = GlobalService.getProgress(dates[0] + "", dates[1] + "");
+
+  var progress = GlobalService.getProgress(dates[0] + "", dates[1] + "");
 
   return (
     <Form>
@@ -106,9 +107,9 @@ const ProjectDetailForm = Form.create({
       <Form.Item label="Tình trạng">
         {getFieldDecorator("isDeleted", {})(<Input disabled />)}
       </Form.Item>
-      <Form.Item label="Số lượng báo cáo">
+      {/* <Form.Item label="Số lượng báo cáo">
         {getFieldDecorator("reportNumbers", {})(<Input disabled />)}
-      </Form.Item>
+      </Form.Item> */}
     </Form>
   );
 });
@@ -125,6 +126,7 @@ class ProjectDetail extends React.Component {
   }
 
   updateFields = data => {
+    console.log(data);
     var members = [];
     data.projectMembers.map(member => {
       var temp = {
@@ -160,9 +162,9 @@ class ProjectDetail extends React.Component {
       isDeleted: {
         value: data.isDeleted
       },
-      reportNumbers: {
-        value: data.reports.length
-      },
+      // reportNumbers: {
+      //   value: data.reports.length
+      // },
       members: {
         value: members
       }
