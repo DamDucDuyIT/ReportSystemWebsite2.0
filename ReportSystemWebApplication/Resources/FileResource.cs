@@ -7,6 +7,7 @@
         public string Title { get; set; }
         public string FileName { get; set; }
         public string Icon { get; set; }
+        public string IconMobile { get; set; }
         public long? ReportId { get; set; }
     }
 }

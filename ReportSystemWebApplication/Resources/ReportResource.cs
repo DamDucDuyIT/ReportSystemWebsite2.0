@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ReportSystemWebApplication.Resources
 {
@@ -13,6 +14,7 @@ namespace ReportSystemWebApplication.Resources
         public string Content { get; set; }
         public string ShortContent { get; set; }
         public string CreatedOn { get; set; }
+        public DateTime UpdateOn { get; set; }
         public string ProjectName { get; set; }
         public string DepartmentNameOfProject { get; set; }
         public string DepartmentCodeOfProject { get; set; }

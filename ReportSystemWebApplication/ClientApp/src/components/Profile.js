@@ -43,12 +43,12 @@ class Profile extends React.Component {
           Chỉnh sửa thông tin
         </span>
       </Menu.Item>
-      <Menu.Item key="1">
+      {/* <Menu.Item key="1">
         <a href="#">Thay ảnh đại diện</a>
-      </Menu.Item>
-      <Menu.Item key="2">
+      </Menu.Item> */}
+      {/* <Menu.Item key="2">
         <a href="#">Đổi mật khẩu</a>
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   );
   showModal() {

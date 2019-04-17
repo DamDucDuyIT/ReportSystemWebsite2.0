@@ -28,6 +28,7 @@ namespace ReportSystemWebApplication.Models
         [Column(TypeName = "ntext")]
         public string ShortContent { get; set; }
         public DateTime CreatedOn { get; set; }
+        public DateTime UpdateOn { get; set; }
         public Department Department { get; set; }
         public ApplicationUser From { get; set; }
         public ICollection<ReportDepartment> HighestChildDepartmentsOfTo { get; set; }

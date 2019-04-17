@@ -135,8 +135,9 @@ namespace ReportSystemWebApplication.Controllers
             //map reportResource json into report model
             var report = mapper.Map<ReportResource, Report>(reportResource);
 
-            //update createOn datetime
+            //update createOn & UpdateOn datetime
             report.CreatedOn = DateTime.Now;
+            report.UpdateOn = DateTime.Now;
 
             //add project for report
             if (reportResource.ProjectId != null)
@@ -181,6 +182,8 @@ namespace ReportSystemWebApplication.Controllers
             {
 
                 var mainReport = await reportRepository.GetReport(reportResource.MainReportId, true);
+
+                mainReport.UpdateOn = DateTime.Now;
 
                 foreach (var email in reportResource.ToEmails)
                 {

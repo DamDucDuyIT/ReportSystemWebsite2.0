@@ -27,7 +27,7 @@ namespace ReportSystemWebApplication
                     RoleSeed.SeedAsync(context, roleManager).Wait();
                     DbInitializer.Initialize(context).Wait();
                     AccountInitializer.SeedAsync(context, userManager).Wait();
-                    ReportInitializer.Initialize(context).Wait();
+                    //ReportInitializer.Initialize(context).Wait();
                 }
                 catch (Exception ex)
                 {

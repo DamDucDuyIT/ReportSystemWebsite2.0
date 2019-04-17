@@ -59,46 +59,46 @@ class ComposeForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.state.content.length < 15) {
-      alert("Xin điền nội dung! Nhập tối thiểu 15 ký tự.");
-    }
-
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.setState({
-          loading: true
-        });
-        var shortContent = document.createElement("html");
-        shortContent.innerHTML = this.state.content;
-
-        const { files, content } = this.state;
-
-        this.props
-          .replyReport(
-            values.toEmails,
-            content,
-            shortContent.textContent,
-            files
-          )
-          .then(res => {
-            console.log(res);
-            if (res.status === 200) {
-              message.success("Đã gửi thành công!");
-              this.props.form.resetFields();
-              this.setState({
-                content: "",
-                files: []
-              });
-              this.props.onClose();
-            } else {
-              message.error("Gửi báo cáo không thành công!");
-            }
-
-            this.setState({
-              loading: false
-            });
+      message.error("Nhập nội dung tối thiểu 15 ký tự!");
+    } else {
+      this.props.form.validateFields((err, values) => {
+        if (!err) {
+          this.setState({
+            loading: true
           });
-      }
-    });
+          var shortContent = document.createElement("html");
+          shortContent.innerHTML = this.state.content;
+
+          const { files, content } = this.state;
+
+          this.props
+            .replyReport(
+              values.toEmails,
+              content,
+              shortContent.textContent,
+              files
+            )
+            .then(res => {
+              console.log(res);
+              if (res.status === 200) {
+                message.success("Đã gửi thành công!");
+                this.props.form.resetFields();
+                this.setState({
+                  content: "",
+                  files: []
+                });
+                this.props.onClose();
+              } else {
+                message.error("Gửi báo cáo không thành công!");
+              }
+
+              this.setState({
+                loading: false
+              });
+            });
+        }
+      });
+    }
   };
 
   render() {

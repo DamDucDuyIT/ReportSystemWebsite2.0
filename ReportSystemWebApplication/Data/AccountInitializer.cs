@@ -20,7 +20,7 @@ namespace ReportSystemWebApplication.Data
                     UserName = "a@a.com",
                     FullName = "WebsiteAdmin",
                     PhoneNumber = "01693848597",
-                    Department = _context.Departments.FirstOrDefault(d => d.Name == "Becamex"),
+                    Department = _context.Departments.FirstOrDefault(d => d.Name == "Ban Giám Đốc"),
                     IsActived = true
                 };
 
@@ -39,7 +39,7 @@ namespace ReportSystemWebApplication.Data
                     UserName = "DamDucDuy",
                     FullName = "Department Admin",
                     PhoneNumber = "01693848597",
-                    Department = _context.Departments.FirstOrDefault(d => d.Name == "R&D"),
+                    Department = _context.Departments.FirstOrDefault(d => d.Name == "Trung tâm R&D"),
                     IsActived = true
                 };
 
@@ -58,7 +58,7 @@ namespace ReportSystemWebApplication.Data
                     UserName = "TranPhucHau",
                     FullName = "Department Admin 2",
                     PhoneNumber = "01693848597",
-                    Department = _context.Departments.FirstOrDefault(d => d.Code == "vntt"),
+                    Department = _context.Departments.FirstOrDefault(d => d.Name == "Trung tâm R&D"),
                     IsActived = true
                 };
 

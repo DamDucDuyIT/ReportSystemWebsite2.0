@@ -126,8 +126,8 @@ class ProjectDetail extends React.Component {
   }
 
   updateFields = data => {
-    console.log(data);
     var members = [];
+
     data.projectMembers.map(member => {
       var temp = {
         name: member.name,
@@ -137,6 +137,7 @@ class ProjectDetail extends React.Component {
       };
       members.push(temp);
     });
+
     newFields = {
       projectId: {
         value: data.projectId

@@ -1,11 +1,12 @@
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReportSystemWebApplication.Models;
 using ReportSystemWebApplication.Persistences.IRepositories;
 using ReportSystemWebApplication.Resources;
+using System;
+using System.Threading.Tasks;
 
 namespace ReportSystemWebApplication.Controllers
 {
@@ -174,37 +175,45 @@ namespace ReportSystemWebApplication.Controllers
             || System.IO.Path.GetExtension(file.FileName) == ".xlt" || System.IO.Path.GetExtension(file.FileName) == ".csv")
             {
                 fileInDatabase.Icon = "file-excel";
+                fileInDatabase.IconMobile = "file-excel";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".doc" || System.IO.Path.GetExtension(file.FileName) == ".docx")
             {
                 fileInDatabase.Icon = "file-word";
+                fileInDatabase.IconMobile = "file-word";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".pdf")
             {
                 fileInDatabase.Icon = "file-pdf";
+                fileInDatabase.IconMobile = "file-pdf";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".ppt" || System.IO.Path.GetExtension(file.FileName) == ".pptx")
             {
                 fileInDatabase.Icon = "file-ppt";
+                fileInDatabase.IconMobile = "file-powerpoint";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".png" || System.IO.Path.GetExtension(file.FileName) == ".bmp"
                 || System.IO.Path.GetExtension(file.FileName) == ".jpeg" || System.IO.Path.GetExtension(file.FileName) == ".jpg")
             {
                 fileInDatabase.Icon = "picture";
+                fileInDatabase.IconMobile = "file-image";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".rar" || System.IO.Path.GetExtension(file.FileName) == ".zip"
                 || System.IO.Path.GetExtension(file.FileName) == ".zip5" || System.IO.Path.GetExtension(file.FileName) == ".7zip")
             {
                 fileInDatabase.Icon = "export";
+                fileInDatabase.IconMobile = "zip-box";
             }
             else if (System.IO.Path.GetExtension(file.FileName) == ".flv" || System.IO.Path.GetExtension(file.FileName) == ".avi"
               || System.IO.Path.GetExtension(file.FileName) == ".mp4" || System.IO.Path.GetExtension(file.FileName) == ".wmv")
             {
                 fileInDatabase.Icon = "video-camera";
+                fileInDatabase.IconMobile = "library-video";
             }
             else
             {
                 fileInDatabase.Icon = "file";
+                fileInDatabase.IconMobile = "file";
             }
 
             fileInDatabase.FileName = fileInDatabase.FileId + System.IO.Path.GetExtension(file.FileName);
@@ -247,6 +256,23 @@ namespace ReportSystemWebApplication.Controllers
             }
             memory.Position = 0;
             return File(memory, contentType, file.Title + System.IO.Path.GetExtension(downloadPath));
+        }
+
+        [HttpGet]
+        [Route("downloadbybase64/{id}")]
+        public async Task<IActionResult> DownloadFileByBase64(long id)
+        {
+            var file = await fileRepository.GetFile(id, false);
+            if (file == null)
+            {
+                return BadRequest("No Id of uploaded file can be found");
+            }
+
+            var downloadPath = System.IO.Path.Combine(host.ContentRootPath, "ClientApp/uploads/file/" + file.FileName);
+
+            byte[] b = System.IO.File.ReadAllBytes(downloadPath);
+
+            return Ok(Convert.ToBase64String(b));
         }
 
         [HttpGet]

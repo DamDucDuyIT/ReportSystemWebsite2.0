@@ -191,6 +191,7 @@ class Account extends Component {
           columns={columns}
           dataSource={accounts}
           onChange={this.handleChange}
+          className="bordered"
         />
         <Modal
           className="project-detail-modal no-footer-modal"

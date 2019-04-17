@@ -787,3 +787,12 @@ p {
 .badge-zone .badge-item.project > i {
   margin: 0 5px;
 }
+/* Table */
+
+.ant-table-wrapper.bordered .ant-table-thead th {
+  height: 54px;
+  border: none;
+}
+.ant-table-wrapper.bordered .ant-table-thead th:hover {
+  background: rgba(66, 66, 66, 0.596);
+}

@@ -52,7 +52,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var userDepartmentLevel = user.Department.Level;
 
             var projectsUserCreate = await context.Projects
-                                    .Where(p => p.CreatorEmail.Equals(queryObj.Email))
+                                    .Include(p => p.ProjectMembers)
+                                    .Where(p => p.CreatorEmail.Equals(queryObj.Email) || p.ProjectMembers.Any(pm => pm.Email.Equals(queryObj.Email)))
                                     .ToListAsync();
 
             var projectsUserReceivedInReport = await context.Reports
@@ -70,8 +71,13 @@ namespace ReportSystemWebApplication.Persistences.Repositories
                 projects.Add(project);
             }
 
-            foreach (var project in projectsUserReceivedInReport)
+            foreach (var projectsUserReceived in projectsUserReceivedInReport)
             {
+                var project = await context.Projects
+                .Include(p => p.Department)
+                .Include(p => p.Reports)
+                .Include(p => p.ProjectMembers)
+                .SingleOrDefaultAsync(p => p.ProjectId == projectsUserReceived.ProjectId);
                 projects.Add(project);
             }
 
@@ -147,6 +153,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             //for user's department
             var projectInReportInUserDepartment = context.Projects
                                     .Include(p => p.Department)
+                                    .Include(p => p.ProjectMembers)
                                     .Where(p => p.Department.DepartmentId == userDepartment.DepartmentId)
                                     .ToList();
 
@@ -154,8 +161,13 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             foreach (var project in projectInReportInUserDepartment)
             {
                 // var reportWhichHaveProject = reportsToUser.Where(r => r.Project != null).ToList();
-                var unread = reportsToUser.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.Email) && t.IsRead == false) && r.Project.ProjectId == project.ProjectId);
-                projectOfUserDepart.Add(new ProjectWithUnread { Project = project, Unread = unread });
+                var reportCount = reportsToUser.Count(r => r.Project.ProjectId == project.ProjectId);
+                if (reportCount > 0 || project.CreatorEmail.Equals(queryObj.Email) || project.ProjectMembers.Any(p => p.Email.Equals(queryObj.Email)))
+                {
+                    var unread = reportsToUser.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(queryObj.Email) && t.IsRead == false) && r.Project.ProjectId == project.ProjectId);
+                    projectOfUserDepart.Add(new ProjectWithUnread { Project = project, Unread = unread });
+                }
+
             }
             if (projectOfUserDepart.Count > 0)
             {
@@ -265,15 +277,26 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             var projectInReportInChildDepartment = new HashSet<Project>();
             foreach (var project in projectInReportInChildDepartmentList)
             {
-                var projectInDB = await context.Projects.FindAsync(project.ProjectId);
-                projectInReportInChildDepartment.Add(projectInDB);
+                var projectInDB = await context.Projects
+                                .Include(p => p.ProjectMembers)
+                                .FirstOrDefaultAsync(p => p.ProjectId == project.ProjectId);
+
+                if (projectInDB != null)
+                {
+                    projectInReportInChildDepartment.Add(projectInDB);
+                }
             }
 
             foreach (var project in projectInReportInChildDepartment)
             {
                 //var reportWhichHaveProject = reportsToUser.Where(r => r.Project != null).ToList();
-                var unread = reportsToUser.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false) && r.Project.ProjectId == project.ProjectId);
-                projects.Add(new ProjectWithUnread { Project = project, Unread = unread });
+                var reportCount = reportsToUser.Count(r => r.Project.ProjectId == project.ProjectId);
+                if (reportCount > 0 || project.ProjectMembers.Any(p => p.Email.Equals(email)))
+                {
+                    var unread = reportsToUser.Count(r => r.To.Any(t => t.ApplicationUser.Email.Equals(email) && t.IsRead == false) && r.Project.ProjectId == project.ProjectId);
+                    projects.Add(new ProjectWithUnread { Project = project, Unread = unread });
+                }
+
             }
 
             foreach (var child in department.Children)

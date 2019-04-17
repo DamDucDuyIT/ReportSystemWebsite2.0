@@ -92,7 +92,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             };
             if (queryObj.SortBy != "id" || queryObj.IsSortAscending != true)
             {
-                query = query.OrderByDescending(s => s.ReportId);
+                query = query.OrderByDescending(s => s.UpdateOn);
             }
             query = query.ApplyOrdering(queryObj, columnsMap);
 
@@ -192,7 +192,7 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             };
             if (queryObj.SortBy != "id" || queryObj.IsSortAscending != true)
             {
-                query = query.OrderByDescending(s => s.ReportId);
+                query = query.OrderByDescending(s => s.UpdateOn);
             }
             query = query.ApplyOrdering(queryObj, columnsMap);
 
@@ -308,7 +308,8 @@ namespace ReportSystemWebApplication.Persistences.Repositories
             };
             if (queryObj.SortBy != "id" || queryObj.IsSortAscending != true)
             {
-                query = query.OrderByDescending(s => s.ReportId);
+                //query = query.OrderByDescending(s => s.ReportId);
+                query = query.OrderByDescending(s => s.UpdateOn);
             }
             query = query.ApplyOrdering(queryObj, columnsMap);
 

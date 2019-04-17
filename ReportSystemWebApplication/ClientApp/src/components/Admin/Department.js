@@ -180,6 +180,7 @@ class Department extends Component {
           columns={columns}
           dataSource={departments}
           expandedRowRender=""
+          className="bordered"
           //   onChange={this.handleChange}
         />
         <Modal
